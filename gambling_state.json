@@ -1,0 +1,2653 @@
+{
+  "metadata": {
+    "created_at": "2026-02-17T16:17:13.472338",
+    "last_updated": "2026-02-17T17:56:23.402802",
+    "total_rounds": 180,
+    "version": "2.1",
+    "adaptation_level": 2
+  },
+  "historical_data": [
+    {
+      "multiplier": 1.12,
+      "timestamp": "2026-02-17T17:20:26.688025",
+      "round_number": 1
+    },
+    {
+      "multiplier": 5.94,
+      "timestamp": "2026-02-17T17:20:34.373765",
+      "round_number": 2
+    },
+    {
+      "multiplier": 1.62,
+      "timestamp": "2026-02-17T17:20:37.647550",
+      "round_number": 3
+    },
+    {
+      "multiplier": 4.15,
+      "timestamp": "2026-02-17T17:20:39.699737",
+      "round_number": 4
+    },
+    {
+      "multiplier": 1.07,
+      "timestamp": "2026-02-17T17:20:42.025805",
+      "round_number": 5
+    },
+    {
+      "multiplier": 1.72,
+      "timestamp": "2026-02-17T17:20:45.829305",
+      "round_number": 6
+    },
+    {
+      "multiplier": 5.64,
+      "timestamp": "2026-02-17T17:20:47.690244",
+      "round_number": 7
+    },
+    {
+      "multiplier": 2.01,
+      "timestamp": "2026-02-17T17:20:50.447783",
+      "round_number": 8
+    },
+    {
+      "multiplier": 1.2,
+      "timestamp": "2026-02-17T17:20:53.457302",
+      "round_number": 9
+    },
+    {
+      "multiplier": 3.42,
+      "timestamp": "2026-02-17T17:20:55.863407",
+      "round_number": 10
+    },
+    {
+      "multiplier": 1.0,
+      "timestamp": "2026-02-17T17:21:02.122981",
+      "round_number": 11
+    },
+    {
+      "multiplier": 2.39,
+      "timestamp": "2026-02-17T17:21:04.084911",
+      "round_number": 12
+    },
+    {
+      "multiplier": 1.03,
+      "timestamp": "2026-02-17T17:21:06.008755",
+      "round_number": 13
+    },
+    {
+      "multiplier": 4.85,
+      "timestamp": "2026-02-17T17:21:09.716116",
+      "round_number": 14
+    },
+    {
+      "multiplier": 1.8,
+      "timestamp": "2026-02-17T17:21:12.434574",
+      "round_number": 15
+    },
+    {
+      "multiplier": 2.05,
+      "timestamp": "2026-02-17T17:21:16.140542",
+      "round_number": 16
+    },
+    {
+      "multiplier": 1.95,
+      "timestamp": "2026-02-17T17:21:18.833738",
+      "round_number": 17
+    },
+    {
+      "multiplier": 1.32,
+      "timestamp": "2026-02-17T17:21:25.013697",
+      "round_number": 18
+    },
+    {
+      "multiplier": 1.6,
+      "timestamp": "2026-02-17T17:21:28.438640",
+      "round_number": 19
+    },
+    {
+      "multiplier": 114.48,
+      "timestamp": "2026-02-17T17:21:31.142265",
+      "round_number": 20
+    },
+    {
+      "multiplier": 20.92,
+      "timestamp": "2026-02-17T17:21:34.119912",
+      "round_number": 21
+    },
+    {
+      "multiplier": 3.66,
+      "timestamp": "2026-02-17T17:21:37.098457",
+      "round_number": 22
+    },
+    {
+      "multiplier": 6.41,
+      "timestamp": "2026-02-17T17:21:43.026457",
+      "round_number": 23
+    },
+    {
+      "multiplier": 2.19,
+      "timestamp": "2026-02-17T17:21:45.181800",
+      "round_number": 24
+    },
+    {
+      "multiplier": 1.8,
+      "timestamp": "2026-02-17T17:21:48.234696",
+      "round_number": 25
+    },
+    {
+      "multiplier": 1.51,
+      "timestamp": "2026-02-17T17:21:53.532942",
+      "round_number": 26
+    },
+    {
+      "multiplier": 2.75,
+      "timestamp": "2026-02-17T17:21:56.433537",
+      "round_number": 27
+    },
+    {
+      "multiplier": 1.41,
+      "timestamp": "2026-02-17T17:21:58.441432",
+      "round_number": 28
+    },
+    {
+      "multiplier": 1.34,
+      "timestamp": "2026-02-17T17:22:02.350716",
+      "round_number": 29
+    },
+    {
+      "multiplier": 1.98,
+      "timestamp": "2026-02-17T17:22:04.570550",
+      "round_number": 30
+    },
+    {
+      "multiplier": 1.15,
+      "timestamp": "2026-02-17T17:22:07.125504",
+      "round_number": 31
+    },
+    {
+      "multiplier": 2.56,
+      "timestamp": "2026-02-17T17:22:10.190760",
+      "round_number": 32
+    },
+    {
+      "multiplier": 1.36,
+      "timestamp": "2026-02-17T17:22:16.643181",
+      "round_number": 33
+    },
+    {
+      "multiplier": 10.55,
+      "timestamp": "2026-02-17T17:22:20.031245",
+      "round_number": 34
+    },
+    {
+      "multiplier": 28.29,
+      "timestamp": "2026-02-17T17:22:24.244221",
+      "round_number": 35
+    },
+    {
+      "multiplier": 1.39,
+      "timestamp": "2026-02-17T17:22:26.447033",
+      "round_number": 36
+    },
+    {
+      "multiplier": 1.09,
+      "timestamp": "2026-02-17T17:22:28.530422",
+      "round_number": 37
+    },
+    {
+      "multiplier": 1.46,
+      "timestamp": "2026-02-17T17:22:31.338641",
+      "round_number": 38
+    },
+    {
+      "multiplier": 143.95,
+      "timestamp": "2026-02-17T17:22:39.624605",
+      "round_number": 39
+    },
+    {
+      "multiplier": 11.66,
+      "timestamp": "2026-02-17T17:22:41.954540",
+      "round_number": 40
+    },
+    {
+      "multiplier": 1.15,
+      "timestamp": "2026-02-17T17:22:45.793528",
+      "round_number": 41
+    },
+    {
+      "multiplier": 22.6,
+      "timestamp": "2026-02-17T17:22:49.108123",
+      "round_number": 42
+    },
+    {
+      "multiplier": 1.86,
+      "timestamp": "2026-02-17T17:22:51.571767",
+      "round_number": 43
+    },
+    {
+      "multiplier": 4.04,
+      "timestamp": "2026-02-17T17:22:58.120765",
+      "round_number": 44
+    },
+    {
+      "multiplier": 3.69,
+      "timestamp": "2026-02-17T17:23:01.752387",
+      "round_number": 45
+    },
+    {
+      "multiplier": 1.35,
+      "timestamp": "2026-02-17T17:23:03.726764",
+      "round_number": 46
+    },
+    {
+      "multiplier": 1.05,
+      "timestamp": "2026-02-17T17:23:06.211883",
+      "round_number": 47
+    },
+    {
+      "multiplier": 1.8,
+      "timestamp": "2026-02-17T17:23:08.303402",
+      "round_number": 48
+    },
+    {
+      "multiplier": 2.13,
+      "timestamp": "2026-02-17T17:23:17.714715",
+      "round_number": 49
+    },
+    {
+      "multiplier": 1.92,
+      "timestamp": "2026-02-17T17:23:19.717284",
+      "round_number": 50
+    },
+    {
+      "multiplier": 2.07,
+      "timestamp": "2026-02-17T17:23:24.075330",
+      "round_number": 51
+    },
+    {
+      "multiplier": 6.22,
+      "timestamp": "2026-02-17T17:23:25.988701",
+      "round_number": 52
+    },
+    {
+      "multiplier": 15.1,
+      "timestamp": "2026-02-17T17:23:29.089575",
+      "round_number": 53
+    },
+    {
+      "multiplier": 1.18,
+      "timestamp": "2026-02-17T17:23:31.754914",
+      "round_number": 54
+    },
+    {
+      "multiplier": 3.39,
+      "timestamp": "2026-02-17T17:23:37.422521",
+      "round_number": 55
+    },
+    {
+      "multiplier": 12.31,
+      "timestamp": "2026-02-17T17:23:41.031028",
+      "round_number": 56
+    },
+    {
+      "multiplier": 2.39,
+      "timestamp": "2026-02-17T17:23:44.496328",
+      "round_number": 57
+    },
+    {
+      "multiplier": 1.29,
+      "timestamp": "2026-02-17T17:23:47.421870",
+      "round_number": 58
+    },
+    {
+      "multiplier": 1.82,
+      "timestamp": "2026-02-17T17:23:51.353815",
+      "round_number": 59
+    },
+    {
+      "multiplier": 1.5,
+      "timestamp": "2026-02-17T17:23:53.486209",
+      "round_number": 60
+    },
+    {
+      "multiplier": 16.75,
+      "timestamp": "2026-02-17T17:23:58.824173",
+      "round_number": 61
+    },
+    {
+      "multiplier": 1.08,
+      "timestamp": "2026-02-17T17:24:04.264565",
+      "round_number": 62
+    },
+    {
+      "multiplier": 1.45,
+      "timestamp": "2026-02-17T17:24:11.679918",
+      "round_number": 63
+    },
+    {
+      "multiplier": 2.06,
+      "timestamp": "2026-02-17T17:24:13.794881",
+      "round_number": 64
+    },
+    {
+      "multiplier": 6.22,
+      "timestamp": "2026-02-17T17:24:16.122668",
+      "round_number": 65
+    },
+    {
+      "multiplier": 6.92,
+      "timestamp": "2026-02-17T17:24:18.698253",
+      "round_number": 66
+    },
+    {
+      "multiplier": 1.81,
+      "timestamp": "2026-02-17T17:24:20.634876",
+      "round_number": 67
+    },
+    {
+      "multiplier": 1.31,
+      "timestamp": "2026-02-17T17:24:22.192381",
+      "round_number": 68
+    },
+    {
+      "multiplier": 1.33,
+      "timestamp": "2026-02-17T17:24:23.702863",
+      "round_number": 69
+    },
+    {
+      "multiplier": 1.28,
+      "timestamp": "2026-02-17T17:24:26.091611",
+      "round_number": 70
+    },
+    {
+      "multiplier": 4.79,
+      "timestamp": "2026-02-17T17:24:33.914832",
+      "round_number": 71
+    },
+    {
+      "multiplier": 3.66,
+      "timestamp": "2026-02-17T17:24:36.173538",
+      "round_number": 72
+    },
+    {
+      "multiplier": 2.04,
+      "timestamp": "2026-02-17T17:24:38.001095",
+      "round_number": 73
+    },
+    {
+      "multiplier": 1.05,
+      "timestamp": "2026-02-17T17:24:39.933726",
+      "round_number": 74
+    },
+    {
+      "multiplier": 11.46,
+      "timestamp": "2026-02-17T17:24:42.435348",
+      "round_number": 75
+    },
+    {
+      "multiplier": 3.09,
+      "timestamp": "2026-02-17T17:24:44.525514",
+      "round_number": 76
+    },
+    {
+      "multiplier": 10.55,
+      "timestamp": "2026-02-17T17:24:46.765795",
+      "round_number": 77
+    },
+    {
+      "multiplier": 1.1,
+      "timestamp": "2026-02-17T17:24:49.406770",
+      "round_number": 78
+    },
+    {
+      "multiplier": 2.8,
+      "timestamp": "2026-02-17T17:24:52.565834",
+      "round_number": 79
+    },
+    {
+      "multiplier": 1.84,
+      "timestamp": "2026-02-17T17:24:59.787932",
+      "round_number": 80
+    },
+    {
+      "multiplier": 327.86,
+      "timestamp": "2026-02-17T17:25:04.479860",
+      "round_number": 81
+    },
+    {
+      "multiplier": 2.43,
+      "timestamp": "2026-02-17T17:25:06.692832",
+      "round_number": 82
+    },
+    {
+      "multiplier": 1.14,
+      "timestamp": "2026-02-17T17:25:08.360629",
+      "round_number": 83
+    },
+    {
+      "multiplier": 76.33,
+      "timestamp": "2026-02-17T17:25:16.188807",
+      "round_number": 84
+    },
+    {
+      "multiplier": 1.52,
+      "timestamp": "2026-02-17T17:25:19.274064",
+      "round_number": 85
+    },
+    {
+      "multiplier": 2.81,
+      "timestamp": "2026-02-17T17:25:22.010091",
+      "round_number": 86
+    },
+    {
+      "multiplier": 4.25,
+      "timestamp": "2026-02-17T17:25:26.856347",
+      "round_number": 87
+    },
+    {
+      "multiplier": 1.11,
+      "timestamp": "2026-02-17T17:25:28.511952",
+      "round_number": 88
+    },
+    {
+      "multiplier": 2.48,
+      "timestamp": "2026-02-17T17:25:33.655683",
+      "round_number": 89
+    },
+    {
+      "multiplier": 6.77,
+      "timestamp": "2026-02-17T17:25:36.495409",
+      "round_number": 90
+    },
+    {
+      "multiplier": 15.07,
+      "timestamp": "2026-02-17T17:25:39.861268",
+      "round_number": 91
+    },
+    {
+      "multiplier": 3.46,
+      "timestamp": "2026-02-17T17:25:41.738174",
+      "round_number": 92
+    },
+    {
+      "multiplier": 1.6,
+      "timestamp": "2026-02-17T17:25:44.354715",
+      "round_number": 93
+    },
+    {
+      "multiplier": 2.58,
+      "timestamp": "2026-02-17T17:25:46.299743",
+      "round_number": 94
+    },
+    {
+      "multiplier": 1.54,
+      "timestamp": "2026-02-17T17:25:48.260839",
+      "round_number": 95
+    },
+    {
+      "multiplier": 1.15,
+      "timestamp": "2026-02-17T17:25:51.108678",
+      "round_number": 96
+    },
+    {
+      "multiplier": 6.05,
+      "timestamp": "2026-02-17T17:25:57.192820",
+      "round_number": 97
+    },
+    {
+      "multiplier": 3.93,
+      "timestamp": "2026-02-17T17:26:01.435174",
+      "round_number": 98
+    },
+    {
+      "multiplier": 1.42,
+      "timestamp": "2026-02-17T17:26:07.294900",
+      "round_number": 99
+    },
+    {
+      "multiplier": 2.82,
+      "timestamp": "2026-02-17T17:26:09.579373",
+      "round_number": 100
+    },
+    {
+      "multiplier": 2.14,
+      "timestamp": "2026-02-17T17:26:12.009540",
+      "round_number": 101
+    },
+    {
+      "multiplier": 3.86,
+      "timestamp": "2026-02-17T17:26:14.892226",
+      "round_number": 102
+    },
+    {
+      "multiplier": 1.58,
+      "timestamp": "2026-02-17T17:26:17.123748",
+      "round_number": 103
+    },
+    {
+      "multiplier": 3.05,
+      "timestamp": "2026-02-17T17:26:19.153212",
+      "round_number": 104
+    },
+    {
+      "multiplier": 4.34,
+      "timestamp": "2026-02-17T17:26:22.495499",
+      "round_number": 105
+    },
+    {
+      "multiplier": 27.51,
+      "timestamp": "2026-02-17T17:26:36.881292",
+      "round_number": 106
+    },
+    {
+      "multiplier": 2.31,
+      "timestamp": "2026-02-17T17:26:41.514429",
+      "round_number": 107
+    },
+    {
+      "multiplier": 3.04,
+      "timestamp": "2026-02-17T17:26:44.152610",
+      "round_number": 108
+    },
+    {
+      "multiplier": 1.79,
+      "timestamp": "2026-02-17T17:26:46.530604",
+      "round_number": 109
+    },
+    {
+      "multiplier": 1.9,
+      "timestamp": "2026-02-17T17:26:48.958435",
+      "round_number": 110
+    },
+    {
+      "multiplier": 1.34,
+      "timestamp": "2026-02-17T17:26:50.723119",
+      "round_number": 111
+    },
+    {
+      "multiplier": 1.9,
+      "timestamp": "2026-02-17T17:26:59.543880",
+      "round_number": 112
+    },
+    {
+      "multiplier": 1.79,
+      "timestamp": "2026-02-17T17:27:01.735548",
+      "round_number": 113
+    },
+    {
+      "multiplier": 3.04,
+      "timestamp": "2026-02-17T17:27:04.391647",
+      "round_number": 114
+    },
+    {
+      "multiplier": 2.31,
+      "timestamp": "2026-02-17T17:27:06.790537",
+      "round_number": 115
+    },
+    {
+      "multiplier": 27.51,
+      "timestamp": "2026-02-17T17:27:11.343765",
+      "round_number": 116
+    },
+    {
+      "multiplier": 4.34,
+      "timestamp": "2026-02-17T17:27:18.165006",
+      "round_number": 117
+    },
+    {
+      "multiplier": 13.29,
+      "timestamp": "2026-02-17T17:27:38.525227",
+      "round_number": 118
+    },
+    {
+      "multiplier": 2.31,
+      "timestamp": "2026-02-17T17:28:08.845854",
+      "round_number": 119
+    },
+    {
+      "multiplier": 2.52,
+      "timestamp": "2026-02-17T17:28:30.898242",
+      "round_number": 120
+    },
+    {
+      "multiplier": 1.0,
+      "timestamp": "2026-02-17T17:28:41.639469",
+      "round_number": 121
+    },
+    {
+      "multiplier": 2.26,
+      "timestamp": "2026-02-17T17:29:08.477287",
+      "round_number": 122
+    },
+    {
+      "multiplier": 1.34,
+      "timestamp": "2026-02-17T17:29:39.748122",
+      "round_number": 123
+    },
+    {
+      "multiplier": 2.38,
+      "timestamp": "2026-02-17T17:33:03.276849",
+      "round_number": 124
+    },
+    {
+      "multiplier": 3.13,
+      "timestamp": "2026-02-17T17:33:07.830066",
+      "round_number": 125
+    },
+    {
+      "multiplier": 1.69,
+      "timestamp": "2026-02-17T17:33:09.770366",
+      "round_number": 126
+    },
+    {
+      "multiplier": 1.99,
+      "timestamp": "2026-02-17T17:33:11.474742",
+      "round_number": 127
+    },
+    {
+      "multiplier": 1.56,
+      "timestamp": "2026-02-17T17:33:13.488810",
+      "round_number": 128
+    },
+    {
+      "multiplier": 1.52,
+      "timestamp": "2026-02-17T17:33:16.646212",
+      "round_number": 129
+    },
+    {
+      "multiplier": 3.38,
+      "timestamp": "2026-02-17T17:33:25.047320",
+      "round_number": 130
+    },
+    {
+      "multiplier": 15.61,
+      "timestamp": "2026-02-17T17:33:29.417106",
+      "round_number": 131
+    },
+    {
+      "multiplier": 2.36,
+      "timestamp": "2026-02-17T17:33:34.330535",
+      "round_number": 132
+    },
+    {
+      "multiplier": 38.21,
+      "timestamp": "2026-02-17T17:34:40.063940",
+      "round_number": 133
+    },
+    {
+      "multiplier": 2.24,
+      "timestamp": "2026-02-17T17:35:01.830493",
+      "round_number": 134
+    },
+    {
+      "multiplier": 1.12,
+      "timestamp": "2026-02-17T17:35:15.162208",
+      "round_number": 135
+    },
+    {
+      "multiplier": 7.98,
+      "timestamp": "2026-02-17T17:36:03.046344",
+      "round_number": 136
+    },
+    {
+      "multiplier": 1.83,
+      "timestamp": "2026-02-17T17:36:46.033896",
+      "round_number": 137
+    },
+    {
+      "multiplier": 1.13,
+      "timestamp": "2026-02-17T17:36:48.931830",
+      "round_number": 138
+    },
+    {
+      "multiplier": 3.01,
+      "timestamp": "2026-02-17T17:37:09.492853",
+      "round_number": 139
+    },
+    {
+      "multiplier": 1.01,
+      "timestamp": "2026-02-17T17:37:20.954760",
+      "round_number": 140
+    },
+    {
+      "multiplier": 14.27,
+      "timestamp": "2026-02-17T17:38:18.523777",
+      "round_number": 141
+    },
+    {
+      "multiplier": 3.19,
+      "timestamp": "2026-02-17T17:39:04.271707",
+      "round_number": 142
+    },
+    {
+      "multiplier": 1.74,
+      "timestamp": "2026-02-17T17:39:26.061420",
+      "round_number": 143
+    },
+    {
+      "multiplier": 2.15,
+      "timestamp": "2026-02-17T17:39:46.916250",
+      "round_number": 144
+    },
+    {
+      "multiplier": 1.29,
+      "timestamp": "2026-02-17T17:40:00.739867",
+      "round_number": 145
+    },
+    {
+      "multiplier": 2.22,
+      "timestamp": "2026-02-17T17:40:21.975449",
+      "round_number": 146
+    },
+    {
+      "multiplier": 1.42,
+      "timestamp": "2026-02-17T17:40:37.442379",
+      "round_number": 147
+    },
+    {
+      "multiplier": 5.02,
+      "timestamp": "2026-02-17T17:41:24.830479",
+      "round_number": 148
+    },
+    {
+      "multiplier": 20.08,
+      "timestamp": "2026-02-17T17:42:26.423790",
+      "round_number": 149
+    },
+    {
+      "multiplier": 1.65,
+      "timestamp": "2026-02-17T17:43:15.051127",
+      "round_number": 150
+    },
+    {
+      "multiplier": 1.54,
+      "timestamp": "2026-02-17T17:43:18.324481",
+      "round_number": 151
+    },
+    {
+      "multiplier": 1.71,
+      "timestamp": "2026-02-17T17:44:01.541865",
+      "round_number": 152
+    },
+    {
+      "multiplier": 3.23,
+      "timestamp": "2026-02-17T17:44:05.606711",
+      "round_number": 153
+    },
+    {
+      "multiplier": 2.25,
+      "timestamp": "2026-02-17T17:44:15.892536",
+      "round_number": 154
+    },
+    {
+      "multiplier": 1.63,
+      "timestamp": "2026-02-17T17:44:56.133352",
+      "round_number": 155
+    },
+    {
+      "multiplier": 3.73,
+      "timestamp": "2026-02-17T17:45:17.632194",
+      "round_number": 156
+    },
+    {
+      "multiplier": 1.18,
+      "timestamp": "2026-02-17T17:45:46.886320",
+      "round_number": 157
+    },
+    {
+      "multiplier": 1.8,
+      "timestamp": "2026-02-17T17:45:53.509274",
+      "round_number": 158
+    },
+    {
+      "multiplier": 2.36,
+      "timestamp": "2026-02-17T17:46:14.973879",
+      "round_number": 159
+    },
+    {
+      "multiplier": 1.93,
+      "timestamp": "2026-02-17T17:47:18.589893",
+      "round_number": 160
+    },
+    {
+      "multiplier": 3.49,
+      "timestamp": "2026-02-17T17:47:21.809046",
+      "round_number": 161
+    },
+    {
+      "multiplier": 7.63,
+      "timestamp": "2026-02-17T17:48:26.546823",
+      "round_number": 162
+    },
+    {
+      "multiplier": 1.78,
+      "timestamp": "2026-02-17T17:48:30.297769",
+      "round_number": 163
+    },
+    {
+      "multiplier": 4.66,
+      "timestamp": "2026-02-17T17:48:55.640188",
+      "round_number": 164
+    },
+    {
+      "multiplier": 1.2,
+      "timestamp": "2026-02-17T17:49:17.065720",
+      "round_number": 165
+    },
+    {
+      "multiplier": 7.93,
+      "timestamp": "2026-02-17T17:50:19.778314",
+      "round_number": 166
+    },
+    {
+      "multiplier": 1.79,
+      "timestamp": "2026-02-17T17:50:26.582208",
+      "round_number": 167
+    },
+    {
+      "multiplier": 1.26,
+      "timestamp": "2026-02-17T17:50:45.877056",
+      "round_number": 168
+    },
+    {
+      "multiplier": 1.05,
+      "timestamp": "2026-02-17T17:51:51.543629",
+      "round_number": 169
+    },
+    {
+      "multiplier": 11.92,
+      "timestamp": "2026-02-17T17:51:55.552032",
+      "round_number": 170
+    },
+    {
+      "multiplier": 2.23,
+      "timestamp": "2026-02-17T17:52:14.494208",
+      "round_number": 171
+    },
+    {
+      "multiplier": 1.23,
+      "timestamp": "2026-02-17T17:52:45.417462",
+      "round_number": 172
+    },
+    {
+      "multiplier": 12.4,
+      "timestamp": "2026-02-17T17:53:19.149749",
+      "round_number": 173
+    },
+    {
+      "multiplier": 1.36,
+      "timestamp": "2026-02-17T17:53:40.064132",
+      "round_number": 174
+    },
+    {
+      "multiplier": 1.08,
+      "timestamp": "2026-02-17T17:53:56.637504",
+      "round_number": 175
+    },
+    {
+      "multiplier": 3.65,
+      "timestamp": "2026-02-17T17:54:34.407330",
+      "round_number": 176
+    },
+    {
+      "multiplier": 2.02,
+      "timestamp": "2026-02-17T17:55:48.177369",
+      "round_number": 177
+    },
+    {
+      "multiplier": 1.75,
+      "timestamp": "2026-02-17T17:55:53.359678",
+      "round_number": 178
+    },
+    {
+      "multiplier": 3.82,
+      "timestamp": "2026-02-17T17:55:56.756392",
+      "round_number": 179
+    },
+    {
+      "multiplier": 5.34,
+      "timestamp": "2026-02-17T17:56:23.297048",
+      "round_number": 180
+    }
+  ],
+  "pattern_analysis": {
+    "volatility_history": [
+      32.25676833272741,
+      32.274447652917864,
+      32.27121248938059,
+      33.99102731151013,
+      34.021591051996424,
+      34.00629921557254,
+      33.99726580562751,
+      34.0081604868247,
+      33.99578289397416,
+      34.022433744150106,
+      34.003126967117566,
+      34.01349531373245,
+      34.02223398419288,
+      34.03304272048906,
+      34.03774932481224,
+      34.03314858290359,
+      34.0011484807984,
+      34.00455634349887,
+      34.01025102419232,
+      34.02289251969072,
+      34.022941110339765,
+      34.01185451598012,
+      34.01287089128379,
+      34.043790492117346,
+      34.03346524742392,
+      34.0190098710072,
+      34.019209628301944,
+      34.02899296399581,
+      34.0296255950149,
+      12.047323737320054,
+      12.040716572503555,
+      12.033247247323466,
+      1.3923800747992963,
+      1.3671508425637247,
+      1.3717149375683606,
+      2.350251867787037,
+      2.352677138353334,
+      2.3626923105031334,
+      2.37532591150701,
+      2.376467606506183,
+      2.3730732461211064,
+      2.3630288692138572,
+      2.3727637529109304,
+      2.3628961315966075,
+      2.3565813689250152,
+      2.273552877907141,
+      2.2676696969818857,
+      2.2606471761031086,
+      2.263321862165264,
+      2.2595219420643327,
+      2.322050609117903,
+      2.3277898500111336,
+      3.513129718612719,
+      3.5331894899756704,
+      3.4582866535226944,
+      3.5596483683624904,
+      3.5750847796895626,
+      3.5746365340396355,
+      3.5686110138039817,
+      3.57486788935939,
+      4.173063999326069,
+      4.185573932140202,
+      4.200163244190024,
+      4.1937087723426405,
+      3.824836897227078,
+      3.8056963121039105,
+      3.8150881602660136,
+      3.8016663079013915,
+      3.8054070964983975,
+      3.8116998624999745,
+      3.8215691384254273,
+      3.814304186973443,
+      3.8137082954270833,
+      3.8215432694012907,
+      3.818597700896547,
+      3.8116683482127196,
+      3.8196293618744708,
+      3.8137259061012516,
+      3.819184287396198,
+      3.8064688738852377,
+      3.786428981190233,
+      2.736639290129896,
+      2.732864646427221,
+      2.723752903123775,
+      2.5556556120848093,
+      2.6906433739171423,
+      2.6981173397141056,
+      2.702820432971074,
+      2.6947931947079953,
+      2.2734336197786504,
+      2.2742926619999917,
+      2.274180499807299,
+      2.730954740240792,
+      2.7414598909934194,
+      2.750455975593521,
+      2.748665516045025,
+      2.749161210420068,
+      2.730188318462872,
+      2.7088312043084146,
+      2.704019344962926
+    ],
+    "trend_history": [
+      0.13134005168330837,
+      0.12287040780199723,
+      0.12065198422748276,
+      0.1208576725875127,
+      0.10985039695936134,
+      0.10449046930899498,
+      0.09342124720273016,
+      0.08105875568460261,
+      0.0693213658956186,
+      0.0585762145564554,
+      0.05795095641006836,
+      0.04614590253149199,
+      0.03398321200666718,
+      0.02242651628351399,
+      0.012294778695962023,
+      0.002241683631917954,
+      -0.00794949421781297,
+      -0.019153024948035696,
+      -0.031410929636657564,
+      -0.04303005348755899,
+      -0.053896594257317375,
+      -0.06424666089894124,
+      -0.07622630934886367,
+      -0.08763132246101844,
+      -0.09600203580372497,
+      -0.09290700332509354,
+      -0.1028609282098724,
+      -0.11420169303428129,
+      -0.12601071632460506,
+      -0.13789743895538042,
+      -0.05346312498590094,
+      -0.06243427523788605,
+      -0.07248337870885017,
+      -0.0004298752975634444,
+      -0.007283469684848729,
+      0.024032086147887318,
+      0.02263931560589714,
+      0.02653665811734031,
+      0.019368294866390474,
+      0.01865474073590539,
+      0.02994740675493022,
+      0.02521178444409349,
+      0.016228682060188467,
+      0.010209733462768482,
+      0.0036283489360219934,
+      -0.005584080618822836,
+      -0.007275512730651196,
+      -0.012513523571248382,
+      -0.021372688345653493,
+      -0.02520612770875704,
+      -0.011194066626677506,
+      -0.016085145152837158,
+      0.019263694203534392,
+      0.011859470706803151,
+      0.004792995103192488,
+      0.036425473172165226,
+      0.02845898898245376,
+      0.020774304804653605,
+      0.013476948445327574,
+      0.0039244120374454135,
+      0.009388518934029533,
+      0.0020386459795867285,
+      -0.007135397154292027,
+      -0.014385069208227937,
+      -0.02355469323254867,
+      -0.0003847450844587694,
+      -0.005592991294275582,
+      0.008294668621206376,
+      0.024910737235789508,
+      0.01731973587289887,
+      0.007361649585479719,
+      -0.0006047639045828029,
+      -0.007747037147753683,
+      -0.014908113646712266,
+      -0.022036689944324072,
+      -0.027763239594603768,
+      -0.03704594128959822,
+      -0.04582393666690231,
+      -0.053711402097403875,
+      -0.06050692813135341,
+      -0.05184723051446845,
+      -0.048942017304499076,
+      -0.005659161738379061,
+      -0.0059426083287333065,
+      -0.014984737767089102,
+      0.001136434523151448,
+      -0.005503862733778757,
+      -0.014412685384747137,
+      -0.02049488183132613,
+      -0.009203508215314711,
+      0.007074298557506279,
+      0.0023174796006771156,
+      0.01426456024743854,
+      0.007190427178881288,
+      -0.0019484816403548078,
+      -0.004896119409905692,
+      -0.01218358697475426,
+      -0.013929872662595042,
+      0.01943933318028732,
+      0.019759195692704422
+    ],
+    "cluster_history": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "algorithm_changes": [
+      {
+        "timestamp": "2026-02-17T17:21:06.220868",
+        "reason": "Pattern changed from random to cyclical (confidence: 0.75)",
+        "old_pattern": "random",
+        "new_pattern": "cyclical",
+        "round_number": 13
+      },
+      {
+        "timestamp": "2026-02-17T17:21:31.357168",
+        "reason": "Pattern changed from cyclical to high_volatility (confidence: 0.90)",
+        "old_pattern": "cyclical",
+        "new_pattern": "high_volatility",
+        "round_number": 20
+      }
+    ],
+    "pattern_confidence": [
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.5,
+      0.5,
+      0.5,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.7,
+      0.7,
+      0.7,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9
+    ]
+  },
+  "performance_metrics": {
+    "prediction_accuracy": 31.176470588235293,
+    "total_predictions": 170,
+    "correct_predictions": 53,
+    "close_predictions": 88,
+    "adaptation_success": 7,
+    "prediction_history": [
+      {
+        "timestamp": "2026-02-17T17:25:04.193842",
+        "actual": 327.86,
+        "predictions": [
+          2.27,
+          6.24,
+          7.42
+        ],
+        "closest": 7.42,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:25:06.330946",
+        "actual": 2.43,
+        "predictions": [
+          2.77,
+          2.81,
+          36.07
+        ],
+        "closest": 2.77,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:25:08.132941",
+        "actual": 1.14,
+        "predictions": [
+          31.65,
+          73.66,
+          79.08
+        ],
+        "closest": 31.65,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:25:16.031981",
+        "actual": 76.33,
+        "predictions": [
+          3.67,
+          5.71,
+          33.73
+        ],
+        "closest": 33.73,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:25:19.105467",
+        "actual": 1.52,
+        "predictions": [
+          1.05,
+          6.92,
+          22.76
+        ],
+        "closest": 1.05,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:25:21.786038",
+        "actual": 2.81,
+        "predictions": [
+          15.3,
+          44.39,
+          44.74
+        ],
+        "closest": 15.3,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:25:26.623596",
+        "actual": 4.25,
+        "predictions": [
+          1.87,
+          2.12,
+          25.42
+        ],
+        "closest": 2.12,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:25:28.188722",
+        "actual": 1.11,
+        "predictions": [
+          1.0,
+          2.4,
+          2.5
+        ],
+        "closest": 1.0,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:25:33.431097",
+        "actual": 2.48,
+        "predictions": [
+          6.94,
+          7.05,
+          37.79
+        ],
+        "closest": 6.94,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:25:36.270965",
+        "actual": 6.77,
+        "predictions": [
+          1.0,
+          34.42,
+          36.63
+        ],
+        "closest": 1.0,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:25:39.594997",
+        "actual": 15.07,
+        "predictions": [
+          4.95,
+          5.09,
+          23.77
+        ],
+        "closest": 23.77,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:25:41.551679",
+        "actual": 3.46,
+        "predictions": [
+          2.0,
+          6.85,
+          47.55
+        ],
+        "closest": 2.0,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:25:44.196458",
+        "actual": 1.6,
+        "predictions": [
+          9.29,
+          9.4,
+          17.66
+        ],
+        "closest": 9.29,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:25:46.145321",
+        "actual": 2.58,
+        "predictions": [
+          4.08,
+          4.25,
+          17.63
+        ],
+        "closest": 4.08,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:25:48.097448",
+        "actual": 1.54,
+        "predictions": [
+          3.89,
+          4.08,
+          15.54
+        ],
+        "closest": 3.89,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:25:50.959743",
+        "actual": 1.15,
+        "predictions": [
+          3.09,
+          3.38,
+          7.38
+        ],
+        "closest": 3.09,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:25:56.849409",
+        "actual": 6.05,
+        "predictions": [
+          11.05,
+          33.22,
+          36.71
+        ],
+        "closest": 11.05,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:26:01.219419",
+        "actual": 3.93,
+        "predictions": [
+          1.0,
+          1.96,
+          2.16
+        ],
+        "closest": 2.16,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:26:07.050114",
+        "actual": 1.42,
+        "predictions": [
+          5.63,
+          6.25,
+          8.03
+        ],
+        "closest": 5.63,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:26:09.445755",
+        "actual": 2.82,
+        "predictions": [
+          1.0,
+          2.85,
+          2.95
+        ],
+        "closest": 2.85,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:26:11.814123",
+        "actual": 2.14,
+        "predictions": [
+          1.0,
+          1.78,
+          2.21
+        ],
+        "closest": 2.21,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:26:14.564123",
+        "actual": 3.86,
+        "predictions": [
+          2.32,
+          2.34,
+          2.79
+        ],
+        "closest": 2.79,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:26:16.834623",
+        "actual": 1.58,
+        "predictions": [
+          2.18,
+          2.68,
+          3.14
+        ],
+        "closest": 2.18,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:26:18.961924",
+        "actual": 3.05,
+        "predictions": [
+          1.0,
+          2.03,
+          2.2
+        ],
+        "closest": 2.2,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:26:22.208951",
+        "actual": 4.34,
+        "predictions": [
+          2.32,
+          2.33,
+          2.46
+        ],
+        "closest": 2.46,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:26:36.606996",
+        "actual": 27.51,
+        "predictions": [
+          1.67,
+          2.07,
+          3.17
+        ],
+        "closest": 3.17,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:26:41.326897",
+        "actual": 2.31,
+        "predictions": [
+          2.27,
+          6.6,
+          7.21
+        ],
+        "closest": 2.27,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:26:43.967688",
+        "actual": 3.04,
+        "predictions": [
+          2.41,
+          2.45,
+          5.58
+        ],
+        "closest": 2.45,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:26:46.326375",
+        "actual": 1.79,
+        "predictions": [
+          1.97,
+          2.06,
+          4.47
+        ],
+        "closest": 1.97,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:26:48.811384",
+        "actual": 1.9,
+        "predictions": [
+          1.05,
+          2.58,
+          2.81
+        ],
+        "closest": 2.58,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:26:50.525714",
+        "actual": 1.34,
+        "predictions": [
+          1.8,
+          1.81,
+          4.57
+        ],
+        "closest": 1.8,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:26:59.290222",
+        "actual": 1.9,
+        "predictions": [
+          1.0,
+          2.21,
+          6.47
+        ],
+        "closest": 2.21,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:27:01.533007",
+        "actual": 1.79,
+        "predictions": [
+          1.0,
+          3.15,
+          3.25
+        ],
+        "closest": 1.0,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:27:04.147313",
+        "actual": 3.04,
+        "predictions": [
+          1.84,
+          2.12,
+          2.17
+        ],
+        "closest": 2.17,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:27:06.508775",
+        "actual": 2.31,
+        "predictions": [
+          2.43,
+          3.06,
+          3.75
+        ],
+        "closest": 2.43,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:27:11.090768",
+        "actual": 27.51,
+        "predictions": [
+          2.69,
+          2.94,
+          3.28
+        ],
+        "closest": 3.28,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:27:17.963962",
+        "actual": 4.34,
+        "predictions": [
+          2.22,
+          4.47,
+          4.54
+        ],
+        "closest": 4.47,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:27:38.332842",
+        "actual": 13.29,
+        "predictions": [
+          2.54,
+          3.5,
+          6.19
+        ],
+        "closest": 6.19,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:28:08.665936",
+        "actual": 2.31,
+        "predictions": [
+          3.41,
+          5.1,
+          5.23
+        ],
+        "closest": 3.41,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:28:30.577459",
+        "actual": 2.52,
+        "predictions": [
+          2.24,
+          3.47,
+          6.7
+        ],
+        "closest": 2.24,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:28:41.471919",
+        "actual": 1.0,
+        "predictions": [
+          2.05,
+          2.63,
+          3.11
+        ],
+        "closest": 2.05,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:29:08.286713",
+        "actual": 2.26,
+        "predictions": [
+          3.37,
+          3.95,
+          6.52
+        ],
+        "closest": 3.37,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:29:39.562871",
+        "actual": 1.34,
+        "predictions": [
+          1.87,
+          1.96,
+          2.86
+        ],
+        "closest": 1.87,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:33:02.906426",
+        "actual": 2.38,
+        "predictions": [
+          2.08,
+          2.47,
+          3.35
+        ],
+        "closest": 2.47,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:33:07.582300",
+        "actual": 3.13,
+        "predictions": [
+          2.58,
+          2.95,
+          3.05
+        ],
+        "closest": 3.05,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:33:09.586772",
+        "actual": 1.69,
+        "predictions": [
+          2.42,
+          3.9,
+          5.25
+        ],
+        "closest": 2.42,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:33:11.287894",
+        "actual": 1.99,
+        "predictions": [
+          1.02,
+          2.44,
+          3.04
+        ],
+        "closest": 2.44,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:33:13.271139",
+        "actual": 1.56,
+        "predictions": [
+          1.14,
+          2.88,
+          4.95
+        ],
+        "closest": 1.14,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:33:16.384323",
+        "actual": 1.52,
+        "predictions": [
+          2.19,
+          2.44,
+          2.79
+        ],
+        "closest": 2.19,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:33:24.826345",
+        "actual": 3.38,
+        "predictions": [
+          1.84,
+          2.06,
+          3.7
+        ],
+        "closest": 3.7,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:33:29.186589",
+        "actual": 15.61,
+        "predictions": [
+          1.44,
+          2.45,
+          4.95
+        ],
+        "closest": 4.95,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:33:34.143676",
+        "actual": 2.36,
+        "predictions": [
+          1.04,
+          2.7,
+          5.58
+        ],
+        "closest": 2.7,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:34:39.878895",
+        "actual": 38.21,
+        "predictions": [
+          1.87,
+          2.44,
+          3.86
+        ],
+        "closest": 3.86,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:35:01.644035",
+        "actual": 2.24,
+        "predictions": [
+          3.27,
+          5.18,
+          5.39
+        ],
+        "closest": 3.27,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:35:14.899948",
+        "actual": 1.12,
+        "predictions": [
+          8.65,
+          13.01,
+          13.07
+        ],
+        "closest": 8.65,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:36:02.768957",
+        "actual": 7.98,
+        "predictions": [
+          1.47,
+          1.59,
+          2.19
+        ],
+        "closest": 2.19,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:36:45.830406",
+        "actual": 1.83,
+        "predictions": [
+          1.04,
+          1.94,
+          2.4
+        ],
+        "closest": 1.94,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:36:48.709855",
+        "actual": 1.13,
+        "predictions": [
+          1.23,
+          1.24,
+          9.71
+        ],
+        "closest": 1.23,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:37:09.183818",
+        "actual": 3.01,
+        "predictions": [
+          2.91,
+          5.14,
+          6.78
+        ],
+        "closest": 2.91,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:37:20.762482",
+        "actual": 1.01,
+        "predictions": [
+          3.51,
+          3.52,
+          11.57
+        ],
+        "closest": 3.51,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:38:18.106555",
+        "actual": 14.27,
+        "predictions": [
+          7.21,
+          8.01,
+          9.47
+        ],
+        "closest": 9.47,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:39:04.052713",
+        "actual": 3.19,
+        "predictions": [
+          3.19,
+          6.29,
+          20.64
+        ],
+        "closest": 3.19,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:39:25.853367",
+        "actual": 1.74,
+        "predictions": [
+          1.0,
+          9.02,
+          15.8
+        ],
+        "closest": 1.0,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:39:46.650039",
+        "actual": 2.15,
+        "predictions": [
+          2.91,
+          3.13,
+          9.08
+        ],
+        "closest": 2.91,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:40:00.529687",
+        "actual": 1.29,
+        "predictions": [
+          10.39,
+          16.77,
+          17.17
+        ],
+        "closest": 10.39,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:40:21.677986",
+        "actual": 2.22,
+        "predictions": [
+          1.67,
+          1.85,
+          3.25
+        ],
+        "closest": 1.85,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:40:37.259194",
+        "actual": 1.42,
+        "predictions": [
+          2.71,
+          3.09,
+          9.92
+        ],
+        "closest": 2.71,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:41:24.557503",
+        "actual": 5.02,
+        "predictions": [
+          5.98,
+          6.48,
+          11.36
+        ],
+        "closest": 5.98,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:42:26.201714",
+        "actual": 20.08,
+        "predictions": [
+          1.61,
+          2.3,
+          2.41
+        ],
+        "closest": 2.41,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:43:14.832471",
+        "actual": 1.65,
+        "predictions": [
+          6.17,
+          7.37,
+          11.21
+        ],
+        "closest": 6.17,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:43:18.087055",
+        "actual": 1.54,
+        "predictions": [
+          3.14,
+          8.58,
+          18.43
+        ],
+        "closest": 3.14,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:44:01.253359",
+        "actual": 1.71,
+        "predictions": [
+          3.12,
+          3.23,
+          11.45
+        ],
+        "closest": 3.12,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:44:05.356459",
+        "actual": 3.23,
+        "predictions": [
+          1.36,
+          1.64,
+          1.68
+        ],
+        "closest": 1.68,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:44:15.594905",
+        "actual": 2.25,
+        "predictions": [
+          1.78,
+          1.94,
+          3.72
+        ],
+        "closest": 1.94,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:44:55.907620",
+        "actual": 1.63,
+        "predictions": [
+          1.05,
+          2.04,
+          9.24
+        ],
+        "closest": 2.04,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:45:17.451124",
+        "actual": 3.73,
+        "predictions": [
+          1.0,
+          2.42,
+          7.21
+        ],
+        "closest": 2.42,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:45:46.687747",
+        "actual": 1.18,
+        "predictions": [
+          1.43,
+          6.59,
+          7.36
+        ],
+        "closest": 1.43,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:45:53.346723",
+        "actual": 1.8,
+        "predictions": [
+          3.88,
+          3.94,
+          3.95
+        ],
+        "closest": 3.88,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:46:14.768933",
+        "actual": 2.36,
+        "predictions": [
+          1.99,
+          2.09,
+          3.22
+        ],
+        "closest": 2.09,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:47:18.371275",
+        "actual": 1.93,
+        "predictions": [
+          1.04,
+          1.74,
+          1.82
+        ],
+        "closest": 1.82,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:47:21.580751",
+        "actual": 3.49,
+        "predictions": [
+          2.22,
+          5.89,
+          6.11
+        ],
+        "closest": 2.22,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:48:26.299023",
+        "actual": 7.63,
+        "predictions": [
+          1.9,
+          2.04,
+          6.59
+        ],
+        "closest": 6.59,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:48:30.059679",
+        "actual": 1.78,
+        "predictions": [
+          2.08,
+          3.78,
+          3.79
+        ],
+        "closest": 2.08,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:48:55.450503",
+        "actual": 4.66,
+        "predictions": [
+          2.26,
+          2.68,
+          3.0
+        ],
+        "closest": 3.0,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:49:16.913519",
+        "actual": 1.2,
+        "predictions": [
+          1.88,
+          2.0,
+          2.25
+        ],
+        "closest": 1.88,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:50:18.925511",
+        "actual": 7.93,
+        "predictions": [
+          1.12,
+          2.26,
+          2.29
+        ],
+        "closest": 2.29,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:50:26.418697",
+        "actual": 1.79,
+        "predictions": [
+          1.18,
+          5.29,
+          5.71
+        ],
+        "closest": 1.18,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:50:45.563048",
+        "actual": 1.26,
+        "predictions": [
+          1.1,
+          4.14,
+          4.31
+        ],
+        "closest": 1.1,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:51:51.275105",
+        "actual": 1.05,
+        "predictions": [
+          1.12,
+          2.41,
+          2.65
+        ],
+        "closest": 1.12,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:51:55.315375",
+        "actual": 11.92,
+        "predictions": [
+          2.02,
+          5.01,
+          5.58
+        ],
+        "closest": 5.58,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:52:14.280720",
+        "actual": 2.23,
+        "predictions": [
+          1.0,
+          1.7,
+          1.76
+        ],
+        "closest": 1.76,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:52:45.162014",
+        "actual": 1.23,
+        "predictions": [
+          2.24,
+          2.52,
+          3.18
+        ],
+        "closest": 2.24,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:53:18.938437",
+        "actual": 12.4,
+        "predictions": [
+          2.74,
+          4.01,
+          4.12
+        ],
+        "closest": 4.12,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:53:39.884869",
+        "actual": 1.36,
+        "predictions": [
+          1.0,
+          7.53,
+          9.39
+        ],
+        "closest": 1.0,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:53:56.457217",
+        "actual": 1.08,
+        "predictions": [
+          1.13,
+          1.82,
+          1.9
+        ],
+        "closest": 1.13,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:54:34.176364",
+        "actual": 3.65,
+        "predictions": [
+          1.11,
+          6.96,
+          9.54
+        ],
+        "closest": 1.11,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:55:47.981120",
+        "actual": 2.02,
+        "predictions": [
+          1.01,
+          4.28,
+          4.49
+        ],
+        "closest": 1.01,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:55:53.150078",
+        "actual": 1.75,
+        "predictions": [
+          1.01,
+          8.17,
+          10.32
+        ],
+        "closest": 1.01,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:55:56.529816",
+        "actual": 3.82,
+        "predictions": [
+          1.03,
+          1.11,
+          5.27
+        ],
+        "closest": 5.27,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "timestamp": "2026-02-17T17:56:22.991121",
+        "actual": 5.34,
+        "predictions": [
+          1.02,
+          2.3,
+          2.73
+        ],
+        "closest": 2.73,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      }
+    ]
+  },
+  "model_state": {
+    "current_pattern": "high_volatility",
+    "last_algorithm_change": "2026-02-17T17:21:31.381645",
+    "prediction_streak": 0,
+    "volatility_threshold": 2.0,
+    "confidence_level": 0.9
+  }
+}
