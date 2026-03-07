@@ -1,0 +1,5 @@
+contd.txt
+requirements.txt
+__pycache__/
+.env
+.env.example
