@@ -12,13 +12,17 @@ import StatsModal from '../components/StatsModal'
 
 export default function Dashboard() {
   const { username, logout } = useAuth()
+
   const [status, setStatus] = useState<StatusResponse | null>(null)
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
+
   const [pendingPredictions, setPendingPredictions] = useState<number[]>([])
   const [currentPredictions, setCurrentPredictions] = useState<number[]>([])
   const [currentPattern, setCurrentPattern] = useState('random')
   const [currentConfidence, setCurrentConfidence] = useState(0)
+  const [currentAllPatterns, setCurrentAllPatterns] = useState<Record<string, number>>({})
+
   const [lastEvaluation, setLastEvaluation] = useState<EvaluationResult | null>(null)
   const [showStats, setShowStats] = useState(false)
 
@@ -27,7 +31,7 @@ export default function Dashboard() {
       const res = await api.get<StatusResponse>('/api/status')
       setStatus(res.data)
     } catch {
-      toast.error('Failed to connect to backend')
+      toast.error('Unable to reach prediction engine')
     } finally {
       setLoading(false)
     }
@@ -39,6 +43,7 @@ export default function Dashboard() {
 
   const handleSubmit = async (multiplier: number) => {
     setSubmitting(true)
+
     try {
       const res = await api.post<AddResponse>('/api/add', {
         multiplier,
@@ -47,8 +52,9 @@ export default function Dashboard() {
 
       if (res.data.evaluation) {
         setLastEvaluation(res.data.evaluation)
+
         if (res.data.evaluation.correct) {
-          toast.success('Exact prediction!')
+          toast.success('Exact prediction')
         } else if (res.data.evaluation.close) {
           toast('Close prediction', { icon: '👍' })
         } else {
@@ -60,9 +66,11 @@ export default function Dashboard() {
       setCurrentPredictions(res.data.next_predictions)
       setCurrentPattern(res.data.pattern)
       setCurrentConfidence(res.data.confidence)
+      setCurrentAllPatterns(res.data.all_patterns ?? {})
+
       await loadStatus()
     } catch {
-      toast.error('Failed to submit')
+      toast.error('Submission failed')
     } finally {
       setSubmitting(false)
     }
@@ -70,13 +78,17 @@ export default function Dashboard() {
 
   const handleClear = async () => {
     if (!confirm('Clear all data and reset the system?')) return
+
     try {
       await api.post('/api/clear')
+
       setPendingPredictions([])
       setCurrentPredictions([])
       setLastEvaluation(null)
+
       await loadStatus()
-      toast.success('Data cleared')
+
+      toast.success('System reset')
     } catch {
       toast.error('Failed to clear data')
     }
@@ -84,66 +96,111 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-slate-900">
-        <div className="text-slate-400 animate-pulse">Connecting to prediction engine...</div>
+      <div className="flex min-h-screen items-center justify-center bg-white">
+        <div className="text-sm text-black/50 animate-pulse">
+          Connecting to prediction engine...
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 p-4 md:p-6">
+    <div className="min-h-screen bg-white text-black">
+      
       {/* Header */}
-      <div className="max-w-5xl mx-auto mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-indigo-400">Adaptive Prediction System</h1>
-          <p className="text-slate-500 text-xs mt-0.5">v2.1 — Pattern Learning Engine</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-slate-500 text-sm hidden sm:block">{username}</span>
-          <button
-            onClick={() => setShowStats(true)}
-            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-sm transition-colors"
-          >
-            Stats
-          </button>
-          <button
-            onClick={handleClear}
-            className="px-3 py-1.5 bg-slate-800 hover:bg-red-900/40 border border-slate-700 hover:border-red-700 rounded-lg text-sm transition-colors text-red-400"
-          >
-            Clear
-          </button>
-          <button
-            onClick={logout}
-            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-lg text-sm transition-colors text-slate-400"
-          >
-            Sign out
-          </button>
-        </div>
-      </div>
+      <header className="sticky top-0 z-20 border-b border-black/10 bg-white/80 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
 
-      {/* Main grid */}
-      <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-1 flex flex-col gap-4">
-          <StatusPanel status={status} />
-          <MultiplierInput onSubmit={handleSubmit} loading={submitting} />
-        </div>
+          <div>
+            <h1 className="text-lg font-semibold tracking-tight">
+              Prediction Dashboard
+            </h1>
+            <p className="text-xs text-black/50">
+              Adaptive pattern learning engine
+            </p>
+          </div>
 
-        <div className="lg:col-span-2 flex flex-col gap-4">
-          <PredictionDisplay
-            predictions={currentPredictions}
-            pattern={currentPattern}
-            confidence={currentConfidence}
-            dataPoints={status?.total_data_points ?? 0}
-          />
-          {lastEvaluation && <EvaluationResultCard evaluation={lastEvaluation} />}
-          {status && (
-            <RecentHistory
-              recentData={status.recent_data}
-              history={status.performance.recent_history}
-            />
-          )}
+          <div className="flex items-center gap-2 sm:gap-3">
+
+            <span className="hidden text-sm text-black/60 sm:block">
+              {username}
+            </span>
+
+            <button
+              onClick={() => setShowStats(true)}
+              className="rounded-xl border border-black/10 px-3 py-1.5 text-sm transition hover:bg-black hover:text-white"
+            >
+              Stats
+            </button>
+
+            <button
+              onClick={handleClear}
+              className="rounded-xl border border-black/10 px-3 py-1.5 text-sm text-red-600 transition hover:bg-red-50"
+            >
+              Clear
+            </button>
+
+            <button
+              onClick={logout}
+              className="rounded-xl border border-black/10 px-3 py-1.5 text-sm text-black/60 transition hover:bg-black hover:text-white"
+            >
+              Sign out
+            </button>
+
+          </div>
         </div>
-      </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+
+          {/* Left column */}
+          <div className="flex flex-col gap-6 lg:col-span-1">
+            <div className="rounded-3xl border border-black/10 bg-white p-5">
+              <StatusPanel status={status} />
+            </div>
+
+            <div className="rounded-3xl border border-black/10 bg-white p-5">
+              <MultiplierInput
+                onSubmit={handleSubmit}
+                loading={submitting}
+              />
+            </div>
+          </div>
+
+          {/* Right column */}
+          <div className="flex flex-col gap-6 lg:col-span-2">
+
+            <div className="rounded-3xl border border-black/10 bg-white p-5">
+              <PredictionDisplay
+                predictions={currentPredictions}
+                pattern={currentPattern}
+                confidence={currentConfidence}
+                dataPoints={status?.total_data_points ?? 0}
+                allPatterns={currentAllPatterns}
+              />
+            </div>
+
+            {lastEvaluation && (
+              <div className="rounded-3xl border border-black/10 bg-white p-5">
+                <EvaluationResultCard evaluation={lastEvaluation} />
+              </div>
+            )}
+
+            {status && (
+              <div className="rounded-3xl border border-black/10 bg-white p-5">
+                <RecentHistory
+                  recentData={status.recent_data}
+                  history={status.performance.recent_history}
+                />
+              </div>
+            )}
+
+          </div>
+        </div>
+      </main>
 
       {showStats && <StatsModal onClose={() => setShowStats(false)} />}
     </div>

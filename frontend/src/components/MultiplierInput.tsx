@@ -26,10 +26,22 @@ export default function MultiplierInput({ onSubmit, loading }: Props) {
   }
 
   return (
-    <div className="bg-slate-800 border border-slate-700 rounded-xl p-4">
-      <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
-        Enter Multiplier
-      </h2>
+    <div className="rounded-3xl border border-black/10 bg-white p-5">
+      
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-[11px] font-medium uppercase tracking-[0.18em] text-black/40">
+          Enter Multiplier
+        </h2>
+
+        {error && (
+          <span className="text-sm font-medium text-red-600">
+            Invalid
+          </span>
+        )}
+      </div>
+
+      {/* Input form */}
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input
           type="number"
@@ -44,17 +56,23 @@ export default function MultiplierInput({ onSubmit, loading }: Props) {
           placeholder="e.g. 2.45"
           autoFocus
           disabled={loading}
-          className="w-full bg-slate-900 border border-slate-600 focus:border-indigo-500 rounded-lg px-4 py-3 text-2xl font-mono text-slate-100 outline-none transition-colors placeholder-slate-700"
+          className="w-full rounded-2xl border border-black/10 bg-white p-3 text-2xl font-mono text-black outline-none transition-colors placeholder-black/25 focus:border-black/20 disabled:opacity-50"
         />
-        {error && <p className="text-red-400 text-xs">{error}</p>}
+        
         <button
           type="submit"
           disabled={loading || !value}
-          className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-700 disabled:text-slate-500 rounded-lg font-semibold transition-colors text-white"
+          className="w-full rounded-2xl border border-black/10 bg-white p-3 font-mono text-sm font-medium text-black transition-colors hover:bg-black/5 disabled:opacity-50 disabled:hover:bg-white"
         >
           {loading ? 'Processing...' : 'Submit →'}
         </button>
       </form>
+
+      {/* Footer */}
+      <p className="mt-3 text-xs text-black/45">
+        Enter a value between 1.00 and 10000
+      </p>
+
     </div>
   )
 }

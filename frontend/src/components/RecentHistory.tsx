@@ -11,21 +11,27 @@ export default function RecentHistory({ recentData, history }: Props) {
   const recent5 = [...history].slice(-5).reverse()
 
   return (
-    <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 flex flex-col gap-3">
-      <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-        Recent History
-      </h2>
+    <div className="rounded-3xl border border-black/10 bg-white p-5">
+      
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-[11px] font-medium uppercase tracking-[0.18em] text-black/40">
+          Recent History
+        </h2>
+      </div>
 
+      {/* Chart */}
       {chartData.length >= 4 && (
-        <div className="h-20">
+        <div className="h-20 mb-4">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData}>
               <Tooltip
                 contentStyle={{
-                  background: '#1e293b',
-                  border: '1px solid #334155',
-                  borderRadius: 8,
+                  background: 'white',
+                  border: '1px solid rgba(0,0,0,0.1)',
+                  borderRadius: 16,
                   fontSize: 11,
+                  boxShadow: 'none',
                 }}
                 formatter={(value) => [`${Number(value).toFixed(2)}x`, '']}
                 labelStyle={{ display: 'none' }}
@@ -33,42 +39,59 @@ export default function RecentHistory({ recentData, history }: Props) {
               <Line
                 type="monotone"
                 dataKey="v"
-                stroke="#6366f1"
-                strokeWidth={2}
+                stroke="black"
+                strokeWidth={1.5}
                 dot={false}
+                opacity={0.4}
               />
             </LineChart>
           </ResponsiveContainer>
         </div>
       )}
 
+      {/* History list */}
       {recent5.length > 0 ? (
-        <div className="flex flex-col divide-y divide-slate-700/50">
+        <div className="flex flex-col">
           {recent5.map((record, i) => (
-            <div key={i} className="flex items-center justify-between py-1.5 text-sm">
-              <span className="font-mono text-slate-300">
-                {record.correct ? '✅' : record.close ? '🟡' : '❌'} {record.actual.toFixed(2)}
-              </span>
-              <span className="text-slate-500 text-xs">→ {record.closest.toFixed(2)}</span>
+            <div key={i} className="flex items-center justify-between py-2 text-sm border-b border-black/5 last:border-0">
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-black/60">
+                  {record.actual.toFixed(2)}
+                </span>
+                <span className="text-black/20">→</span>
+                <span className="font-mono text-black">
+                  {record.closest.toFixed(2)}
+                </span>
+              </div>
               <span
-                className={`text-xs ${
+                className={`text-[11px] uppercase tracking-wide ${
                   record.correct
-                    ? 'text-green-400'
+                    ? 'text-black/60'
                     : record.close
-                      ? 'text-yellow-400'
-                      : 'text-slate-500'
+                      ? 'text-black/60'
+                      : 'text-black/40'
                 }`}
               >
-                {record.correct ? 'exact' : record.close ? 'close' : 'miss'}
+                {record.correct ? 'Exact match' : record.close ? 'Close' : 'Miss'}
               </span>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-slate-600 text-xs text-center py-1">
-          No prediction history yet
-        </p>
+        <div className="rounded-2xl border border-black/10 bg-white p-4 text-center">
+          <p className="text-[11px] uppercase tracking-wide text-black/45">
+            No history
+          </p>
+          <p className="font-mono text-sm text-black/60">
+            Waiting for predictions...
+          </p>
+        </div>
       )}
+
+      {/* Footer with count */}
+      <p className="mt-3 text-xs text-black/45">
+        Last {recent5.length} predictions shown
+      </p>
     </div>
   )
 }

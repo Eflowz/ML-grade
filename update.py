@@ -1,15 +1,12 @@
 import numpy as np
-import pandas as pd
-from collections import deque
 import random
 import json
 import os
-from typing import List, Tuple, Optional, Dict, Any
+from typing import List, Optional, Dict, Any
 import warnings
 from datetime import datetime
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
+from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.preprocessing import StandardScaler
-import warnings
 warnings.filterwarnings('ignore')
 
 class AdaptiveStateManager:
@@ -455,9 +452,6 @@ class AdaptiveGamblingPredictor:
         # Select best predictions from ensemble
         predictions = self._select_best_predictions(predictions_ensemble, history, pattern_info)
         
-        # Add anti-detection noise
-        predictions = self._add_anti_detection_noise(predictions, history, pattern_info)
-        
         # Ensure predictions are valid and diverse
         predictions = self._validate_predictions(predictions, history)
         
@@ -727,11 +721,6 @@ class AdaptiveGamblingPredictor:
         scored_predictions.sort(key=lambda x: x[1], reverse=True)
         return [p[0] for p in scored_predictions[:5]]
     
-    def _add_anti_detection_noise(self, predictions: List[float], history: List[float],
-                                  pattern_info: Dict[str, Any]) -> List[float]:
-        """Pass-through — noise removed to preserve prediction accuracy"""
-        return predictions
-    
     def _validate_predictions(self, predictions: List[float], history: List[float]) -> List[float]:
         """Validate and ensure prediction quality"""
         if not predictions:
@@ -956,20 +945,10 @@ class AdaptiveGamblingPredictor:
         best_diff = min([abs(p - actual) for p in predicted])
         closest_pred = min(predicted, key=lambda x: abs(x - actual))
         
-        # Adaptive thresholds based on recent volatility
-        recent_data = self.state_manager.get_recent_data(10)
-        if len(recent_data) > 1:
-            volatility = self._calculate_volatility(recent_data)
-        else:
-            volatility = 0.5
-        
-        # Adjust thresholds based on volatility and value magnitude
-        base_exact_threshold = 0.05  # 5%
-        base_close_threshold = 0.15  # 15%
-        
-        # Higher volatility = more lenient thresholds
-        exact_threshold = actual * (base_exact_threshold + volatility * 0.05)
-        close_threshold = actual * (base_close_threshold + volatility * 0.10)
+        # Fixed percentage thresholds — no volatility inflation
+        # exact = within 5% of actual (min ±0.05), close = within 15% (min ±0.15)
+        exact_threshold = max(0.05, actual * 0.05)
+        close_threshold = max(0.15, actual * 0.15)
         
         is_correct = best_diff <= exact_threshold
         is_close = best_diff <= close_threshold

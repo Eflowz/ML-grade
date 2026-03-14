@@ -15,7 +15,7 @@ import type { StatsResponse } from '../types'
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
-      <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+      <h3 className="text-[11px] font-medium uppercase tracking-[0.18em] text-black/40 mb-3">
         {title}
       </h3>
       {children}
@@ -26,16 +26,18 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 function StatBox({
   label,
   value,
-  color = 'text-slate-100',
+  color = 'text-black',
 }: {
   label: string
   value: string | number
   color?: string
 }) {
   return (
-    <div className="bg-slate-900/60 rounded-lg p-3 text-center">
-      <div className="text-xs text-slate-500 mb-1">{label}</div>
-      <div className={`text-xl font-bold ${color}`}>{value}</div>
+    <div className="rounded-2xl border border-black/10 bg-white p-3 text-center">
+      <div className="text-[11px] uppercase tracking-wide text-black/45 mb-0.5">
+        {label}
+      </div>
+      <div className={`font-mono text-sm font-medium ${color}`}>{value}</div>
     </div>
   )
 }
@@ -66,14 +68,16 @@ export default function StatsModal({ onClose }: { onClose: () => void }) {
     : []
 
   return (
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-      <div className="bg-slate-800 border border-slate-700 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col">
+    <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+      <div className="rounded-3xl border border-black/10 bg-white w-full max-w-2xl max-h-[85vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-700 shrink-0">
-          <h2 className="text-base font-bold text-slate-100">Detailed Statistics</h2>
+        <div className="flex items-center justify-between p-5 border-b border-black/10 shrink-0">
+          <h2 className="text-[11px] font-medium uppercase tracking-[0.18em] text-black/40">
+            Detailed Statistics
+          </h2>
           <button
             onClick={onClose}
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded-2xl border border-black/10 bg-white text-black/40 hover:text-black/60 hover:bg-black/5 transition-colors"
           >
             ✕
           </button>
@@ -82,29 +86,46 @@ export default function StatsModal({ onClose }: { onClose: () => void }) {
         {/* Body */}
         <div className="overflow-y-auto p-5">
           {loading ? (
-            <div className="py-12 text-center text-slate-500 animate-pulse">Loading...</div>
+            <div className="py-12 text-center">
+              <div className="rounded-2xl border border-black/10 bg-white p-4">
+                <p className="text-[11px] uppercase tracking-wide text-black/45 mb-0.5">
+                  Loading
+                </p>
+                <p className="font-mono text-sm text-black/60 animate-pulse">
+                  Fetching statistics...
+                </p>
+              </div>
+            </div>
           ) : !stats ? (
-            <div className="py-12 text-center text-slate-500">Failed to load statistics</div>
+            <div className="py-12 text-center">
+              <div className="rounded-2xl border border-black/10 bg-white p-4">
+                <p className="text-[11px] uppercase tracking-wide text-black/45 mb-0.5">
+                  Error
+                </p>
+                <p className="font-mono text-sm text-black/60">
+                  Failed to load statistics
+                </p>
+              </div>
+            </div>
           ) : (
             <div className="flex flex-col gap-6">
               {/* Performance */}
               <Section title="Prediction Performance">
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-4 gap-3">
                   <StatBox label="Total" value={stats.performance.total_predictions} />
                   <StatBox
                     label="Exact"
                     value={stats.performance.correct_predictions}
-                    color="text-green-400"
+                    color="text-black"
                   />
                   <StatBox
                     label="Close"
                     value={stats.performance.close_predictions}
-                    color="text-yellow-400"
+                    color="text-black"
                   />
                   <StatBox
                     label="Accuracy"
                     value={`${stats.performance.prediction_accuracy.toFixed(1)}%`}
-                    color="text-indigo-400"
                   />
                 </div>
               </Section>
@@ -115,20 +136,28 @@ export default function StatsModal({ onClose }: { onClose: () => void }) {
                   <div className="h-44">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={barData}>
-                        <XAxis dataKey="name" tick={{ fontSize: 10, fill: '#94a3b8' }} />
+                        <XAxis 
+                          dataKey="name" 
+                          tick={{ fontSize: 10, fill: 'rgba(0,0,0,0.45)' }} 
+                          axisLine={{ stroke: 'rgba(0,0,0,0.1)' }}
+                          tickLine={{ stroke: 'rgba(0,0,0,0.1)' }}
+                        />
                         <YAxis
-                          tick={{ fontSize: 10, fill: '#94a3b8' }}
+                          tick={{ fontSize: 10, fill: 'rgba(0,0,0,0.45)' }}
+                          axisLine={{ stroke: 'rgba(0,0,0,0.1)' }}
+                          tickLine={{ stroke: 'rgba(0,0,0,0.1)' }}
                           allowDecimals={false}
                         />
                         <Tooltip
                           contentStyle={{
-                            background: '#1e293b',
-                            border: '1px solid #334155',
-                            borderRadius: 8,
+                            background: 'white',
+                            border: '1px solid rgba(0,0,0,0.1)',
+                            borderRadius: 16,
                             fontSize: 11,
+                            boxShadow: 'none',
                           }}
                         />
-                        <Bar dataKey="count" fill="#6366f1" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="count" fill="black" radius={[8, 8, 0, 0]} opacity={0.4} />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
@@ -143,10 +172,11 @@ export default function StatsModal({ onClose }: { onClose: () => void }) {
                       <LineChart data={confData}>
                         <Tooltip
                           contentStyle={{
-                            background: '#1e293b',
-                            border: '1px solid #334155',
-                            borderRadius: 8,
+                            background: 'white',
+                            border: '1px solid rgba(0,0,0,0.1)',
+                            borderRadius: 16,
                             fontSize: 11,
+                            boxShadow: 'none',
                           }}
                           formatter={(value) => [
                             `${Math.round(Number(value) * 100)}%`,
@@ -157,9 +187,10 @@ export default function StatsModal({ onClose }: { onClose: () => void }) {
                         <Line
                           type="monotone"
                           dataKey="v"
-                          stroke="#a78bfa"
-                          strokeWidth={2}
+                          stroke="black"
+                          strokeWidth={1.5}
                           dot={false}
+                          opacity={0.4}
                         />
                       </LineChart>
                     </ResponsiveContainer>
@@ -170,13 +201,13 @@ export default function StatsModal({ onClose }: { onClose: () => void }) {
               {/* Adaptation history */}
               {stats.adaptation_history.length > 0 && (
                 <Section title="Adaptation History">
-                  <div className="flex flex-col divide-y divide-slate-700/50">
+                  <div className="flex flex-col">
                     {[...stats.adaptation_history].reverse().map((a, i) => (
-                      <div key={i} className="flex items-center gap-2 py-1.5 text-xs">
-                        <span className="text-slate-500 font-mono w-10">#{a.round_number}</span>
-                        <span className="text-slate-400">{a.old_pattern.replace(/_/g, ' ')}</span>
-                        <span className="text-slate-600">→</span>
-                        <span className="text-indigo-400">{a.new_pattern.replace(/_/g, ' ')}</span>
+                      <div key={i} className="flex items-center gap-3 py-2 text-sm border-b border-black/5 last:border-0">
+                        <span className="font-mono text-black/40 text-xs w-12">#{a.round_number}</span>
+                        <span className="text-black/60 text-xs">{a.old_pattern.replace(/_/g, ' ')}</span>
+                        <span className="text-black/20">→</span>
+                        <span className="text-black font-mono text-xs">{a.new_pattern.replace(/_/g, ' ')}</span>
                       </div>
                     ))}
                   </div>
@@ -184,6 +215,13 @@ export default function StatsModal({ onClose }: { onClose: () => void }) {
               )}
             </div>
           )}
+        </div>
+
+        {/* Footer */}
+        <div className="p-5 border-t border-black/10 shrink-0">
+          <p className="text-xs text-black/45 text-center">
+            Statistics based on all predictions
+          </p>
         </div>
       </div>
     </div>
