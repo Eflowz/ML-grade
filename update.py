@@ -5,7 +5,9 @@ import os
 from typing import List, Optional, Dict, Any
 import warnings
 from datetime import datetime
-from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import GradientBoostingRegressor, ExtraTreesRegressor
+from sklearn.linear_model import Ridge
+from sklearn.neighbors import KNeighborsRegressor
 from sklearn.preprocessing import StandardScaler
 warnings.filterwarnings('ignore')
 
@@ -48,7 +50,7 @@ class AdaptiveStateManager:
                 "correct_predictions": 0,
                 "close_predictions": 0,
                 "adaptation_success": 0,
-                "prediction_history": []  # Track each prediction outcome
+                "prediction_history": [] 
             },
             "model_state": {
                 "current_pattern": "random",
@@ -444,7 +446,11 @@ class AdaptiveGamblingPredictor:
                 n_to_add = 2 if conf >= 0.6 else 1
                 predictions_ensemble.extend(secondary_preds[:n_to_add])
 
-        # Add machine learning predictions (now activates at 30 samples)
+        # EWMA and linear extrapolation — always available, no minimum data required
+        predictions_ensemble.extend(self._predict_ewma(history))
+        predictions_ensemble.extend(self._predict_linear_extrapolation(history))
+
+        # 4-model ML ensemble (activates at 30 samples)
         if len(history) >= 30:
             ml_preds = self._predict_ml(history)
             predictions_ensemble.extend(ml_preds)
@@ -622,59 +628,107 @@ class AdaptiveGamblingPredictor:
         else:
             return self._predict_random(history)
 
+    def _ml_features(self, window: List[float]) -> List[float]:
+        """Extract 10 statistical features from a lookback window"""
+        arr = np.array(window, dtype=float)
+        mean = float(np.mean(arr))
+        std = float(np.std(arr)) or 1e-6
+        # Exponential weighted moving average (α=0.3)
+        ewma = arr[0]
+        for v in arr[1:]:
+            ewma = 0.3 * v + 0.7 * ewma
+        returns = np.diff(arr) / (arr[:-1] + 1e-9)
+        return [
+            mean,
+            std,
+            float(arr[-1]),                        # most recent value
+            float(arr[-1]) - mean,                 # deviation from mean
+            float(arr[-1]) / (mean + 1e-9),        # ratio to window mean
+            float(np.min(arr)),
+            float(np.max(arr)),
+            float(ewma),
+            float(np.mean(returns)),               # average return
+            float(np.std(returns)),                # return volatility
+        ]
+
     def _predict_ml(self, history: List[float]) -> List[float]:
-        """Machine learning based predictions using GradientBoosting with feature scaling"""
+        """4-model ensemble with engineered features: GBR + ExtraTrees + Ridge + KNN"""
         if len(history) < 30:
             return []
-
         try:
             lookback = 10
-            X = []
-            y = []
-
+            X, y = [], []
             for i in range(lookback, len(history)):
-                features = history[i-lookback:i]
-                target = history[i]
-                X.append(features)
-                y.append(target)
-
+                X.append(self._ml_features(history[i - lookback:i]))
+                y.append(history[i])
             if len(X) < 20:
                 return []
 
             X = np.array(X)
             y = np.array(y)
+            X_train, y_train = X[-80:], y[-80:]
 
-            # Use up to last 80 samples for training (was 30)
-            X_train = X[-80:]
-            y_train = y[-80:]
-
-            # Scale features for better gradient descent convergence
             scaler = StandardScaler()
             X_scaled = scaler.fit_transform(X_train)
+            last_scaled = scaler.transform(np.array([self._ml_features(history[-lookback:])]))
 
-            # GradientBoosting: more accurate than shallow RandomForest
-            model = GradientBoostingRegressor(
-                n_estimators=100,
-                max_depth=3,
-                learning_rate=0.05,
-                subsample=0.8,
-                min_samples_leaf=3,
-                random_state=42
-            )
-            model.fit(X_scaled, y_train)
-
-            # Predict on latest window
-            last_features = np.array(history[-lookback:]).reshape(1, -1)
-            last_scaled = scaler.transform(last_features)
-            prediction = float(model.predict(last_scaled)[0])
-            prediction = max(1.0, prediction)
-
-            # Return the direct prediction and one conservative variant
-            return [
-                prediction,
-                max(1.0, prediction * 0.97),
+            k = min(5, max(1, len(X_train) // 4))
+            models = [
+                GradientBoostingRegressor(
+                    n_estimators=80, max_depth=3, learning_rate=0.05,
+                    subsample=0.8, min_samples_leaf=3, random_state=42
+                ),
+                ExtraTreesRegressor(
+                    n_estimators=80, max_depth=4, min_samples_leaf=3, random_state=42
+                ),
+                Ridge(alpha=1.0),
+                KNeighborsRegressor(n_neighbors=k),
             ]
-        except:
+
+            preds = []
+            for model in models:
+                try:
+                    model.fit(X_scaled, y_train)
+                    p = max(1.0, float(model.predict(last_scaled)[0]))
+                    if p <= 10000.0:
+                        preds.append(p)
+                except Exception:
+                    continue
+
+            if not preds:
+                return []
+
+            avg = float(np.mean(preds))
+            lo = max(1.0, float(np.min(preds)))
+            hi = max(1.0, float(np.max(preds)))
+            return [avg, lo, hi]
+        except Exception:
+            return []
+
+    def _predict_ewma(self, history: List[float]) -> List[float]:
+        """Exponential weighted moving average — strong for mean-reverting series"""
+        if len(history) < 5:
+            return []
+        try:
+            alpha = 0.3
+            ewma = float(history[0])
+            for v in history[1:]:
+                ewma = alpha * float(v) + (1 - alpha) * ewma
+            return [max(1.0, ewma), max(1.0, ewma * 0.95), max(1.0, ewma * 1.05)]
+        except Exception:
+            return []
+
+    def _predict_linear_extrapolation(self, history: List[float]) -> List[float]:
+        """Linear trend extrapolation — strong for trending series"""
+        if len(history) < 5:
+            return []
+        try:
+            recent = history[-20:]
+            x = np.arange(len(recent), dtype=float)
+            coeffs = np.polyfit(x, recent, 1)
+            next_val = max(1.0, float(np.polyval(coeffs, len(recent))))
+            return [next_val, max(1.0, next_val * 0.95), max(1.0, next_val * 1.05)]
+        except Exception:
             return []
     
     def _select_best_predictions(self, ensemble: List[float], history: List[float], 
@@ -704,12 +758,13 @@ class AdaptiveGamblingPredictor:
             
             # Consider volatility
             if pattern_info["volatility"] < 1.0:
-                # Low volatility - prefer predictions close to average
+                # Low volatility — prefer predictions close to the recent average
                 if abs(pred - recent_avg) < recent_std:
                     score += 1.5
             else:
-                # High volatility - prefer diverse predictions
-                score += random.random()
+                # High volatility — prefer predictions within 2 std of the mean
+                if abs(pred - recent_avg) < recent_std * 2:
+                    score += 0.5
             
             # Penalize extreme outliers
             if pred > recent_avg * 5 or pred < recent_avg * 0.2:
