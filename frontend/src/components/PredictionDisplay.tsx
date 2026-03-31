@@ -1,4 +1,5 @@
-const MIN_POINTS = 30
+const rawThreshold = Number(import.meta.env.VITE_PREDICTION_START_THRESHOLD ?? '60')
+const MIN_POINTS = Number.isFinite(rawThreshold) && rawThreshold > 0 ? Math.floor(rawThreshold) : 60
 
 function confidenceLabel(c: number): string {
   if (c >= 0.8) return 'VERY HIGH'

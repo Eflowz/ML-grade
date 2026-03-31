@@ -11,6 +11,18 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.preprocessing import StandardScaler
 warnings.filterwarnings('ignore')
 
+
+def _get_prediction_threshold() -> int:
+    raw = os.environ.get("PREDICTION_START_THRESHOLD", "60").strip()
+    try:
+        value = int(raw)
+        return max(1, value)
+    except ValueError:
+        return 60
+
+
+PREDICTION_START_THRESHOLD = _get_prediction_threshold()
+
 class AdaptiveStateManager:
     """Manages saving and loading system state with adaptive learning"""
     
@@ -57,7 +69,8 @@ class AdaptiveStateManager:
                 "last_algorithm_change": None,
                 "prediction_streak": 0,
                 "volatility_threshold": 2.0,
-                "confidence_level": 0.5
+                "confidence_level": 0.5,
+                "bias_correction": 0.0
             }
         }
     
@@ -94,12 +107,16 @@ class AdaptiveStateManager:
                 "last_algorithm_change": None,
                 "prediction_streak": 0,
                 "volatility_threshold": 2.0,
-                "confidence_level": 0.5
+                "confidence_level": 0.5,
+                "bias_correction": 0.0
             }
             needs_save = True
         else:
             if "confidence_level" not in state["model_state"]:
                 state["model_state"]["confidence_level"] = 0.5
+                needs_save = True
+            if "bias_correction" not in state["model_state"]:
+                state["model_state"]["bias_correction"] = 0.0
                 needs_save = True
         
         if "metadata" not in state:
@@ -415,7 +432,7 @@ class AdaptiveGamblingPredictor:
         # Get model state and check if we need to adapt
         model_state = self.state_manager.get_model_state()
         old_pattern = model_state.get("current_pattern", "random")
-        old_confidence = model_state.get("confidence_level", 0.5)
+        bias_correction = float(model_state.get("bias_correction", 0.0))
 
         # Drift detection — if recent errors have spiked, reset before adapting
         if self._detect_drift(history):
@@ -423,7 +440,8 @@ class AdaptiveGamblingPredictor:
             self.state_manager.update_model_state({
                 "current_pattern": "random",
                 "confidence_level": 0.5,
-                "prediction_streak": 0
+                "prediction_streak": 0,
+                "bias_correction": bias_correction * 0.5
             })
             old_pattern = "random"
 
@@ -450,13 +468,20 @@ class AdaptiveGamblingPredictor:
         predictions_ensemble.extend(self._predict_ewma(history))
         predictions_ensemble.extend(self._predict_linear_extrapolation(history))
 
-        # 4-model ML ensemble (activates at 30 samples)
-        if len(history) >= 30:
+        # 4-model ML ensemble (activates at 60 samples)
+        if len(history) >= PREDICTION_START_THRESHOLD:
             ml_preds = self._predict_ml(history)
             predictions_ensemble.extend(ml_preds)
         
         # Select best predictions from ensemble
         predictions = self._select_best_predictions(predictions_ensemble, history, pattern_info)
+
+        # Apply lightweight feedback from recent misses so the next round
+        # nudges in the direction the model has been consistently wrong.
+        feedback = self._calculate_prediction_bias()
+        blended_bias = float(np.clip((bias_correction * 0.6) + (feedback * 0.4), -0.25, 0.25))
+        predictions = self._apply_bias_correction(predictions, blended_bias)
+        self.state_manager.update_model_state({"bias_correction": blended_bias})
         
         # Ensure predictions are valid and diverse
         predictions = self._validate_predictions(predictions, history)
@@ -653,7 +678,7 @@ class AdaptiveGamblingPredictor:
 
     def _predict_ml(self, history: List[float]) -> List[float]:
         """4-model ensemble with engineered features: GBR + ExtraTrees + Ridge + KNN"""
-        if len(history) < 30:
+        if len(history) < PREDICTION_START_THRESHOLD:
             return []
         try:
             lookback = 10
@@ -746,25 +771,37 @@ class AdaptiveGamblingPredictor:
         # Score each prediction based on historical patterns
         recent = history[-20:]
         recent_avg = float(np.mean(recent))
+        recent_median = float(np.median(recent))
         recent_std = float(np.std(recent))
+        recent_min = float(np.min(recent))
+        recent_max = float(np.max(recent))
+        trend_projection = float(self._predict_linear_extrapolation(history)[0]) if len(history) >= 5 else recent_avg
         
         scored_predictions = []
         for pred in ensemble:
             score = 0.0
             
-            # Prefer predictions near recent average
+            # Keep some preference for the recent center, but less aggressively.
             distance_from_avg = abs(pred - recent_avg) / recent_avg
-            score += (1.0 - min(1.0, distance_from_avg)) * 2.0
+            score += (1.0 - min(1.0, distance_from_avg)) * 1.0
+
+            distance_from_median = abs(pred - recent_median) / max(recent_median, 1.0)
+            score += (1.0 - min(1.0, distance_from_median)) * 0.8
+
+            distance_from_trend = abs(pred - trend_projection) / max(trend_projection, 1.0)
+            score += (1.0 - min(1.0, distance_from_trend)) * 0.7
             
             # Consider volatility
             if pattern_info["volatility"] < 1.0:
-                # Low volatility — prefer predictions close to the recent average
+                # Low volatility — prefer predictions close to the recent center.
                 if abs(pred - recent_avg) < recent_std:
-                    score += 1.5
+                    score += 1.0
             else:
-                # High volatility — prefer predictions within 2 std of the mean
-                if abs(pred - recent_avg) < recent_std * 2:
-                    score += 0.5
+                # High volatility — keep plausible wider-range values in play.
+                if recent_min * 0.9 <= pred <= recent_max * 1.1:
+                    score += 0.9
+                elif abs(pred - recent_avg) < recent_std * 2:
+                    score += 0.4
             
             # Penalize extreme outliers
             if pred > recent_avg * 5 or pred < recent_avg * 0.2:
@@ -775,6 +812,49 @@ class AdaptiveGamblingPredictor:
         # Sort by score and take top 5
         scored_predictions.sort(key=lambda x: x[1], reverse=True)
         return [p[0] for p in scored_predictions[:5]]
+
+    def _calculate_prediction_bias(self, window: int = 8) -> float:
+        """Estimate whether recent predictions have been consistently too high or too low."""
+        try:
+            metrics = self.state_manager.get_performance_metrics()
+            pred_history = metrics.get("prediction_history", [])
+            if not pred_history:
+                return 0.0
+
+            recent_records = pred_history[-window:]
+            weighted_errors = []
+            total_weight = 0.0
+
+            for idx, record in enumerate(recent_records, start=1):
+                actual = float(record.get("actual", 0.0))
+                closest = float(record.get("closest", 0.0))
+                if actual <= 0.0 or closest <= 0.0:
+                    continue
+
+                # Positive means the model has been predicting too low.
+                signed_error = (actual - closest) / actual
+                severity = min(1.5, abs(signed_error) * 2.0 + (0.25 if not record.get("close", False) else 0.0))
+                weight = idx * severity
+                weighted_errors.append(signed_error * weight)
+                total_weight += weight
+
+            if total_weight == 0.0:
+                return 0.0
+
+            return float(np.clip(sum(weighted_errors) / total_weight, -0.25, 0.25))
+        except:
+            return 0.0
+
+    def _apply_bias_correction(self, predictions: List[float], bias_correction: float) -> List[float]:
+        """Shift predictions slightly based on recent signed error direction."""
+        if not predictions or abs(bias_correction) < 0.01:
+            return predictions
+
+        corrected = []
+        for pred in predictions:
+            adjusted = float(pred) * (1.0 + bias_correction)
+            corrected.append(max(1.0, min(10000.0, adjusted)))
+        return corrected
     
     def _validate_predictions(self, predictions: List[float], history: List[float]) -> List[float]:
         """Validate and ensure prediction quality"""
@@ -943,22 +1023,28 @@ class AdaptiveGamblingPredictor:
             return 0.0
 
     def _detect_drift(self, history: List[float]) -> bool:
-        """Return True if recent prediction errors have grown ≥50% vs earlier errors"""
+        """Return True when the latest error window is materially worse than the prior one."""
         try:
             metrics = self.state_manager.get_performance_metrics()
             pred_history = metrics.get("prediction_history", [])
-            if len(pred_history) < 20:
+            if len(pred_history) < 24:
                 return False
             errors = [
                 abs(p["actual"] - p["closest"]) / max(p["actual"], 1.0)
                 for p in pred_history
                 if "actual" in p and "closest" in p
             ]
-            if len(errors) < 20:
+            if len(errors) < 24:
                 return False
-            first_half = float(np.mean(errors[:10]))
-            second_half = float(np.mean(errors[-10:]))
-            return second_half > first_half * 1.5
+
+            baseline_window = errors[-24:-12]
+            recent_window = errors[-12:]
+            baseline = float(np.mean(baseline_window))
+            recent = float(np.mean(recent_window))
+
+            # Require both a relative jump and a meaningful absolute increase
+            # so random noise does not trigger repeated resets.
+            return recent > max(0.18, baseline * 1.35) and (recent - baseline) > 0.05
         except:
             return False
 
@@ -1111,7 +1197,7 @@ class AdaptiveGamblingSystem:
             print(f"   At Round: {last_change['round_number']}")
         
         # SHOW THE ACTUAL PREDICTIONS
-        if next_predictions and total_data_points >= 40:
+        if next_predictions and total_data_points >= PREDICTION_START_THRESHOLD:
             print("\n🔮 PREDICTED NEXT MULTIPLIERS:")
             for i, pred in enumerate(next_predictions[:3], 1):
                 print(f"   {i}. {pred:.2f}")
@@ -1122,9 +1208,9 @@ class AdaptiveGamblingSystem:
                 model_state.get('confidence_level', 0.5)
             )
             print(f"   🎯 Confidence: {pattern_confidence}")
-        elif total_data_points < 40:
-            print("\n💡 Need at least 40 data points to start predictions")
-            print(f"   ({40 - total_data_points} more needed)")
+        elif total_data_points < PREDICTION_START_THRESHOLD:
+            print(f"\n💡 Need at least {PREDICTION_START_THRESHOLD} data points to start predictions")
+            print(f"   ({PREDICTION_START_THRESHOLD - total_data_points} more needed)")
         else:
             print("\n💡 Analyzing patterns...")
         
@@ -1234,7 +1320,7 @@ class AdaptiveGamblingSystem:
             
             # Generate predictions for NEXT value
             next_predictions = []
-            if len(historical_data) >= 10:
+            if len(historical_data) >= PREDICTION_START_THRESHOLD:
                 next_predictions = self.predictor.predict_next_multipliers(historical_data)
                 self.pending_predictions = next_predictions  # Store for evaluation
             
@@ -1250,7 +1336,7 @@ class AdaptiveGamblingSystem:
                 break
             
             # NOW evaluate the prediction we made BEFORE this input
-            if self.pending_predictions is not None and len(historical_data) >= 10:
+            if self.pending_predictions is not None and len(historical_data) >= PREDICTION_START_THRESHOLD:
                 evaluation = self.predictor.evaluate_prediction_accuracy(multiplier, self.pending_predictions)
                 
                 # Update performance metrics
@@ -1322,8 +1408,8 @@ class AdaptiveGamblingSystem:
             print(f"📊 Total data points: {total_data_points}")
             
             # Learning progress
-            if total_data_points < 40:
-                progress = (total_data_points / 40) * 100
+            if total_data_points < PREDICTION_START_THRESHOLD:
+                progress = (total_data_points / PREDICTION_START_THRESHOLD) * 100
                 bar_length = int(progress / 5)
                 print(f"🔄 Learning Progress: [{'█' * bar_length}{'░' * (20 - bar_length)}] {progress:.1f}%")
             else:

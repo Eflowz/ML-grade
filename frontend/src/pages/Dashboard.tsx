@@ -98,7 +98,7 @@ export default function Dashboard() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-white">
         <div className="text-sm text-black/50 animate-pulse">
-          Connecting to prediction engine...
+          Connecting ...
         </div>
       </div>
     )

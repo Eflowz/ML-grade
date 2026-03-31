@@ -7,7 +7,6 @@ import jwt
 import os
 import sys
 
-# Load .env before reading any env vars
 load_dotenv()
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -17,9 +16,30 @@ app = Flask(__name__)
 CORS(app, origins=os.environ.get("ALLOWED_ORIGINS", "*"))
 
 STATE_FILE = os.environ.get("STATE_FILE", "gambling_state.json")
-JWT_SECRET = os.environ.get("JWT_SECRET", "dev-secret-change-in-production")
-ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "predict123")
+
+
+def _get_required_env(name: str) -> str:
+    value = os.environ.get(name, "").strip()
+    if not value:
+        raise RuntimeError(f"Missing required environment variable: {name}")
+    return value
+
+
+JWT_SECRET = _get_required_env("JWT_SECRET")
+ADMIN_USERNAME = _get_required_env("ADMIN_USERNAME")
+ADMIN_PASSWORD = _get_required_env("ADMIN_PASSWORD")
+
+
+def _get_prediction_threshold() -> int:
+    raw = os.environ.get("PREDICTION_START_THRESHOLD", "60").strip()
+    try:
+        value = int(raw)
+        return max(1, value)
+    except ValueError:
+        return 60
+
+
+PREDICTION_START_THRESHOLD = _get_prediction_threshold()
 
 
 # ── Auth helpers ──────────────────────────────────────────────────────────────
@@ -101,7 +121,7 @@ def get_status():
             "recent_history": metrics["prediction_history"][-10:],
         },
         "recent_data": recent_data,
-        "ready_for_predictions": sm.get_data_count() >= 30,
+        "ready_for_predictions": sm.get_data_count() >= PREDICTION_START_THRESHOLD,
     })
 
 
@@ -125,7 +145,7 @@ def add_multiplier():
     pending_preds = data.get("pending_predictions", [])
 
     evaluation = None
-    if pending_preds and len(history) >= 30:
+    if pending_preds and len(history) >= PREDICTION_START_THRESHOLD:
         evaluation = predictor.evaluate_prediction_accuracy(multiplier, pending_preds)
         metrics = sm.get_performance_metrics()
         n_correct = metrics["correct_predictions"]
@@ -162,7 +182,7 @@ def add_multiplier():
 
     next_predictions: list = []
     pattern_info: dict = {}
-    if len(history) >= 30:
+    if len(history) >= PREDICTION_START_THRESHOLD:
         next_predictions = predictor.predict_next_multipliers(history)
         pattern_info = predictor.detect_algorithm_pattern(history)
 
