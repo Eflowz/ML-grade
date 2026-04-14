@@ -1,5 +1,10 @@
 const rawThreshold = Number(import.meta.env.VITE_PREDICTION_START_THRESHOLD ?? '60')
 const MIN_POINTS = Number.isFinite(rawThreshold) && rawThreshold > 0 ? Math.floor(rawThreshold) : 60
+const rawLongRangeThreshold = Number(import.meta.env.VITE_LONG_RANGE_PREDICTION_THRESHOLD ?? '100')
+const LONG_RANGE_MIN_POINTS =
+  Number.isFinite(rawLongRangeThreshold) && rawLongRangeThreshold > 0
+    ? Math.floor(rawLongRangeThreshold)
+    : 100
 
 function confidenceLabel(c: number): string {
   if (c >= 0.8) return 'VERY HIGH'
@@ -10,15 +15,25 @@ function confidenceLabel(c: number): string {
 
 interface Props {
   predictions: number[]
+  futureTurnPredictions?: number[]
   pattern: string
   confidence: number
   dataPoints: number
   allPatterns?: Record<string, number>
 }
 
-export default function PredictionDisplay({ predictions, pattern, confidence, dataPoints, allPatterns }: Props) {
+export default function PredictionDisplay({
+  predictions,
+  futureTurnPredictions = [],
+  pattern,
+  confidence,
+  dataPoints,
+  allPatterns,
+}: Props) {
   const isReady = dataPoints >= MIN_POINTS
   const remaining = MIN_POINTS - dataPoints
+  const isLongRangeReady = dataPoints >= LONG_RANGE_MIN_POINTS
+  const longRangeRemaining = LONG_RANGE_MIN_POINTS - dataPoints
 
   // Secondary patterns that also influenced the prediction (conf > 0.4, excluding primary)
   const contributing = Object.entries(allPatterns ?? {})
@@ -92,6 +107,41 @@ export default function PredictionDisplay({ predictions, pattern, confidence, da
                 </div>
               </div>
             ))}
+          </div>
+
+          <div className="mb-4 rounded-2xl border border-black/10 bg-black/[0.02] p-3">
+            <div className="mb-2 flex items-center justify-between gap-3">
+              <p className="text-[11px] uppercase tracking-wide text-black/45">
+                Next 5 turns
+              </p>
+              <span className="text-[10px] font-mono text-black/45">
+                {isLongRangeReady ? 'Unlocked' : `${longRangeRemaining} to unlock`}
+              </span>
+            </div>
+
+            {isLongRangeReady && futureTurnPredictions.length > 0 ? (
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+                {futureTurnPredictions.slice(0, 5).map((p, i) => (
+                  <div
+                    key={`future-${i}`}
+                    className="rounded-2xl border border-black/10 bg-white p-3 text-center"
+                  >
+                    <div className="text-[10px] uppercase tracking-wide text-black/45 mb-0.5">
+                      T+{i + 1}
+                    </div>
+                    <div className="font-mono text-sm text-black/70">
+                      {p.toFixed(2)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="font-mono text-xs text-black/50">
+                {isLongRangeReady
+                  ? 'Building longer-range forecast'
+                  : `Unlocks at ${LONG_RANGE_MIN_POINTS} data points`}
+              </p>
+            )}
           </div>
 
           {/* Active calculation pattern */}

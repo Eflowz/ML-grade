@@ -1,952 +1,1342 @@
 {
   "metadata": {
-    "created_at": "2026-03-14T18:38:35.124268",
-    "last_updated": "2026-03-14T19:09:49.215475",
-    "total_rounds": 147,
+    "created_at": "2026-04-14T14:22:29.067902",
+    "last_updated": "2026-04-14T15:33:44.646284",
+    "total_rounds": 225,
     "version": "2.1",
-    "adaptation_level": 13
+    "adaptation_level": 41
   },
   "historical_data": [
     {
-      "multiplier": 1.92,
-      "timestamp": "2026-03-14T18:38:46.996291",
+      "multiplier": 1.03,
+      "timestamp": "2026-04-14T14:24:33.446223",
       "round_number": 1
     },
     {
-      "multiplier": 1.16,
-      "timestamp": "2026-03-14T18:38:51.089384",
+      "multiplier": 1.53,
+      "timestamp": "2026-04-14T14:24:41.921158",
       "round_number": 2
     },
     {
-      "multiplier": 1.71,
-      "timestamp": "2026-03-14T18:38:57.063938",
+      "multiplier": 3.82,
+      "timestamp": "2026-04-14T14:24:49.124407",
       "round_number": 3
     },
     {
-      "multiplier": 1.07,
-      "timestamp": "2026-03-14T18:39:00.839568",
+      "multiplier": 1.4,
+      "timestamp": "2026-04-14T14:24:56.171479",
       "round_number": 4
     },
     {
-      "multiplier": 3.87,
-      "timestamp": "2026-03-14T18:39:04.975596",
+      "multiplier": 1.54,
+      "timestamp": "2026-04-14T14:25:00.923679",
       "round_number": 5
     },
     {
-      "multiplier": 1.96,
-      "timestamp": "2026-03-14T18:39:10.380942",
+      "multiplier": 1.53,
+      "timestamp": "2026-04-14T14:25:05.631097",
       "round_number": 6
     },
     {
-      "multiplier": 2.34,
-      "timestamp": "2026-03-14T18:39:16.153811",
+      "multiplier": 51.97,
+      "timestamp": "2026-04-14T14:25:15.279303",
       "round_number": 7
     },
     {
-      "multiplier": 1.0,
-      "timestamp": "2026-03-14T18:39:24.931470",
+      "multiplier": 1.16,
+      "timestamp": "2026-04-14T14:25:18.549153",
       "round_number": 8
     },
     {
-      "multiplier": 1.07,
-      "timestamp": "2026-03-14T18:39:29.502064",
+      "multiplier": 1.37,
+      "timestamp": "2026-04-14T14:25:21.726273",
       "round_number": 9
     },
     {
-      "multiplier": 3.5,
-      "timestamp": "2026-03-14T18:39:34.006774",
+      "multiplier": 1.74,
+      "timestamp": "2026-04-14T14:25:25.135177",
       "round_number": 10
     },
     {
-      "multiplier": 1.71,
-      "timestamp": "2026-03-14T18:39:37.495186",
+      "multiplier": 2.03,
+      "timestamp": "2026-04-14T14:25:28.620137",
       "round_number": 11
     },
     {
-      "multiplier": 1.21,
-      "timestamp": "2026-03-14T18:39:41.347030",
+      "multiplier": 1.97,
+      "timestamp": "2026-04-14T14:25:32.112251",
       "round_number": 12
     },
     {
-      "multiplier": 1.56,
-      "timestamp": "2026-03-14T18:39:46.184282",
+      "multiplier": 1.53,
+      "timestamp": "2026-04-14T14:25:36.563403",
       "round_number": 13
     },
     {
-      "multiplier": 1.31,
-      "timestamp": "2026-03-14T18:39:50.442968",
+      "multiplier": 1.21,
+      "timestamp": "2026-04-14T14:25:40.820865",
       "round_number": 14
     },
     {
-      "multiplier": 1.13,
-      "timestamp": "2026-03-14T18:39:53.920355",
+      "multiplier": 1.08,
+      "timestamp": "2026-04-14T14:25:45.100261",
       "round_number": 15
     },
     {
-      "multiplier": 4.03,
-      "timestamp": "2026-03-14T18:39:57.580451",
+      "multiplier": 54.63,
+      "timestamp": "2026-04-14T14:25:50.658616",
       "round_number": 16
     },
     {
-      "multiplier": 3.25,
-      "timestamp": "2026-03-14T18:40:02.104419",
+      "multiplier": 3.86,
+      "timestamp": "2026-04-14T14:25:54.180711",
       "round_number": 17
     },
     {
-      "multiplier": 1.58,
-      "timestamp": "2026-03-14T18:40:06.968375",
+      "multiplier": 1.19,
+      "timestamp": "2026-04-14T14:25:59.734943",
       "round_number": 18
     },
     {
-      "multiplier": 1.11,
-      "timestamp": "2026-03-14T18:40:13.490868",
+      "multiplier": 1.02,
+      "timestamp": "2026-04-14T14:26:03.720094",
       "round_number": 19
     },
     {
-      "multiplier": 3.1,
-      "timestamp": "2026-03-14T18:40:17.458765",
+      "multiplier": 2.47,
+      "timestamp": "2026-04-14T14:26:07.453110",
       "round_number": 20
     },
     {
-      "multiplier": 1.78,
-      "timestamp": "2026-03-14T18:40:21.431211",
+      "multiplier": 1.26,
+      "timestamp": "2026-04-14T14:26:12.085877",
       "round_number": 21
     },
     {
-      "multiplier": 2.2,
-      "timestamp": "2026-03-14T18:40:25.019262",
+      "multiplier": 2.67,
+      "timestamp": "2026-04-14T14:26:15.425184",
       "round_number": 22
     },
     {
-      "multiplier": 1.96,
-      "timestamp": "2026-03-14T18:40:29.607482",
+      "multiplier": 12.39,
+      "timestamp": "2026-04-14T14:26:19.393914",
       "round_number": 23
     },
     {
-      "multiplier": 2.69,
-      "timestamp": "2026-03-14T18:40:34.281699",
+      "multiplier": 3.39,
+      "timestamp": "2026-04-14T14:26:23.496088",
       "round_number": 24
     },
     {
-      "multiplier": 9.97,
-      "timestamp": "2026-03-14T18:40:39.684267",
+      "multiplier": 2.08,
+      "timestamp": "2026-04-14T14:26:28.562039",
       "round_number": 25
     },
     {
-      "multiplier": 23.8,
-      "timestamp": "2026-03-14T18:40:44.140238",
+      "multiplier": 2.3,
+      "timestamp": "2026-04-14T14:26:32.100883",
       "round_number": 26
     },
     {
-      "multiplier": 4.09,
-      "timestamp": "2026-03-14T18:40:49.124864",
+      "multiplier": 18.36,
+      "timestamp": "2026-04-14T14:26:37.875281",
       "round_number": 27
     },
     {
-      "multiplier": 1.11,
-      "timestamp": "2026-03-14T18:40:52.989125",
+      "multiplier": 2.46,
+      "timestamp": "2026-04-14T14:26:40.909480",
       "round_number": 28
     },
     {
-      "multiplier": 1.3,
-      "timestamp": "2026-03-14T18:40:56.769538",
+      "multiplier": 2.09,
+      "timestamp": "2026-04-14T14:26:45.509259",
       "round_number": 29
     },
     {
-      "multiplier": 1.97,
-      "timestamp": "2026-03-14T18:41:00.988086",
+      "multiplier": 3.67,
+      "timestamp": "2026-04-14T14:26:51.742554",
       "round_number": 30
     },
     {
-      "multiplier": 11.14,
-      "timestamp": "2026-03-14T18:41:05.276973",
+      "multiplier": 6.74,
+      "timestamp": "2026-04-14T14:26:56.421043",
       "round_number": 31
     },
     {
-      "multiplier": 1.0,
-      "timestamp": "2026-03-14T18:41:10.201799",
+      "multiplier": 1.08,
+      "timestamp": "2026-04-14T14:27:00.068526",
       "round_number": 32
     },
     {
-      "multiplier": 1.62,
-      "timestamp": "2026-03-14T18:41:44.361996",
+      "multiplier": 1.14,
+      "timestamp": "2026-04-14T14:27:02.846063",
       "round_number": 33
     },
     {
-      "multiplier": 1.13,
-      "timestamp": "2026-03-14T18:41:53.082855",
+      "multiplier": 1.83,
+      "timestamp": "2026-04-14T14:27:09.986961",
       "round_number": 34
     },
     {
-      "multiplier": 13.59,
-      "timestamp": "2026-03-14T18:42:02.304363",
+      "multiplier": 1.2,
+      "timestamp": "2026-04-14T14:27:14.814529",
       "round_number": 35
     },
     {
-      "multiplier": 2.6,
-      "timestamp": "2026-03-14T18:42:10.623538",
+      "multiplier": 7.53,
+      "timestamp": "2026-04-14T14:27:24.580067",
       "round_number": 36
     },
     {
-      "multiplier": 2.66,
-      "timestamp": "2026-03-14T18:42:15.004109",
+      "multiplier": 1.0,
+      "timestamp": "2026-04-14T14:28:20.911102",
       "round_number": 37
     },
     {
-      "multiplier": 1.99,
-      "timestamp": "2026-03-14T18:42:24.371075",
+      "multiplier": 1.51,
+      "timestamp": "2026-04-14T14:28:25.089010",
       "round_number": 38
     },
     {
-      "multiplier": 10.85,
-      "timestamp": "2026-03-14T18:42:35.033064",
+      "multiplier": 2.76,
+      "timestamp": "2026-04-14T14:28:29.165163",
       "round_number": 39
     },
     {
-      "multiplier": 1.19,
-      "timestamp": "2026-03-14T18:42:38.734339",
+      "multiplier": 1.04,
+      "timestamp": "2026-04-14T14:28:34.208704",
       "round_number": 40
     },
     {
-      "multiplier": 1.9,
-      "timestamp": "2026-03-14T18:42:50.676596",
+      "multiplier": 2.26,
+      "timestamp": "2026-04-14T14:28:39.223289",
       "round_number": 41
     },
     {
-      "multiplier": 1.9,
-      "timestamp": "2026-03-14T18:42:57.632467",
+      "multiplier": 82.48,
+      "timestamp": "2026-04-14T14:28:46.239937",
       "round_number": 42
     },
     {
-      "multiplier": 3.31,
-      "timestamp": "2026-03-14T18:43:04.570650",
+      "multiplier": 5.55,
+      "timestamp": "2026-04-14T14:28:51.116590",
       "round_number": 43
     },
     {
-      "multiplier": 1.63,
-      "timestamp": "2026-03-14T18:43:09.793616",
+      "multiplier": 1.88,
+      "timestamp": "2026-04-14T14:28:55.729846",
       "round_number": 44
     },
     {
-      "multiplier": 1.94,
-      "timestamp": "2026-03-14T18:43:14.707885",
+      "multiplier": 1.3,
+      "timestamp": "2026-04-14T14:28:58.958596",
       "round_number": 45
     },
     {
-      "multiplier": 1.07,
-      "timestamp": "2026-03-14T18:43:21.718013",
+      "multiplier": 5.99,
+      "timestamp": "2026-04-14T14:29:03.665797",
       "round_number": 46
     },
     {
-      "multiplier": 3.51,
-      "timestamp": "2026-03-14T18:43:29.435689",
+      "multiplier": 10.27,
+      "timestamp": "2026-04-14T14:29:07.875100",
       "round_number": 47
     },
     {
-      "multiplier": 1.79,
-      "timestamp": "2026-03-14T18:43:34.216209",
+      "multiplier": 1.52,
+      "timestamp": "2026-04-14T14:29:10.971021",
       "round_number": 48
     },
     {
-      "multiplier": 3.57,
-      "timestamp": "2026-03-14T18:43:38.345245",
+      "multiplier": 1.98,
+      "timestamp": "2026-04-14T14:29:13.777376",
       "round_number": 49
     },
     {
-      "multiplier": 2.07,
-      "timestamp": "2026-03-14T18:43:43.585637",
+      "multiplier": 1.18,
+      "timestamp": "2026-04-14T14:29:16.918947",
       "round_number": 50
     },
     {
-      "multiplier": 1.95,
-      "timestamp": "2026-03-14T18:43:47.618430",
+      "multiplier": 1.11,
+      "timestamp": "2026-04-14T14:29:19.226401",
       "round_number": 51
     },
     {
-      "multiplier": 1.39,
-      "timestamp": "2026-03-14T18:43:52.179090",
+      "multiplier": 8.03,
+      "timestamp": "2026-04-14T14:29:23.023850",
       "round_number": 52
     },
     {
-      "multiplier": 1.01,
-      "timestamp": "2026-03-14T18:43:56.026526",
+      "multiplier": 1.34,
+      "timestamp": "2026-04-14T14:29:26.461751",
       "round_number": 53
     },
     {
-      "multiplier": 2.07,
-      "timestamp": "2026-03-14T18:44:00.878610",
+      "multiplier": 1.21,
+      "timestamp": "2026-04-14T14:29:29.847409",
       "round_number": 54
     },
     {
-      "multiplier": 14.43,
-      "timestamp": "2026-03-14T18:44:06.620907",
+      "multiplier": 1.71,
+      "timestamp": "2026-04-14T14:29:33.554562",
       "round_number": 55
     },
     {
-      "multiplier": 2.02,
-      "timestamp": "2026-03-14T18:44:11.001743",
+      "multiplier": 1.45,
+      "timestamp": "2026-04-14T14:29:36.402437",
       "round_number": 56
     },
     {
-      "multiplier": 3.53,
-      "timestamp": "2026-03-14T18:44:16.823734",
+      "multiplier": 2.16,
+      "timestamp": "2026-04-14T14:29:39.379939",
       "round_number": 57
     },
     {
-      "multiplier": 1.16,
-      "timestamp": "2026-03-14T18:44:23.717497",
+      "multiplier": 7.42,
+      "timestamp": "2026-04-14T14:29:44.152325",
       "round_number": 58
     },
     {
-      "multiplier": 1.0,
-      "timestamp": "2026-03-14T18:44:28.063888",
+      "multiplier": 1.02,
+      "timestamp": "2026-04-14T14:29:46.587489",
       "round_number": 59
     },
     {
-      "multiplier": 1.33,
-      "timestamp": "2026-03-14T18:44:32.037518",
+      "multiplier": 1.65,
+      "timestamp": "2026-04-14T14:29:51.012602",
       "round_number": 60
     },
     {
-      "multiplier": 2.74,
-      "timestamp": "2026-03-14T18:44:37.847206",
+      "multiplier": 1.45,
+      "timestamp": "2026-04-14T14:30:13.978272",
       "round_number": 61
     },
     {
-      "multiplier": 2.76,
-      "timestamp": "2026-03-14T18:44:47.158685",
+      "multiplier": 2.16,
+      "timestamp": "2026-04-14T14:30:22.490698",
       "round_number": 62
     },
     {
-      "multiplier": 1.83,
-      "timestamp": "2026-03-14T18:44:52.424785",
+      "multiplier": 7.42,
+      "timestamp": "2026-04-14T14:30:33.042969",
       "round_number": 63
     },
     {
-      "multiplier": 2.21,
-      "timestamp": "2026-03-14T18:45:15.264244",
+      "multiplier": 1.02,
+      "timestamp": "2026-04-14T14:30:42.431434",
       "round_number": 64
     },
     {
-      "multiplier": 4.14,
-      "timestamp": "2026-03-14T18:45:19.687827",
+      "multiplier": 1.65,
+      "timestamp": "2026-04-14T14:30:53.702030",
       "round_number": 65
     },
     {
-      "multiplier": 1.01,
-      "timestamp": "2026-03-14T18:45:25.930437",
+      "multiplier": 1.23,
+      "timestamp": "2026-04-14T14:31:02.872657",
       "round_number": 66
     },
     {
-      "multiplier": 1.19,
-      "timestamp": "2026-03-14T18:45:40.588870",
+      "multiplier": 1.66,
+      "timestamp": "2026-04-14T14:31:14.806515",
       "round_number": 67
     },
     {
-      "multiplier": 2.61,
-      "timestamp": "2026-03-14T18:45:46.265265",
+      "multiplier": 10.51,
+      "timestamp": "2026-04-14T14:31:19.870417",
       "round_number": 68
     },
     {
-      "multiplier": 5.89,
-      "timestamp": "2026-03-14T18:45:51.708536",
+      "multiplier": 1.12,
+      "timestamp": "2026-04-14T14:31:28.675882",
       "round_number": 69
     },
     {
-      "multiplier": 1.23,
-      "timestamp": "2026-03-14T18:45:56.201241",
+      "multiplier": 48.13,
+      "timestamp": "2026-04-14T14:31:34.876896",
       "round_number": 70
     },
     {
-      "multiplier": 4.94,
-      "timestamp": "2026-03-14T18:46:01.415375",
+      "multiplier": 2.94,
+      "timestamp": "2026-04-14T14:31:44.207103",
       "round_number": 71
     },
     {
-      "multiplier": 13.51,
-      "timestamp": "2026-03-14T18:46:11.110188",
+      "multiplier": 1.02,
+      "timestamp": "2026-04-14T14:31:47.945470",
       "round_number": 72
     },
     {
-      "multiplier": 1.06,
-      "timestamp": "2026-03-14T18:46:23.064722",
+      "multiplier": 15.65,
+      "timestamp": "2026-04-14T14:31:53.059262",
       "round_number": 73
     },
     {
-      "multiplier": 7.76,
-      "timestamp": "2026-03-14T18:46:50.714444",
+      "multiplier": 1.01,
+      "timestamp": "2026-04-14T14:31:57.069629",
       "round_number": 74
     },
     {
-      "multiplier": 3.91,
-      "timestamp": "2026-03-14T18:47:13.914595",
+      "multiplier": 1.0,
+      "timestamp": "2026-04-14T14:33:07.938053",
       "round_number": 75
     },
     {
-      "multiplier": 4.58,
-      "timestamp": "2026-03-14T18:47:36.719869",
+      "multiplier": 1.0,
+      "timestamp": "2026-04-14T14:33:13.978286",
       "round_number": 76
     },
     {
-      "multiplier": 5.85,
-      "timestamp": "2026-03-14T18:48:03.499785",
+      "multiplier": 3.19,
+      "timestamp": "2026-04-14T14:33:27.201237",
       "round_number": 77
     },
     {
-      "multiplier": 20.27,
-      "timestamp": "2026-03-14T18:48:44.027292",
+      "multiplier": 1.13,
+      "timestamp": "2026-04-14T14:33:32.031804",
       "round_number": 78
     },
     {
-      "multiplier": 1.51,
-      "timestamp": "2026-03-14T18:48:56.773316",
+      "multiplier": 21.44,
+      "timestamp": "2026-04-14T14:33:37.522410",
       "round_number": 79
     },
     {
-      "multiplier": 13.0,
-      "timestamp": "2026-03-14T18:49:58.070630",
+      "multiplier": 4.26,
+      "timestamp": "2026-04-14T14:33:51.443598",
       "round_number": 80
     },
     {
-      "multiplier": 9.06,
-      "timestamp": "2026-03-14T18:50:03.932628",
+      "multiplier": 4.87,
+      "timestamp": "2026-04-14T14:34:15.743599",
       "round_number": 81
     },
     {
-      "multiplier": 1.49,
-      "timestamp": "2026-03-14T18:50:30.282623",
+      "multiplier": 4.45,
+      "timestamp": "2026-04-14T14:34:37.293491",
       "round_number": 82
     },
     {
-      "multiplier": 4.45,
-      "timestamp": "2026-03-14T18:50:38.641156",
+      "multiplier": 13.99,
+      "timestamp": "2026-04-14T14:35:11.059151",
       "round_number": 83
     },
     {
-      "multiplier": 1.37,
-      "timestamp": "2026-03-14T18:50:54.460562",
+      "multiplier": 2.59,
+      "timestamp": "2026-04-14T14:35:31.708219",
       "round_number": 84
     },
     {
-      "multiplier": 1.0,
-      "timestamp": "2026-03-14T18:51:02.496585",
+      "multiplier": 3.42,
+      "timestamp": "2026-04-14T14:35:49.892128",
       "round_number": 85
     },
     {
-      "multiplier": 2.51,
-      "timestamp": "2026-03-14T18:51:19.140931",
+      "multiplier": 21.38,
+      "timestamp": "2026-04-14T14:37:25.699677",
       "round_number": 86
     },
     {
-      "multiplier": 1.0,
-      "timestamp": "2026-03-14T18:51:43.753206",
+      "multiplier": 8.71,
+      "timestamp": "2026-04-14T14:37:30.274818",
       "round_number": 87
     },
     {
-      "multiplier": 1.21,
-      "timestamp": "2026-03-14T18:51:47.263593",
+      "multiplier": 23.14,
+      "timestamp": "2026-04-14T14:37:45.377097",
       "round_number": 88
     },
     {
-      "multiplier": 1.92,
-      "timestamp": "2026-03-14T18:51:53.115241",
+      "multiplier": 1.38,
+      "timestamp": "2026-04-14T14:37:53.478969",
       "round_number": 89
     },
     {
-      "multiplier": 8.72,
-      "timestamp": "2026-03-14T18:52:33.407259",
+      "multiplier": 5.73,
+      "timestamp": "2026-04-14T14:38:25.164970",
       "round_number": 90
     },
     {
-      "multiplier": 1.62,
-      "timestamp": "2026-03-14T18:52:38.831748",
+      "multiplier": 1.12,
+      "timestamp": "2026-04-14T14:38:39.574276",
       "round_number": 91
     },
     {
-      "multiplier": 2.28,
-      "timestamp": "2026-03-14T18:52:58.735379",
+      "multiplier": 9.3,
+      "timestamp": "2026-04-14T14:39:06.320157",
       "round_number": 92
     },
     {
-      "multiplier": 3.16,
-      "timestamp": "2026-03-14T18:53:15.670448",
+      "multiplier": 4.78,
+      "timestamp": "2026-04-14T14:39:29.864665",
       "round_number": 93
     },
     {
-      "multiplier": 2.94,
-      "timestamp": "2026-03-14T18:54:01.427126",
+      "multiplier": 5.23,
+      "timestamp": "2026-04-14T14:39:53.392141",
       "round_number": 94
     },
     {
-      "multiplier": 3.65,
-      "timestamp": "2026-03-14T18:54:07.144479",
+      "multiplier": 4.25,
+      "timestamp": "2026-04-14T14:40:16.504360",
       "round_number": 95
     },
     {
-      "multiplier": 2.42,
-      "timestamp": "2026-03-14T18:54:30.423558",
+      "multiplier": 2.37,
+      "timestamp": "2026-04-14T14:40:35.838734",
       "round_number": 96
     },
     {
-      "multiplier": 1.9,
-      "timestamp": "2026-03-14T18:54:38.068311",
+      "multiplier": 1.61,
+      "timestamp": "2026-04-14T14:40:48.697971",
       "round_number": 97
     },
     {
-      "multiplier": 1.23,
-      "timestamp": "2026-03-14T18:54:43.189758",
+      "multiplier": 1.54,
+      "timestamp": "2026-04-14T14:41:00.948286",
       "round_number": 98
     },
     {
-      "multiplier": 1.95,
-      "timestamp": "2026-03-14T18:55:02.087128",
+      "multiplier": 1.5,
+      "timestamp": "2026-04-14T14:41:14.956072",
       "round_number": 99
     },
     {
-      "multiplier": 1.93,
-      "timestamp": "2026-03-14T18:55:17.778428",
+      "multiplier": 2.36,
+      "timestamp": "2026-04-14T14:41:31.609895",
       "round_number": 100
     },
     {
-      "multiplier": 16.23,
-      "timestamp": "2026-03-14T18:55:51.730476",
+      "multiplier": 1.37,
+      "timestamp": "2026-04-14T14:41:50.655397",
       "round_number": 101
     },
     {
-      "multiplier": 2.16,
-      "timestamp": "2026-03-14T18:56:09.040660",
+      "multiplier": 1.01,
+      "timestamp": "2026-04-14T14:41:56.843357",
       "round_number": 102
     },
     {
-      "multiplier": 1.4,
-      "timestamp": "2026-03-14T18:56:20.841103",
+      "multiplier": 35.22,
+      "timestamp": "2026-04-14T14:42:42.672331",
       "round_number": 103
     },
     {
-      "multiplier": 1.09,
-      "timestamp": "2026-03-14T18:56:30.987851",
+      "multiplier": 1.66,
+      "timestamp": "2026-04-14T14:42:53.279920",
       "round_number": 104
     },
     {
-      "multiplier": 2.2,
-      "timestamp": "2026-03-14T18:57:02.527048",
+      "multiplier": 1.31,
+      "timestamp": "2026-04-14T14:43:05.659424",
       "round_number": 105
     },
     {
-      "multiplier": 3.28,
-      "timestamp": "2026-03-14T18:57:08.665787",
+      "multiplier": 2.5,
+      "timestamp": "2026-04-14T14:43:23.796468",
       "round_number": 106
     },
     {
-      "multiplier": 7.26,
-      "timestamp": "2026-03-14T18:57:39.502160",
+      "multiplier": 4.07,
+      "timestamp": "2026-04-14T14:43:45.572270",
       "round_number": 107
     },
     {
-      "multiplier": 1.6,
-      "timestamp": "2026-03-14T18:57:51.751833",
+      "multiplier": 33.14,
+      "timestamp": "2026-04-14T14:44:30.659915",
       "round_number": 108
     },
     {
-      "multiplier": 2.53,
-      "timestamp": "2026-03-14T18:58:09.227234",
+      "multiplier": 1.7,
+      "timestamp": "2026-04-14T14:44:52.764577",
       "round_number": 109
     },
     {
-      "multiplier": 1.27,
-      "timestamp": "2026-03-14T18:58:22.197588",
+      "multiplier": 1.19,
+      "timestamp": "2026-04-14T14:44:56.310928",
       "round_number": 110
     },
     {
-      "multiplier": 1.07,
-      "timestamp": "2026-03-14T18:58:31.130925",
+      "multiplier": 3.05,
+      "timestamp": "2026-04-14T14:45:16.917299",
       "round_number": 111
     },
     {
-      "multiplier": 1.44,
-      "timestamp": "2026-03-14T18:58:43.337176",
+      "multiplier": 2.62,
+      "timestamp": "2026-04-14T14:45:33.064048",
       "round_number": 112
     },
     {
-      "multiplier": 3.12,
-      "timestamp": "2026-03-14T18:59:04.027205",
+      "multiplier": 1.25,
+      "timestamp": "2026-04-14T14:45:44.605033",
       "round_number": 113
     },
     {
-      "multiplier": 2.24,
-      "timestamp": "2026-03-14T18:59:21.236451",
+      "multiplier": 1.19,
+      "timestamp": "2026-04-14T14:45:57.568568",
       "round_number": 114
     },
     {
-      "multiplier": 2.94,
-      "timestamp": "2026-03-14T18:59:41.498534",
+      "multiplier": 1.42,
+      "timestamp": "2026-04-14T14:46:11.314420",
       "round_number": 115
     },
     {
-      "multiplier": 1.72,
-      "timestamp": "2026-03-14T18:59:56.152823",
+      "multiplier": 1.31,
+      "timestamp": "2026-04-14T14:49:08.935481",
       "round_number": 116
     },
     {
-      "multiplier": 8.81,
-      "timestamp": "2026-03-14T19:00:25.965744",
+      "multiplier": 10.48,
+      "timestamp": "2026-04-14T14:49:15.213850",
       "round_number": 117
     },
     {
-      "multiplier": 1.08,
-      "timestamp": "2026-03-14T19:00:36.376210",
+      "multiplier": 6.99,
+      "timestamp": "2026-04-14T14:49:25.156510",
       "round_number": 118
     },
     {
-      "multiplier": 1.11,
-      "timestamp": "2026-03-14T19:00:46.486308",
+      "multiplier": 9.66,
+      "timestamp": "2026-04-14T14:49:29.569785",
       "round_number": 119
     },
     {
-      "multiplier": 63.48,
-      "timestamp": "2026-03-14T19:01:38.670118",
+      "multiplier": 1.42,
+      "timestamp": "2026-04-14T14:49:35.443774",
       "round_number": 120
     },
     {
-      "multiplier": 1.47,
-      "timestamp": "2026-03-14T19:01:49.951405",
+      "multiplier": 2.29,
+      "timestamp": "2026-04-14T14:50:00.066161",
       "round_number": 121
     },
     {
-      "multiplier": 2.07,
-      "timestamp": "2026-03-14T19:02:05.054027",
+      "multiplier": 1.94,
+      "timestamp": "2026-04-14T14:53:21.426500",
       "round_number": 122
     },
     {
-      "multiplier": 8.5,
-      "timestamp": "2026-03-14T19:02:42.228127",
+      "multiplier": 1.12,
+      "timestamp": "2026-04-14T14:53:25.915771",
       "round_number": 123
     },
     {
-      "multiplier": 2.11,
-      "timestamp": "2026-03-14T19:02:54.894118",
+      "multiplier": 2.12,
+      "timestamp": "2026-04-14T14:53:30.866379",
       "round_number": 124
     },
     {
-      "multiplier": 2.01,
-      "timestamp": "2026-03-14T19:03:09.794907",
+      "multiplier": 14.95,
+      "timestamp": "2026-04-14T14:53:38.503206",
       "round_number": 125
     },
     {
-      "multiplier": 8.61,
-      "timestamp": "2026-03-14T19:05:06.011140",
+      "multiplier": 3.69,
+      "timestamp": "2026-04-14T14:53:49.793821",
       "round_number": 126
     },
     {
-      "multiplier": 1.03,
-      "timestamp": "2026-03-14T19:05:10.688747",
+      "multiplier": 1.11,
+      "timestamp": "2026-04-14T14:53:55.448190",
       "round_number": 127
     },
     {
-      "multiplier": 2.43,
-      "timestamp": "2026-03-14T19:05:14.971016",
+      "multiplier": 1.06,
+      "timestamp": "2026-04-14T14:54:00.583557",
       "round_number": 128
     },
     {
-      "multiplier": 1.3,
-      "timestamp": "2026-03-14T19:05:19.960880",
+      "multiplier": 1.0,
+      "timestamp": "2026-04-14T14:54:07.291623",
       "round_number": 129
     },
     {
-      "multiplier": 1.32,
-      "timestamp": "2026-03-14T19:05:24.285370",
+      "multiplier": 1.0,
+      "timestamp": "2026-04-14T14:54:30.640431",
       "round_number": 130
     },
     {
-      "multiplier": 1.42,
-      "timestamp": "2026-03-14T19:05:30.134054",
+      "multiplier": 1.2,
+      "timestamp": "2026-04-14T14:54:36.718352",
       "round_number": 131
     },
     {
-      "multiplier": 1.58,
-      "timestamp": "2026-03-14T19:05:36.312755",
+      "multiplier": 23.48,
+      "timestamp": "2026-04-14T14:54:43.726179",
       "round_number": 132
     },
     {
-      "multiplier": 1.0,
-      "timestamp": "2026-03-14T19:05:42.617383",
+      "multiplier": 1.09,
+      "timestamp": "2026-04-14T14:54:50.463497",
       "round_number": 133
     },
     {
-      "multiplier": 11.86,
-      "timestamp": "2026-03-14T19:05:52.978539",
+      "multiplier": 2.38,
+      "timestamp": "2026-04-14T14:54:56.780803",
       "round_number": 134
     },
     {
-      "multiplier": 5.38,
-      "timestamp": "2026-03-14T19:06:06.889834",
+      "multiplier": 6.54,
+      "timestamp": "2026-04-14T14:55:02.445818",
       "round_number": 135
     },
     {
-      "multiplier": 2.09,
-      "timestamp": "2026-03-14T19:06:23.272875",
+      "multiplier": 3.4,
+      "timestamp": "2026-04-14T14:55:18.375803",
       "round_number": 136
     },
     {
-      "multiplier": 1.0,
-      "timestamp": "2026-03-14T19:06:34.386220",
+      "multiplier": 2.56,
+      "timestamp": "2026-04-14T14:55:33.770708",
       "round_number": 137
     },
     {
-      "multiplier": 2.51,
-      "timestamp": "2026-03-14T19:06:49.738451",
+      "multiplier": 2.23,
+      "timestamp": "2026-04-14T15:05:46.335627",
       "round_number": 138
     },
     {
-      "multiplier": 1.26,
-      "timestamp": "2026-03-14T19:07:27.777138",
+      "multiplier": 9.71,
+      "timestamp": "2026-04-14T15:05:55.529566",
       "round_number": 139
     },
     {
-      "multiplier": 1.76,
-      "timestamp": "2026-03-14T19:07:33.927892",
+      "multiplier": 1.04,
+      "timestamp": "2026-04-14T15:06:01.976636",
       "round_number": 140
     },
     {
-      "multiplier": 9.71,
-      "timestamp": "2026-03-14T19:07:48.398224",
+      "multiplier": 1.82,
+      "timestamp": "2026-04-14T15:06:09.490788",
       "round_number": 141
     },
     {
-      "multiplier": 1.12,
-      "timestamp": "2026-03-14T19:08:21.766840",
+      "multiplier": 3.07,
+      "timestamp": "2026-04-14T15:06:14.368909",
       "round_number": 142
     },
     {
-      "multiplier": 13.97,
-      "timestamp": "2026-03-14T19:08:34.539191",
+      "multiplier": 1.16,
+      "timestamp": "2026-04-14T15:06:19.241920",
       "round_number": 143
     },
     {
-      "multiplier": 1.63,
-      "timestamp": "2026-03-14T19:08:48.275475",
+      "multiplier": 2.04,
+      "timestamp": "2026-04-14T15:06:23.560866",
       "round_number": 144
     },
     {
-      "multiplier": 1.23,
-      "timestamp": "2026-03-14T19:09:01.685126",
+      "multiplier": 2.0,
+      "timestamp": "2026-04-14T15:06:28.288351",
       "round_number": 145
     },
     {
-      "multiplier": 4.82,
-      "timestamp": "2026-03-14T19:09:26.214986",
+      "multiplier": 1.76,
+      "timestamp": "2026-04-14T15:06:49.658907",
       "round_number": 146
     },
     {
-      "multiplier": 2.77,
-      "timestamp": "2026-03-14T19:09:48.833884",
+      "multiplier": 80.39,
+      "timestamp": "2026-04-14T15:07:28.238121",
       "round_number": 147
+    },
+    {
+      "multiplier": 2.16,
+      "timestamp": "2026-04-14T15:07:33.426235",
+      "round_number": 148
+    },
+    {
+      "multiplier": 7.55,
+      "timestamp": "2026-04-14T15:07:41.504459",
+      "round_number": 149
+    },
+    {
+      "multiplier": 7.46,
+      "timestamp": "2026-04-14T15:07:50.922509",
+      "round_number": 150
+    },
+    {
+      "multiplier": 3.1,
+      "timestamp": "2026-04-14T15:23:43.164045",
+      "round_number": 151
+    },
+    {
+      "multiplier": 1.57,
+      "timestamp": "2026-04-14T15:23:48.963669",
+      "round_number": 152
+    },
+    {
+      "multiplier": 4.64,
+      "timestamp": "2026-04-14T15:23:54.277495",
+      "round_number": 153
+    },
+    {
+      "multiplier": 2.49,
+      "timestamp": "2026-04-14T15:24:14.257727",
+      "round_number": 154
+    },
+    {
+      "multiplier": 3.81,
+      "timestamp": "2026-04-14T15:24:21.314683",
+      "round_number": 155
+    },
+    {
+      "multiplier": 2.96,
+      "timestamp": "2026-04-14T15:24:29.872754",
+      "round_number": 156
+    },
+    {
+      "multiplier": 11.67,
+      "timestamp": "2026-04-14T15:24:34.192249",
+      "round_number": 157
+    },
+    {
+      "multiplier": 1.53,
+      "timestamp": "2026-04-14T15:25:00.762568",
+      "round_number": 158
+    },
+    {
+      "multiplier": 1.53,
+      "timestamp": "2026-04-14T15:25:06.354832",
+      "round_number": 159
+    },
+    {
+      "multiplier": 4.57,
+      "timestamp": "2026-04-14T15:25:12.026452",
+      "round_number": 160
+    },
+    {
+      "multiplier": 1.7,
+      "timestamp": "2026-04-14T15:25:17.557225",
+      "round_number": 161
+    },
+    {
+      "multiplier": 1.53,
+      "timestamp": "2026-04-14T15:25:21.906352",
+      "round_number": 162
+    },
+    {
+      "multiplier": 2.05,
+      "timestamp": "2026-04-14T15:25:30.899367",
+      "round_number": 163
+    },
+    {
+      "multiplier": 1.33,
+      "timestamp": "2026-04-14T15:25:35.319700",
+      "round_number": 164
+    },
+    {
+      "multiplier": 1.02,
+      "timestamp": "2026-04-14T15:25:41.857056",
+      "round_number": 165
+    },
+    {
+      "multiplier": 1.9,
+      "timestamp": "2026-04-14T15:25:47.856853",
+      "round_number": 166
+    },
+    {
+      "multiplier": 1.12,
+      "timestamp": "2026-04-14T15:25:52.247259",
+      "round_number": 167
+    },
+    {
+      "multiplier": 1.03,
+      "timestamp": "2026-04-14T15:25:56.620213",
+      "round_number": 168
+    },
+    {
+      "multiplier": 1.0,
+      "timestamp": "2026-04-14T15:26:03.477329",
+      "round_number": 169
+    },
+    {
+      "multiplier": 12.04,
+      "timestamp": "2026-04-14T15:26:09.190845",
+      "round_number": 170
+    },
+    {
+      "multiplier": 2.81,
+      "timestamp": "2026-04-14T15:26:16.019485",
+      "round_number": 171
+    },
+    {
+      "multiplier": 3.7,
+      "timestamp": "2026-04-14T15:26:21.978875",
+      "round_number": 172
+    },
+    {
+      "multiplier": 3.93,
+      "timestamp": "2026-04-14T15:26:28.799106",
+      "round_number": 173
+    },
+    {
+      "multiplier": 1.49,
+      "timestamp": "2026-04-14T15:26:37.072085",
+      "round_number": 174
+    },
+    {
+      "multiplier": 41.12,
+      "timestamp": "2026-04-14T15:26:42.849939",
+      "round_number": 175
+    },
+    {
+      "multiplier": 1.64,
+      "timestamp": "2026-04-14T15:26:50.970135",
+      "round_number": 176
+    },
+    {
+      "multiplier": 1.12,
+      "timestamp": "2026-04-14T15:26:55.904529",
+      "round_number": 177
+    },
+    {
+      "multiplier": 1.88,
+      "timestamp": "2026-04-14T15:27:08.727672",
+      "round_number": 178
+    },
+    {
+      "multiplier": 7.41,
+      "timestamp": "2026-04-14T15:27:15.388720",
+      "round_number": 179
+    },
+    {
+      "multiplier": 5.35,
+      "timestamp": "2026-04-14T15:27:21.749388",
+      "round_number": 180
+    },
+    {
+      "multiplier": 6.47,
+      "timestamp": "2026-04-14T15:27:28.941376",
+      "round_number": 181
+    },
+    {
+      "multiplier": 1.06,
+      "timestamp": "2026-04-14T15:27:35.041916",
+      "round_number": 182
+    },
+    {
+      "multiplier": 4.69,
+      "timestamp": "2026-04-14T15:27:39.619825",
+      "round_number": 183
+    },
+    {
+      "multiplier": 2.18,
+      "timestamp": "2026-04-14T15:27:44.234206",
+      "round_number": 184
+    },
+    {
+      "multiplier": 1.08,
+      "timestamp": "2026-04-14T15:27:50.069602",
+      "round_number": 185
+    },
+    {
+      "multiplier": 1.1,
+      "timestamp": "2026-04-14T15:27:54.578354",
+      "round_number": 186
+    },
+    {
+      "multiplier": 12.27,
+      "timestamp": "2026-04-14T15:28:00.850273",
+      "round_number": 187
+    },
+    {
+      "multiplier": 1.52,
+      "timestamp": "2026-04-14T15:28:05.742114",
+      "round_number": 188
+    },
+    {
+      "multiplier": 4.14,
+      "timestamp": "2026-04-14T15:28:09.935182",
+      "round_number": 189
+    },
+    {
+      "multiplier": 2.18,
+      "timestamp": "2026-04-14T15:28:14.563043",
+      "round_number": 190
+    },
+    {
+      "multiplier": 1.08,
+      "timestamp": "2026-04-14T15:29:35.202341",
+      "round_number": 191
+    },
+    {
+      "multiplier": 1.68,
+      "timestamp": "2026-04-14T15:30:01.232759",
+      "round_number": 192
+    },
+    {
+      "multiplier": 1.48,
+      "timestamp": "2026-04-14T15:30:04.382229",
+      "round_number": 193
+    },
+    {
+      "multiplier": 13.04,
+      "timestamp": "2026-04-14T15:30:11.001693",
+      "round_number": 194
+    },
+    {
+      "multiplier": 2.75,
+      "timestamp": "2026-04-14T15:30:17.422904",
+      "round_number": 195
+    },
+    {
+      "multiplier": 2.29,
+      "timestamp": "2026-04-14T15:30:22.958236",
+      "round_number": 196
+    },
+    {
+      "multiplier": 1.08,
+      "timestamp": "2026-04-14T15:30:29.021127",
+      "round_number": 197
+    },
+    {
+      "multiplier": 1.03,
+      "timestamp": "2026-04-14T15:30:33.251472",
+      "round_number": 198
+    },
+    {
+      "multiplier": 1.1,
+      "timestamp": "2026-04-14T15:30:37.411462",
+      "round_number": 199
+    },
+    {
+      "multiplier": 1.05,
+      "timestamp": "2026-04-14T15:30:41.170397",
+      "round_number": 200
+    },
+    {
+      "multiplier": 2.44,
+      "timestamp": "2026-04-14T15:30:45.933061",
+      "round_number": 201
+    },
+    {
+      "multiplier": 2.68,
+      "timestamp": "2026-04-14T15:30:51.278520",
+      "round_number": 202
+    },
+    {
+      "multiplier": 1.5,
+      "timestamp": "2026-04-14T15:30:57.060159",
+      "round_number": 203
+    },
+    {
+      "multiplier": 1.21,
+      "timestamp": "2026-04-14T15:31:01.606655",
+      "round_number": 204
+    },
+    {
+      "multiplier": 1.14,
+      "timestamp": "2026-04-14T15:31:09.419160",
+      "round_number": 205
+    },
+    {
+      "multiplier": 1.21,
+      "timestamp": "2026-04-14T15:31:16.011483",
+      "round_number": 206
+    },
+    {
+      "multiplier": 1.32,
+      "timestamp": "2026-04-14T15:31:26.195303",
+      "round_number": 207
+    },
+    {
+      "multiplier": 1.49,
+      "timestamp": "2026-04-14T15:31:40.357182",
+      "round_number": 208
+    },
+    {
+      "multiplier": 1.18,
+      "timestamp": "2026-04-14T15:31:45.369019",
+      "round_number": 209
+    },
+    {
+      "multiplier": 1.46,
+      "timestamp": "2026-04-14T15:31:52.037921",
+      "round_number": 210
+    },
+    {
+      "multiplier": 1.0,
+      "timestamp": "2026-04-14T15:31:59.800961",
+      "round_number": 211
+    },
+    {
+      "multiplier": 6.39,
+      "timestamp": "2026-04-14T15:32:05.906019",
+      "round_number": 212
+    },
+    {
+      "multiplier": 12.74,
+      "timestamp": "2026-04-14T15:32:11.433421",
+      "round_number": 213
+    },
+    {
+      "multiplier": 3.37,
+      "timestamp": "2026-04-14T15:32:19.740237",
+      "round_number": 214
+    },
+    {
+      "multiplier": 1.1,
+      "timestamp": "2026-04-14T15:32:23.929055",
+      "round_number": 215
+    },
+    {
+      "multiplier": 2.24,
+      "timestamp": "2026-04-14T15:32:31.618962",
+      "round_number": 216
+    },
+    {
+      "multiplier": 2.14,
+      "timestamp": "2026-04-14T15:32:36.063247",
+      "round_number": 217
+    },
+    {
+      "multiplier": 1.53,
+      "timestamp": "2026-04-14T15:32:39.863586",
+      "round_number": 218
+    },
+    {
+      "multiplier": 5.02,
+      "timestamp": "2026-04-14T15:32:44.413488",
+      "round_number": 219
+    },
+    {
+      "multiplier": 1.13,
+      "timestamp": "2026-04-14T15:32:48.545641",
+      "round_number": 220
+    },
+    {
+      "multiplier": 8.07,
+      "timestamp": "2026-04-14T15:32:56.379479",
+      "round_number": 221
+    },
+    {
+      "multiplier": 1.02,
+      "timestamp": "2026-04-14T15:33:03.954054",
+      "round_number": 222
+    },
+    {
+      "multiplier": 2.26,
+      "timestamp": "2026-04-14T15:33:08.532018",
+      "round_number": 223
+    },
+    {
+      "multiplier": 1.79,
+      "timestamp": "2026-04-14T15:33:37.271907",
+      "round_number": 224
+    },
+    {
+      "multiplier": 1.11,
+      "timestamp": "2026-04-14T15:33:42.732877",
+      "round_number": 225
     }
   ],
   "pattern_analysis": {
     "volatility_history": [
-      2.3883895542064417,
-      2.3821220326946806,
-      2.3820191985396897,
-      2.385178313505616,
-      2.387807988353846,
-      2.3948862585205006,
-      2.3683063117694907,
-      2.551979149553699,
-      2.5527294262242113,
-      2.5344331132964038,
-      2.547978751871044,
-      2.554338084141745,
-      2.4549405017528674,
-      2.4352807353886003,
-      2.4395472615791287,
-      2.4400904525566167,
-      1.4887182051874632,
-      1.4723536093432463,
-      1.487459309025311,
-      1.482501369057011,
-      1.2867425725311172,
-      1.2746921591290115,
-      1.2934015006886062,
-      1.3771609866887935,
-      1.395348405558162,
-      1.4078400364341006,
-      1.7607703001633264,
-      1.7618789375383703,
-      1.7391248042883436,
-      1.7275018516814624,
-      1.7576510562460803,
-      1.7713100711370358,
-      2.1663675424962463,
-      2.166686554808595,
-      2.1801556800459014,
-      2.188379097275003,
-      1.9932082272602882,
-      1.979651700446952,
-      1.9842512630265534,
-      1.9825125550349831,
-      1.9778620549400636,
-      1.9762693538492544,
-      2.0376520409968726,
-      2.05555353086799,
-      2.0448706714700395,
-      2.0430427823581963,
-      2.050816753222565,
-      2.0314457365654155,
-      2.039997173116962,
-      2.04897810193726,
-      2.058793619159343,
-      2.037607024448686,
-      2.0003823072508515,
-      2.3380666247056587,
-      2.336598654818524,
-      2.1119943469233466,
-      2.107227280741355,
-      2.1054612554739514,
-      2.1042139953180854,
-      2.0811873765186193,
-      2.0774224904108873,
-      1.6168601402988703,
-      1.6204354996157633,
-      1.6064482933295723,
-      1.5810977475140608,
-      1.5722118552607318,
-      1.5724124903680392,
-      1.5606979644855348,
-      1.556744018243895,
-      1.693379978457826,
-      1.714347512047833,
-      1.6192416096988482,
-      10.294188942625798,
-      10.306433872821382,
-      10.306290004422795,
-      10.297031137908096,
-      10.305948422364594,
-      10.3034220803832,
-      10.29234298879619,
-      10.297907153821447,
-      10.293855503410956,
-      10.298087667223728,
-      10.265687030974963,
-      10.257165440396104,
-      10.253356845086888,
-      10.254639489844486,
-      10.368111036741285,
-      10.377321395944955,
-      10.39121671170505,
-      10.388460803010695,
-      10.383706868636537,
-      10.383706706452228,
-      10.379116219837524,
-      10.375471335692717,
-      10.393113301649256,
-      10.497788133292076,
-      10.511000321697248,
-      10.509112781292997,
-      10.507234618819368,
-      10.501768405896039
+      6.419802450411704,
+      6.42754522242444,
+      6.427734729949852,
+      6.432961220922541,
+      6.428436147261436,
+      6.423845781950767,
+      3.903816685277331,
+      3.9038307962996157,
+      3.893532304861406,
+      3.893296164663001,
+      3.905851725067335,
+      3.756946603040006,
+      3.744629278154607,
+      3.75653941879517,
+      3.7758375908435577,
+      3.7688186732605424,
+      3.756395393991747,
+      3.7645483243490863,
+      3.7607278491948324,
+      3.7600526648263872,
+      3.6041801369624227,
+      8.738588920984283,
+      8.753568894610222,
+      8.73083354212271,
+      8.736478840464597,
+      8.741485889521156,
+      8.742330329126402,
+      8.737485537284414,
+      8.729549977364595,
+      8.716831776072029,
+      8.711392741999278,
+      8.699122128870691,
+      8.708730961179594,
+      8.708730961179594,
+      8.698490508277423,
+      8.170396860820627,
+      8.161564695731245,
+      8.16570560419834,
+      8.176111621876755,
+      8.173821560679736,
+      8.166530314571977,
+      8.16908471354804,
+      8.171660970509862,
+      8.1635237697389,
+      8.332690242141803,
+      8.345641188774964,
+      8.336873870754115,
+      8.341769376983398,
+      8.34775263950189,
+      9.45522657095879,
+      5.250617881324796,
+      5.241641404791439,
+      5.239603560159708,
+      5.240161090856233,
+      5.236280717854666,
+      5.2286292326771715,
+      5.24543068230851,
+      5.245123649891994,
+      5.255924565970783,
+      5.259398846888467,
+      5.259058153487911,
+      5.474406288139214,
+      5.486618744446772,
+      5.486457301213847,
+      5.484215919699033,
+      5.4894381817445375,
+      5.48767579500106,
+      5.4847701655247825,
+      5.579540806280506,
+      5.599637314121254,
+      5.596230628102862,
+      5.602536420826865,
+      5.6027489144760505,
+      5.342076075844511,
+      5.332697785951922,
+      5.327378729891865,
+      5.32700983344371,
+      5.324450664524149,
+      2.484705793499837,
+      2.4688501307340713,
+      2.4640712282846313,
+      2.4672515782741375,
+      2.434721492962346,
+      2.4338209711268757,
+      2.4336451230996103,
+      2.424379105202487,
+      2.5253605816408595,
+      2.513835552524035,
+      2.5183367868219158,
+      2.528872605517391,
+      1.8068734304889842,
+      1.791976935525491,
+      1.78170045323651,
+      1.8048322002423192,
+      1.8107599054474661,
+      2.0825758757822985,
+      2.097281458396602,
+      1.6123473729358309,
+      1.6004590367407372,
+      1.60381967596647
     ],
     "trend_history": [
-      -0.021080971258028363,
-      -0.026213063732504403,
-      -0.03130872356777642,
-      -0.0384569961136517,
-      -0.04615231053256904,
-      -0.0549533258285054,
-      -0.06062142026324308,
-      -0.03200837599670644,
-      -0.0028492693256642176,
-      -0.0011800283822096676,
-      -0.010037150348930424,
-      -0.018874984152992217,
-      -0.025801796049754716,
-      -0.011892859022259668,
-      -0.01685862794228618,
-      -0.022799324632897106,
-      -0.02877302265675319,
-      -0.004541184470829022,
-      -0.009492840756311231,
-      -0.013784257531603613,
-      -0.015897823073512257,
-      0.012209770292861091,
-      0.005055709111643128,
-      0.008627913132583185,
-      0.028269238787508158,
-      0.025116032691878634,
-      0.030037510661142647,
-      0.028091468763606343,
-      0.025076786775477842,
-      0.029243640181797557,
-      0.04840906883838668,
-      0.04418048272330808,
-      0.050601881046420945,
-      0.050866110226390635,
-      0.0416316875768187,
-      0.035109400042733364,
-      0.026757498931883297,
-      0.03956892458709713,
-      0.03313223640438344,
-      0.02749117723146967,
-      0.017888356677487453,
-      0.009050420401496659,
-      0.010507233723410234,
-      0.003724918180759325,
-      -0.002053910856993528,
-      -0.007885205387115157,
-      -0.013527371068658743,
-      -0.015369712945093678,
-      -0.023443872566265813,
-      -0.03211383825748667,
-      -0.04018049851281899,
-      -0.042995301073859044,
-      -0.05129451281386789,
-      -0.030541519754916237,
-      -0.023342620569783663,
-      -0.03289585046186588,
-      -0.034257389203611356,
-      -0.03831170635471954,
-      -0.03932056247803387,
-      -0.03101371524542346,
-      -0.00953873958874146,
-      -0.015140696870396597,
-      -0.001057802986129311,
-      0.008238848733610032,
-      0.0016510260084658225,
-      0.005960285071146716,
-      0.0009918739266134317,
-      -0.003294321586123513,
-      -0.007050968077623239,
-      0.0013384585267547373,
-      -0.0071986949209364055,
-      -0.014235920144445994,
-      0.07704400205028145,
-      0.06792007828246924,
-      0.06051362391452689,
-      0.060450492976418836,
-      0.05399100048381217,
-      0.048628978335423456,
-      0.04762954339073352,
-      0.03824648062720098,
-      0.02929269667560585,
-      0.020169721742313056,
-      0.011021935529249705,
-      0.023001555030956952,
-      0.01501279368135929,
-      0.005094137957051521,
-      0.008932177594051762,
-      0.005326695984874813,
-      -0.0010432998351904558,
-      -0.0035131747066193242,
-      -0.011257401602229213,
-      -0.019606108411944226,
-      -0.028760180324921017,
-      -0.02634631982154645,
-      -0.036477341453476364,
-      -0.02651677008648236,
-      -0.03532671883307654,
-      -0.04403791239961118,
-      -0.04863876305574813,
-      -0.04970896808562552
+      -0.004158440290513518,
+      -0.014032002163048386,
+      -0.024079329686867487,
+      -0.034281064563739264,
+      -0.043592010547646824,
+      -0.053625663413705484,
+      -0.031240223140095967,
+      -0.002207970639906817,
+      -0.009803691504165903,
+      -0.01187038401708064,
+      -0.017116272239606184,
+      -0.021639349495491587,
+      0.01877808329421232,
+      0.023150334447482476,
+      0.013443431333544425,
+      0.008151379799679089,
+      0.004096400505949038,
+      -0.00531233620410275,
+      -0.013331923349832095,
+      -0.021057898984231202,
+      -0.029360915412140715,
+      0.06394019648371875,
+      0.0617258347316227,
+      0.06739725519693199,
+      0.06134894347744134,
+      0.053331806885825325,
+      0.04369980775042275,
+      0.035536917201865297,
+      0.026804721889318494,
+      0.034798194981180273,
+      0.02872750922036194,
+      0.027225931997149604,
+      0.016463595459932978,
+      0.005656093676599526,
+      -0.002123043156972824,
+      -0.01256646758263039,
+      -0.0003644600839969065,
+      -0.010190534285406729,
+      -0.01949611925015272,
+      -0.024968400322091192,
+      -0.03243483960032956,
+      -0.041801365705229424,
+      -0.05164617335507039,
+      -0.05483028071217852,
+      -0.049018806425744396,
+      -0.05668938279238529,
+      -0.06200031034495577,
+      -0.06849230151031117,
+      -0.07805609508492407,
+      -0.03582072128275518,
+      -0.04602395470753116,
+      0.030196074859799703,
+      0.02287559102429905,
+      0.03170719963851804,
+      0.038034844622574525,
+      0.03795875142162455,
+      0.02860278897082114,
+      0.028987461447294832,
+      0.022583827044630665,
+      0.016928999852618816,
+      0.009929384423491425,
+      0.03297599941193045,
+      0.0242688371461048,
+      0.01903493018313332,
+      0.01616032914539926,
+      0.007098204886800617,
+      -0.001358792159913169,
+      -0.009339225717341432,
+      -0.001185161182623242,
+      -0.009206587969102275,
+      -0.016712197406420392,
+      -0.027020779836742444,
+      -0.03751673308878264,
+      -0.047928775352092744,
+      -0.0461645654742515,
+      -0.051776564636873176,
+      -0.05592198087045511,
+      -0.062071534448078086,
+      -0.07139754281317578,
+      -0.025172994536544428,
+      -0.03227813938166177,
+      -0.04007509866621617,
+      -0.04604831899644362,
+      -0.04258949664381293,
+      -0.04108494017433827,
+      -0.03762226463437751,
+      -0.029033444417390624,
+      0.0011309267461612428,
+      0.00048538780463140165,
+      -0.007902441021721501,
+      -0.01356374736697128,
+      0.007001748255439221,
+      0.0013797381706168968,
+      0.011038290793574422,
+      0.006151122649696135,
+      0.01418300790769151,
+      0.007238089269767654,
+      0.0025941827276487884,
+      0.028365519652729782,
+      0.0260781388420359
     ],
     "cluster_history": [
       0,
@@ -1052,170 +1442,294 @@
     ],
     "algorithm_changes": [
       {
-        "timestamp": "2026-03-14T18:44:06.742220",
+        "timestamp": "2026-04-14T14:29:51.067502",
         "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
         "old_pattern": "random",
         "new_pattern": "high_volatility",
-        "round_number": 55
+        "round_number": 60
       },
       {
-        "timestamp": "2026-03-14T19:06:23.778049",
+        "timestamp": "2026-04-14T14:37:53.576755",
         "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
         "old_pattern": "random",
         "new_pattern": "high_volatility",
-        "round_number": 136
+        "round_number": 89
       },
       {
-        "timestamp": "2026-03-14T19:06:34.953224",
+        "timestamp": "2026-04-14T14:39:53.502808",
         "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
         "old_pattern": "random",
         "new_pattern": "high_volatility",
-        "round_number": 137
+        "round_number": 94
       },
       {
-        "timestamp": "2026-03-14T19:06:50.025666",
+        "timestamp": "2026-04-14T14:40:48.794827",
         "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
         "old_pattern": "random",
         "new_pattern": "high_volatility",
-        "round_number": 138
+        "round_number": 97
       },
       {
-        "timestamp": "2026-03-14T19:07:28.394939",
+        "timestamp": "2026-04-14T14:41:01.037643",
         "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
         "old_pattern": "random",
         "new_pattern": "high_volatility",
-        "round_number": 139
+        "round_number": 98
       },
       {
-        "timestamp": "2026-03-14T19:07:34.413265",
+        "timestamp": "2026-04-14T14:41:15.050441",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 99
+      },
+      {
+        "timestamp": "2026-04-14T14:41:31.710584",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 100
+      },
+      {
+        "timestamp": "2026-04-14T14:45:44.708600",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 113
+      },
+      {
+        "timestamp": "2026-04-14T14:46:11.438879",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 115
+      },
+      {
+        "timestamp": "2026-04-14T14:49:09.037233",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 116
+      },
+      {
+        "timestamp": "2026-04-14T14:49:15.315916",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 117
+      },
+      {
+        "timestamp": "2026-04-14T14:49:25.296408",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 118
+      },
+      {
+        "timestamp": "2026-04-14T14:49:29.680951",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 119
+      },
+      {
+        "timestamp": "2026-04-14T14:49:35.546740",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 120
+      },
+      {
+        "timestamp": "2026-04-14T14:50:00.197082",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 121
+      },
+      {
+        "timestamp": "2026-04-14T15:06:02.140979",
         "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
         "old_pattern": "random",
         "new_pattern": "high_volatility",
         "round_number": 140
       },
       {
-        "timestamp": "2026-03-14T19:07:48.660994",
+        "timestamp": "2026-04-14T15:06:09.609602",
         "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
         "old_pattern": "random",
         "new_pattern": "high_volatility",
         "round_number": 141
       },
       {
-        "timestamp": "2026-03-14T19:08:22.192315",
+        "timestamp": "2026-04-14T15:06:14.588939",
         "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
         "old_pattern": "random",
         "new_pattern": "high_volatility",
         "round_number": 142
       },
       {
-        "timestamp": "2026-03-14T19:08:35.008255",
+        "timestamp": "2026-04-14T15:06:19.419911",
         "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
         "old_pattern": "random",
         "new_pattern": "high_volatility",
         "round_number": 143
       },
       {
-        "timestamp": "2026-03-14T19:08:48.569356",
+        "timestamp": "2026-04-14T15:06:23.750588",
         "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
         "old_pattern": "random",
         "new_pattern": "high_volatility",
         "round_number": 144
       },
       {
-        "timestamp": "2026-03-14T19:09:01.951242",
+        "timestamp": "2026-04-14T15:25:00.883009",
         "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
         "old_pattern": "random",
         "new_pattern": "high_volatility",
-        "round_number": 145
+        "round_number": 158
       },
       {
-        "timestamp": "2026-03-14T19:09:26.734055",
+        "timestamp": "2026-04-14T15:25:06.479276",
         "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
         "old_pattern": "random",
         "new_pattern": "high_volatility",
-        "round_number": 146
+        "round_number": 159
       },
       {
-        "timestamp": "2026-03-14T19:09:49.136567",
+        "timestamp": "2026-04-14T15:25:12.172946",
         "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
         "old_pattern": "random",
         "new_pattern": "high_volatility",
-        "round_number": 147
+        "round_number": 160
+      },
+      {
+        "timestamp": "2026-04-14T15:25:17.698776",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 161
+      },
+      {
+        "timestamp": "2026-04-14T15:25:22.067294",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 162
+      },
+      {
+        "timestamp": "2026-04-14T15:25:31.025906",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 163
+      },
+      {
+        "timestamp": "2026-04-14T15:27:35.161091",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 182
+      },
+      {
+        "timestamp": "2026-04-14T15:27:39.759529",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 183
+      },
+      {
+        "timestamp": "2026-04-14T15:27:44.406461",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 184
+      },
+      {
+        "timestamp": "2026-04-14T15:27:50.264701",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 185
+      },
+      {
+        "timestamp": "2026-04-14T15:27:54.714505",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 186
+      },
+      {
+        "timestamp": "2026-04-14T15:28:01.002480",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 187
+      },
+      {
+        "timestamp": "2026-04-14T15:28:05.887182",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 188
+      },
+      {
+        "timestamp": "2026-04-14T15:28:10.061072",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 189
+      },
+      {
+        "timestamp": "2026-04-14T15:28:14.713691",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 190
+      },
+      {
+        "timestamp": "2026-04-14T15:29:35.364822",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 191
+      },
+      {
+        "timestamp": "2026-04-14T15:30:01.352499",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 192
+      },
+      {
+        "timestamp": "2026-04-14T15:30:04.508561",
+        "reason": "Pattern changed from random to high_volatility (confidence: 0.90)",
+        "old_pattern": "random",
+        "new_pattern": "high_volatility",
+        "round_number": 193
+      },
+      {
+        "timestamp": "2026-04-14T15:31:45.454721",
+        "reason": "Pattern changed from high_volatility to cyclical (confidence: 0.75)",
+        "old_pattern": "high_volatility",
+        "new_pattern": "cyclical",
+        "round_number": 209
+      },
+      {
+        "timestamp": "2026-04-14T15:31:52.119394",
+        "reason": "Pattern changed from cyclical to clustered (confidence: 0.80)",
+        "old_pattern": "cyclical",
+        "new_pattern": "clustered",
+        "round_number": 210
+      },
+      {
+        "timestamp": "2026-04-14T15:32:05.986641",
+        "reason": "Pattern changed from clustered to high_volatility (confidence: 0.90)",
+        "old_pattern": "clustered",
+        "new_pattern": "high_volatility",
+        "round_number": 212
       }
     ],
     "pattern_confidence": [
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.9,
-      0.9,
-      0.9,
-      0.9,
-      0.9,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.65,
-      0.65,
-      0.65,
-      0.7,
-      0.65,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
-      0.7,
       0.9,
       0.9,
       0.9,
@@ -1243,312 +1757,108 @@
       0.9,
       0.9,
       0.9,
-      0.9
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.75,
+      0.8,
+      0.7,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7
     ]
   },
   "performance_metrics": {
-    "prediction_accuracy": 31.62393162393162,
-    "total_predictions": 117,
-    "correct_predictions": 37,
-    "close_predictions": 61,
-    "adaptation_success": 7,
+    "prediction_accuracy": 19.272727272727273,
+    "total_predictions": 165,
+    "correct_predictions": 28,
+    "close_predictions": 56,
+    "adaptation_success": 4,
     "prediction_history": [
       {
-        "actual": 1.79,
+        "actual": 3.69,
         "predictions": [
-          2.89,
-          2.98,
-          3.33
+          3.4,
+          3.87,
+          3.9
         ],
-        "closest": 2.89,
-        "correct": false,
-        "close": false,
-        "pattern": "random"
-      },
-      {
-        "actual": 3.57,
-        "predictions": [
-          2.02,
-          3.22,
-          3.32
-        ],
-        "closest": 3.32,
-        "correct": true,
-        "close": true,
-        "pattern": "random"
-      },
-      {
-        "actual": 2.07,
-        "predictions": [
-          1.57,
-          1.9,
-          3.51
-        ],
-        "closest": 1.9,
-        "correct": true,
-        "close": true,
-        "pattern": "random"
-      },
-      {
-        "actual": 1.95,
-        "predictions": [
-          2.29,
-          2.46,
-          2.54
-        ],
-        "closest": 2.29,
-        "correct": false,
-        "close": true,
-        "pattern": "random"
-      },
-      {
-        "actual": 1.39,
-        "predictions": [
-          1.06,
-          1.37,
-          2.13
-        ],
-        "closest": 1.37,
-        "correct": true,
-        "close": true,
-        "pattern": "random"
-      },
-      {
-        "actual": 1.01,
-        "predictions": [
-          1.46,
-          1.66,
-          3.02
-        ],
-        "closest": 1.46,
-        "correct": false,
-        "close": false,
-        "pattern": "random"
-      },
-      {
-        "actual": 2.07,
-        "predictions": [
-          1,
-          1.98,
-          2.04
-        ],
-        "closest": 2.04,
-        "correct": true,
-        "close": true,
-        "pattern": "random"
-      },
-      {
-        "actual": 14.43,
-        "predictions": [
-          1.82,
-          1.87,
-          2.24
-        ],
-        "closest": 2.24,
-        "correct": false,
-        "close": false,
-        "pattern": "random"
-      },
-      {
-        "actual": 2.02,
-        "predictions": [
-          1,
-          2.99,
-          3.21
-        ],
-        "closest": 2.99,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 3.53,
-        "predictions": [
-          1,
-          1.63,
-          1.68
-        ],
-        "closest": 1.68,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.16,
-        "predictions": [
-          1.77,
-          2.57,
-          2.65
-        ],
-        "closest": 1.77,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.0,
-        "predictions": [
-          1.24,
-          2.27,
-          2.34
-        ],
-        "closest": 1.24,
-        "correct": false,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.33,
-        "predictions": [
-          2.56,
-          2.86,
-          2.95
-        ],
-        "closest": 2.56,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.74,
-        "predictions": [
-          1.47,
-          2.66,
-          3.32
-        ],
-        "closest": 2.66,
+        "closest": 3.87,
         "correct": true,
         "close": true,
         "pattern": "high_volatility"
       },
       {
-        "actual": 2.76,
+        "actual": 1.11,
         "predictions": [
-          2.51,
-          2.57,
-          2.86
+          1.93,
+          3.5,
+          3.68
         ],
-        "closest": 2.86,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.83,
-        "predictions": [
-          2.53,
-          2.76,
-          3.14
-        ],
-        "closest": 2.53,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.21,
-        "predictions": [
-          1,
-          2.09,
-          2.69
-        ],
-        "closest": 2.09,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 4.14,
-        "predictions": [
-          2.14,
-          2.58,
-          2.77
-        ],
-        "closest": 2.77,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.01,
-        "predictions": [
-          2.91,
-          3.51,
-          3.63
-        ],
-        "closest": 2.91,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.19,
-        "predictions": [
-          1.13,
-          1.18,
-          2.32
-        ],
-        "closest": 1.18,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.61,
-        "predictions": [
-          1.31,
-          1.35,
-          2.21
-        ],
-        "closest": 2.21,
-        "correct": false,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 5.89,
-        "predictions": [
-          2.58,
-          2.89,
-          4.53
-        ],
-        "closest": 4.53,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.23,
-        "predictions": [
-          1.16,
-          1.19,
-          2.94
-        ],
-        "closest": 1.19,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 4.94,
-        "predictions": [
-          1,
-          1.37,
-          1.45
-        ],
-        "closest": 1.45,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 13.51,
-        "predictions": [
-          1.26,
-          1.3,
-          2.83
-        ],
-        "closest": 2.83,
+        "closest": 1.93,
         "correct": false,
         "close": false,
         "pattern": "high_volatility"
@@ -1556,143 +1866,23 @@
       {
         "actual": 1.06,
         "predictions": [
-          3.62,
-          8.25,
-          8.5
+          1.13,
+          1.64,
+          2.04
         ],
-        "closest": 3.62,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 7.76,
-        "predictions": [
-          1.16,
-          1.27,
-          1.78
-        ],
-        "closest": 1.78,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 3.91,
-        "predictions": [
-          3.77,
-          6.63,
-          6.67
-        ],
-        "closest": 3.77,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 4.58,
-        "predictions": [
-          1.9,
-          2.84,
-          2.93
-        ],
-        "closest": 2.93,
+        "closest": 1.13,
         "correct": false,
         "close": true,
         "pattern": "high_volatility"
       },
       {
-        "actual": 5.85,
+        "actual": 1.0,
         "predictions": [
-          3.57,
-          3.65,
-          3.76
+          2.01,
+          2.95,
+          3.11
         ],
-        "closest": 3.76,
-        "correct": false,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 20.27,
-        "predictions": [
-          3.59,
-          5.17,
-          5.22
-        ],
-        "closest": 5.22,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.51,
-        "predictions": [
-          1.16,
-          4.56,
-          4.87
-        ],
-        "closest": 1.16,
-        "correct": false,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 13.0,
-        "predictions": [
-          1.73,
-          4.71,
-          6.84
-        ],
-        "closest": 6.84,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 9.06,
-        "predictions": [
-          2.56,
-          5.02,
-          6.85
-        ],
-        "closest": 6.85,
-        "correct": false,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.49,
-        "predictions": [
-          4.57,
-          5.11,
-          5.27
-        ],
-        "closest": 4.57,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 4.45,
-        "predictions": [
-          1.62,
-          5.48,
-          5.8
-        ],
-        "closest": 5.48,
-        "correct": false,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.37,
-        "predictions": [
-          5.18,
-          5.25,
-          6.38
-        ],
-        "closest": 5.18,
+        "closest": 2.01,
         "correct": false,
         "close": false,
         "pattern": "high_volatility"
@@ -1700,45 +1890,21 @@
       {
         "actual": 1.0,
         "predictions": [
-          1.47,
-          5.24,
-          7.08
+          2.03,
+          2.14,
+          2.24
         ],
-        "closest": 1.47,
+        "closest": 2.03,
         "correct": false,
         "close": false,
         "pattern": "high_volatility"
       },
       {
-        "actual": 2.51,
-        "predictions": [
-          4.51,
-          5.19,
-          7.21
-        ],
-        "closest": 4.51,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.0,
-        "predictions": [
-          2.69,
-          5.29,
-          7.99
-        ],
-        "closest": 2.69,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.21,
+        "actual": 1.2,
         "predictions": [
           1.76,
-          1.81,
-          5.31
+          1.94,
+          2.44
         ],
         "closest": 1.76,
         "correct": false,
@@ -1746,181 +1912,13 @@
         "pattern": "high_volatility"
       },
       {
-        "actual": 1.92,
+        "actual": 23.48,
         "predictions": [
-          5.33,
-          5.34,
-          5.51
+          1.35,
+          1.42,
+          1.5
         ],
-        "closest": 5.33,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 8.72,
-        "predictions": [
-          1.52,
-          2.13,
-          3.34
-        ],
-        "closest": 3.34,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.62,
-        "predictions": [
-          1.71,
-          1.77,
-          5.29
-        ],
-        "closest": 1.71,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.28,
-        "predictions": [
-          5.11,
-          8.39,
-          8.65
-        ],
-        "closest": 5.11,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 3.16,
-        "predictions": [
-          1,
-          1.92,
-          2.47
-        ],
-        "closest": 2.47,
-        "correct": false,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.94,
-        "predictions": [
-          3.62,
-          3.78,
-          4.34
-        ],
-        "closest": 3.62,
-        "correct": false,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 3.65,
-        "predictions": [
-          1,
-          2.26,
-          3.35
-        ],
-        "closest": 3.35,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.42,
-        "predictions": [
-          3.42,
-          3.53,
-          4.14
-        ],
-        "closest": 3.42,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.9,
-        "predictions": [
-          1.82,
-          1.88,
-          2.57
-        ],
-        "closest": 1.88,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.23,
-        "predictions": [
-          2.08,
-          2.66,
-          2.74
-        ],
-        "closest": 2.08,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.95,
-        "predictions": [
-          1.09,
-          1.38,
-          3.25
-        ],
-        "closest": 1.38,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.93,
-        "predictions": [
-          2.09,
-          3.39,
-          3.89
-        ],
-        "closest": 2.09,
-        "correct": false,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 16.23,
-        "predictions": [
-          1.98,
-          2.13,
-          2.86
-        ],
-        "closest": 2.86,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.16,
-        "predictions": [
-          1,
-          2.96,
-          3.05
-        ],
-        "closest": 2.96,
-        "correct": false,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.4,
-        "predictions": [
-          2.48,
-          2.94,
-          3.04
-        ],
-        "closest": 2.48,
+        "closest": 1.5,
         "correct": false,
         "close": false,
         "pattern": "high_volatility"
@@ -1928,140 +1926,152 @@
       {
         "actual": 1.09,
         "predictions": [
-          1,
-          1.02,
-          1.67
+          3.21,
+          3.35,
+          3.47
         ],
-        "closest": 1.02,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.2,
-        "predictions": [
-          1.17,
-          2.07,
-          2.14
-        ],
-        "closest": 2.14,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 3.28,
-        "predictions": [
-          2.42,
-          2.86,
-          3.07
-        ],
-        "closest": 3.07,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 7.26,
-        "predictions": [
-          2.94,
-          3.02,
-          3.98
-        ],
-        "closest": 3.98,
+        "closest": 3.21,
         "correct": false,
         "close": false,
         "pattern": "high_volatility"
       },
       {
-        "actual": 1.6,
+        "actual": 2.38,
         "predictions": [
-          1,
-          1.52,
-          1.57
+          3.35,
+          4.05,
+          4.26
         ],
-        "closest": 1.57,
+        "closest": 3.35,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 6.54,
+        "predictions": [
+          3.32,
+          3.46,
+          3.61
+        ],
+        "closest": 3.61,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 3.4,
+        "predictions": [
+          3.42,
+          3.5,
+          3.66
+        ],
+        "closest": 3.42,
         "correct": true,
         "close": true,
         "pattern": "high_volatility"
       },
       {
-        "actual": 2.53,
+        "actual": 2.56,
         "predictions": [
-          1.75,
-          1.9,
-          1.96
+          2.01,
+          2.75,
+          3.01
         ],
-        "closest": 1.96,
+        "closest": 2.75,
         "correct": false,
         "close": true,
         "pattern": "high_volatility"
       },
       {
-        "actual": 1.27,
+        "actual": 2.23,
         "predictions": [
-          2.76,
-          2.85,
-          2.86
+          2.58,
+          3.13,
+          3.15
         ],
-        "closest": 2.76,
+        "closest": 2.58,
         "correct": false,
         "close": false,
         "pattern": "high_volatility"
       },
       {
-        "actual": 1.07,
+        "actual": 9.71,
         "predictions": [
-          1.28,
-          1.42,
-          2.6
+          2.7,
+          2.82,
+          3.04
         ],
-        "closest": 1.28,
+        "closest": 3.04,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.04,
+        "predictions": [
+          4.3,
+          5.15,
+          5.3
+        ],
+        "closest": 4.3,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.82,
+        "predictions": [
+          2.65,
+          3.14,
+          3.31
+        ],
+        "closest": 2.65,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 3.07,
+        "predictions": [
+          2.68,
+          2.81,
+          3.23
+        ],
+        "closest": 3.23,
         "correct": false,
         "close": true,
         "pattern": "high_volatility"
       },
       {
-        "actual": 1.44,
+        "actual": 1.16,
         "predictions": [
-          1,
-          2.25,
-          2.37
+          2.5,
+          2.56,
+          2.68
         ],
-        "closest": 1.0,
+        "closest": 2.5,
         "correct": false,
         "close": false,
         "pattern": "high_volatility"
       },
       {
-        "actual": 3.12,
+        "actual": 2.04,
         "predictions": [
-          1.63,
-          2.62,
-          2.94
+          1.94,
+          2.03,
+          2.09
         ],
-        "closest": 2.94,
+        "closest": 2.03,
         "correct": true,
         "close": true,
         "pattern": "high_volatility"
       },
       {
-        "actual": 2.24,
+        "actual": 2.0,
         "predictions": [
-          3,
-          3.01,
-          3.53
-        ],
-        "closest": 3.0,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.94,
-        "predictions": [
-          1,
-          1.62,
+          1.58,
+          1.64,
           1.67
         ],
         "closest": 1.67,
@@ -2070,25 +2080,469 @@
         "pattern": "high_volatility"
       },
       {
-        "actual": 1.72,
+        "actual": 1.76,
         "predictions": [
-          1.47,
-          1.52,
-          3.07
+          1.77,
+          1.85,
+          2.15
         ],
-        "closest": 1.52,
+        "closest": 1.77,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 80.39,
+        "predictions": [
+          1.63,
+          1.71,
+          1.89
+        ],
+        "closest": 1.89,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 2.16,
+        "predictions": [
+          2.08,
+          2.76,
+          6.79
+        ],
+        "closest": 2.08,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 7.55,
+        "predictions": [
+          2.49,
+          2.73,
+          3.7
+        ],
+        "closest": 3.7,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 7.46,
+        "predictions": [
+          2.37,
+          7.55,
+          8.6
+        ],
+        "closest": 7.55,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 3.1,
+        "predictions": [
+          3.27,
+          8.28,
+          9.32
+        ],
+        "closest": 3.27,
         "correct": false,
         "close": true,
         "pattern": "high_volatility"
       },
       {
-        "actual": 8.81,
+        "actual": 1.57,
+        "predictions": [
+          9.7,
+          10.32,
+          11.55
+        ],
+        "closest": 9.7,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 4.64,
+        "predictions": [
+          5.43,
+          6.46,
+          6.71
+        ],
+        "closest": 5.43,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 2.49,
+        "predictions": [
+          2.94,
+          5.32,
+          5.6
+        ],
+        "closest": 2.94,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 3.81,
+        "predictions": [
+          2.18,
+          5.64,
+          7.85
+        ],
+        "closest": 2.18,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 2.96,
+        "predictions": [
+          2.06,
+          5.62,
+          7.02
+        ],
+        "closest": 2.06,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 11.67,
+        "predictions": [
+          5.26,
+          5.96,
+          6.15
+        ],
+        "closest": 6.15,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.53,
+        "predictions": [
+          5.86,
+          5.88,
+          6.15
+        ],
+        "closest": 5.86,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.53,
+        "predictions": [
+          2.2,
+          4.79,
+          5.04
+        ],
+        "closest": 2.2,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 4.57,
+        "predictions": [
+          4.07,
+          4.14,
+          4.29
+        ],
+        "closest": 4.29,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.7,
+        "predictions": [
+          2.64,
+          2.97,
+          3.13
+        ],
+        "closest": 2.64,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.53,
+        "predictions": [
+          1.91,
+          2.01,
+          2.11
+        ],
+        "closest": 1.91,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 2.05,
+        "predictions": [
+          1.23,
+          2.04,
+          2.14
+        ],
+        "closest": 2.04,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.33,
         "predictions": [
           1.67,
-          1.93,
-          1.94
+          1.71,
+          1.86
         ],
-        "closest": 1.94,
+        "closest": 1.67,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.02,
+        "predictions": [
+          1.1,
+          1.12,
+          1.59
+        ],
+        "closest": 1.1,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.9,
+        "predictions": [
+          1.33,
+          1.4,
+          1.47
+        ],
+        "closest": 1.47,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.12,
+        "predictions": [
+          1.42,
+          1.5,
+          1.57
+        ],
+        "closest": 1.42,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.03,
+        "predictions": [
+          1,
+          1.27,
+          1.34
+        ],
+        "closest": 1.0,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.0,
+        "predictions": [
+          1,
+          1.16,
+          1.22
+        ],
+        "closest": 1.0,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 12.04,
+        "predictions": [
+          1,
+          1.1,
+          1.15
+        ],
+        "closest": 1.15,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 2.81,
+        "predictions": [
+          3.1,
+          3.26,
+          3.43
+        ],
+        "closest": 3.1,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 3.7,
+        "predictions": [
+          3.19,
+          3.35,
+          3.4
+        ],
+        "closest": 3.4,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 3.93,
+        "predictions": [
+          3.21,
+          3.38,
+          3.55
+        ],
+        "closest": 3.55,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.49,
+        "predictions": [
+          3.39,
+          3.62,
+          3.77
+        ],
+        "closest": 3.39,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 41.12,
+        "predictions": [
+          1.55,
+          2.34,
+          2.47
+        ],
+        "closest": 2.47,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.64,
+        "predictions": [
+          1.6,
+          2.95,
+          4.33
+        ],
+        "closest": 1.6,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.12,
+        "predictions": [
+          1.96,
+          2.22,
+          3.79
+        ],
+        "closest": 1.96,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.88,
+        "predictions": [
+          1.59,
+          2.82,
+          3.67
+        ],
+        "closest": 1.59,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 7.41,
+        "predictions": [
+          1.71,
+          1.89,
+          3.68
+        ],
+        "closest": 3.68,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 5.35,
+        "predictions": [
+          4.27,
+          4.5,
+          5.14
+        ],
+        "closest": 5.14,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 6.47,
+        "predictions": [
+          4.06,
+          4.35,
+          4.37
+        ],
+        "closest": 4.37,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.06,
+        "predictions": [
+          5.36,
+          6.08,
+          6.17
+        ],
+        "closest": 5.36,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 4.69,
+        "predictions": [
+          3.74,
+          3.94,
+          3.98
+        ],
+        "closest": 3.98,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 2.18,
+        "predictions": [
+          3.94,
+          3.95,
+          4.02
+        ],
+        "closest": 3.94,
         "correct": false,
         "close": false,
         "pattern": "high_volatility"
@@ -2096,321 +2550,153 @@
       {
         "actual": 1.08,
         "predictions": [
-          1.94,
-          2,
-          3.28
+          1.96,
+          3.94,
+          4.76
         ],
-        "closest": 1.94,
+        "closest": 1.96,
         "correct": false,
         "close": false,
         "pattern": "high_volatility"
       },
       {
-        "actual": 1.11,
+        "actual": 1.1,
         "predictions": [
-          1,
-          2.25,
-          2.32
+          3.73,
+          3.89,
+          3.93
         ],
-        "closest": 1.0,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 63.48,
-        "predictions": [
-          1,
-          1.89,
-          2.3
-        ],
-        "closest": 2.3,
+        "closest": 3.73,
         "correct": false,
         "close": false,
         "pattern": "high_volatility"
       },
       {
-        "actual": 1.47,
-        "predictions": [
-          3.44,
-          3.55,
-          6.02
-        ],
-        "closest": 3.44,
-        "correct": false,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.07,
-        "predictions": [
-          1.58,
-          5.4,
-          5.46
-        ],
-        "closest": 1.58,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 8.5,
-        "predictions": [
-          2.26,
-          3.77,
-          3.88
-        ],
-        "closest": 3.88,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.11,
-        "predictions": [
-          2.73,
-          3.4,
-          5.72
-        ],
-        "closest": 2.73,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.01,
-        "predictions": [
-          1.47,
-          1.52,
-          2.38
-        ],
-        "closest": 2.38,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 8.61,
+        "actual": 12.27,
         "predictions": [
           1.8,
-          5.84,
-          5.9
+          1.89,
+          1.97
         ],
-        "closest": 5.9,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.03,
-        "predictions": [
-          6.2,
-          7.04,
-          7.26
-        ],
-        "closest": 6.2,
+        "closest": 1.97,
         "correct": false,
         "close": false,
         "pattern": "high_volatility"
       },
       {
-        "actual": 2.43,
+        "actual": 1.52,
         "predictions": [
-          1.15,
-          2.57,
-          2.65
+          2.44,
+          2.91,
+          3.52
         ],
-        "closest": 2.57,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.3,
-        "predictions": [
-          2.56,
-          3.51,
-          5.98
-        ],
-        "closest": 2.56,
-        "correct": false,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.32,
-        "predictions": [
-          1.38,
-          1.46,
-          1.5
-        ],
-        "closest": 1.38,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.42,
-        "predictions": [
-          1.45,
-          2.17,
-          5.98
-        ],
-        "closest": 1.45,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.58,
-        "predictions": [
-          1.55,
-          4.1,
-          5.23
-        ],
-        "closest": 1.55,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.0,
-        "predictions": [
-          1.73,
-          2.66,
-          2.74
-        ],
-        "closest": 1.73,
+        "closest": 2.44,
         "correct": false,
         "close": false,
         "pattern": "high_volatility"
       },
       {
-        "actual": 11.86,
+        "actual": 4.14,
         "predictions": [
-          3.09,
-          3.18,
-          5.63
+          2.53,
+          2.59,
+          2.66
         ],
-        "closest": 5.63,
+        "closest": 2.66,
         "correct": false,
         "close": false,
         "pattern": "high_volatility"
       },
       {
-        "actual": 5.38,
+        "actual": 2.18,
         "predictions": [
-          1.17,
-          5.26,
-          6.04
+          1.84,
+          1.91,
+          2.01
         ],
-        "closest": 5.26,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.09,
-        "predictions": [
-          5.02,
-          6.11,
-          6.18
-        ],
-        "closest": 5.02,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.0,
-        "predictions": [
-          6.54,
-          7.62,
-          7.85
-        ],
-        "closest": 6.54,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.51,
-        "predictions": [
-          5,
-          6.17,
-          9.3
-        ],
-        "closest": 5.0,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.26,
-        "predictions": [
-          2.73,
-          3.49,
-          4.07
-        ],
-        "closest": 2.73,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.76,
-        "predictions": [
-          1.38,
-          3.88,
-          4
-        ],
-        "closest": 1.38,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 9.71,
-        "predictions": [
-          2.01,
-          3.13,
-          4.92
-        ],
-        "closest": 4.92,
+        "closest": 2.01,
         "correct": false,
         "close": true,
         "pattern": "high_volatility"
       },
       {
-        "actual": 1.12,
+        "actual": 1.08,
         "predictions": [
-          2.73,
-          3.55,
-          4.3
+          1.8,
+          1.89,
+          2
         ],
-        "closest": 2.73,
+        "closest": 1.8,
         "correct": false,
         "close": false,
         "pattern": "high_volatility"
       },
       {
-        "actual": 13.97,
+        "actual": 1.68,
         "predictions": [
-          1.27,
-          3.46,
-          4.13
+          1,
+          1.07,
+          1.13
         ],
-        "closest": 4.13,
+        "closest": 1.13,
         "correct": false,
         "close": false,
         "pattern": "high_volatility"
       },
       {
-        "actual": 1.63,
+        "actual": 1.48,
+        "predictions": [
+          1,
+          1.34,
+          1.78
+        ],
+        "closest": 1.34,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 13.04,
+        "predictions": [
+          1,
+          1.22,
+          1.63
+        ],
+        "closest": 1.63,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 2.75,
+        "predictions": [
+          2.91,
+          2.98,
+          5.81
+        ],
+        "closest": 2.91,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 2.29,
+        "predictions": [
+          2.61,
+          3.28,
+          3.32
+        ],
+        "closest": 2.61,
+        "correct": false,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.08,
         "predictions": [
           3.72,
-          6.5,
-          7
+          3.83,
+          4.42
         ],
         "closest": 3.72,
         "correct": false,
@@ -2418,48 +2704,360 @@
         "pattern": "high_volatility"
       },
       {
-        "actual": 1.23,
+        "actual": 1.03,
         "predictions": [
-          1,
-          1.81,
-          3.1
+          2.6,
+          2.61,
+          2.75
         ],
-        "closest": 1.0,
+        "closest": 2.6,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.1,
+        "predictions": [
+          1.85,
+          1.95,
+          2.05
+        ],
+        "closest": 1.85,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.05,
+        "predictions": [
+          1.64,
+          1.71,
+          1.73
+        ],
+        "closest": 1.64,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 2.44,
+        "predictions": [
+          1.3,
+          1.37,
+          1.44
+        ],
+        "closest": 1.44,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 2.68,
+        "predictions": [
+          1.51,
+          1.58,
+          1.64
+        ],
+        "closest": 1.64,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.5,
+        "predictions": [
+          1.42,
+          1.5,
+          1.54
+        ],
+        "closest": 1.5,
         "correct": true,
         "close": true,
         "pattern": "high_volatility"
       },
       {
-        "actual": 4.82,
+        "actual": 1.21,
+        "predictions": [
+          1.26,
+          1.33,
+          1.4
+        ],
+        "closest": 1.26,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.14,
+        "predictions": [
+          1.03,
+          1.08,
+          1.14
+        ],
+        "closest": 1.14,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.21,
         "predictions": [
           1,
-          1.33,
-          2.38
+          1.2,
+          1.27
         ],
-        "closest": 2.38,
+        "closest": 1.2,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.32,
+        "predictions": [
+          1,
+          1.27,
+          1.3
+        ],
+        "closest": 1.3,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.49,
+        "predictions": [
+          1.3,
+          1.45,
+          1.52
+        ],
+        "closest": 1.52,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.18,
+        "predictions": [
+          1.22,
+          1.44,
+          1.59
+        ],
+        "closest": 1.22,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.46,
+        "predictions": [
+          1.44,
+          1.47,
+          1.51
+        ],
+        "closest": 1.47,
+        "correct": true,
+        "close": true,
+        "pattern": "cyclical"
+      },
+      {
+        "actual": 1.0,
+        "predictions": [
+          1.1,
+          1.34,
+          1.36
+        ],
+        "closest": 1.1,
+        "correct": false,
+        "close": true,
+        "pattern": "clustered"
+      },
+      {
+        "actual": 6.39,
+        "predictions": [
+          1.05,
+          1.18,
+          1.19
+        ],
+        "closest": 1.19,
+        "correct": false,
+        "close": false,
+        "pattern": "clustered"
+      },
+      {
+        "actual": 12.74,
+        "predictions": [
+          1.16,
+          1.35,
+          1.42
+        ],
+        "closest": 1.42,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 3.37,
+        "predictions": [
+          3.4,
+          3.64,
+          3.83
+        ],
+        "closest": 3.4,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.1,
+        "predictions": [
+          2.51,
+          2.83,
+          3.55
+        ],
+        "closest": 2.51,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 2.24,
+        "predictions": [
+          1.23,
+          1.52,
+          2.31
+        ],
+        "closest": 2.31,
+        "correct": true,
+        "close": true,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 2.14,
+        "predictions": [
+          1.63,
+          2.36,
+          2.82
+        ],
+        "closest": 2.36,
         "correct": false,
         "close": true,
         "pattern": "high_volatility"
       },
       {
-        "actual": 2.77,
+        "actual": 1.53,
         "predictions": [
-          2.79,
-          3.59,
-          3.96
+          1.61,
+          1.82,
+          2.06
         ],
-        "closest": 2.79,
-        "correct": true,
+        "closest": 1.61,
+        "correct": false,
         "close": true,
         "pattern": "high_volatility"
+      },
+      {
+        "actual": 5.02,
+        "predictions": [
+          1.36,
+          1.46,
+          2.02
+        ],
+        "closest": 2.02,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.13,
+        "predictions": [
+          1.83,
+          2.72,
+          3.04
+        ],
+        "closest": 1.83,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 8.07,
+        "predictions": [
+          2.08,
+          2.19,
+          2.25
+        ],
+        "closest": 2.25,
+        "correct": false,
+        "close": false,
+        "pattern": "high_volatility"
+      },
+      {
+        "actual": 1.02,
+        "predictions": [
+          1.46,
+          2.56,
+          2.6
+        ],
+        "closest": 1.46,
+        "correct": false,
+        "close": false,
+        "pattern": "random"
+      },
+      {
+        "actual": 2.26,
+        "predictions": [
+          1.41,
+          2.44,
+          2.68
+        ],
+        "closest": 2.44,
+        "correct": false,
+        "close": true,
+        "pattern": "random"
+      },
+      {
+        "actual": 1.79,
+        "predictions": [
+          1.99,
+          2.63,
+          2.94
+        ],
+        "closest": 1.99,
+        "correct": false,
+        "close": true,
+        "pattern": "random"
+      },
+      {
+        "actual": 1.11,
+        "predictions": [
+          2.07,
+          2.58,
+          2.72
+        ],
+        "closest": 2.07,
+        "correct": false,
+        "close": false,
+        "pattern": "random"
       }
     ]
   },
+  "long_range_forecast": {
+    "predictions": [
+      1.85,
+      1.85,
+      1.79,
+      1.57,
+      1.45
+    ],
+    "generated_at_round": 225,
+    "turn_count": 5
+  },
   "model_state": {
-    "current_pattern": "high_volatility",
-    "last_algorithm_change": "2026-03-14T19:09:49.185528",
+    "current_pattern": "random",
+    "last_algorithm_change": "2026-04-14T15:32:06.005550",
     "prediction_streak": 0,
     "volatility_threshold": 2.0,
-    "confidence_level": 0.9
+    "confidence_level": 0.5,
+    "bias_correction": -0.08274301073466966
   }
 }

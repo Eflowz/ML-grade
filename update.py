@@ -12,16 +12,21 @@ from sklearn.preprocessing import StandardScaler
 warnings.filterwarnings('ignore')
 
 
-def _get_prediction_threshold() -> int:
-    raw = os.environ.get("PREDICTION_START_THRESHOLD", "60").strip()
+def _get_positive_int_env(name: str, default: int) -> int:
+    raw = os.environ.get(name, str(default)).strip()
     try:
         value = int(raw)
         return max(1, value)
     except ValueError:
-        return 60
+        return default
 
 
-PREDICTION_START_THRESHOLD = _get_prediction_threshold()
+PREDICTION_START_THRESHOLD = _get_positive_int_env("PREDICTION_START_THRESHOLD", 60)
+LONG_RANGE_PREDICTION_THRESHOLD = max(
+    PREDICTION_START_THRESHOLD,
+    _get_positive_int_env("LONG_RANGE_PREDICTION_THRESHOLD", 100),
+)
+LONG_RANGE_TURN_COUNT = _get_positive_int_env("LONG_RANGE_TURN_COUNT", 5)
 
 class AdaptiveStateManager:
     """Manages saving and loading system state with adaptive learning"""
@@ -63,6 +68,11 @@ class AdaptiveStateManager:
                 "close_predictions": 0,
                 "adaptation_success": 0,
                 "prediction_history": [] 
+            },
+            "long_range_forecast": {
+                "predictions": [],
+                "generated_at_round": 0,
+                "turn_count": LONG_RANGE_TURN_COUNT
             },
             "model_state": {
                 "current_pattern": "random",
@@ -149,6 +159,24 @@ class AdaptiveStateManager:
         else:
             if "prediction_history" not in state["performance_metrics"]:
                 state["performance_metrics"]["prediction_history"] = []
+                needs_save = True
+
+        if "long_range_forecast" not in state:
+            state["long_range_forecast"] = {
+                "predictions": [],
+                "generated_at_round": 0,
+                "turn_count": LONG_RANGE_TURN_COUNT
+            }
+            needs_save = True
+        else:
+            if "predictions" not in state["long_range_forecast"]:
+                state["long_range_forecast"]["predictions"] = []
+                needs_save = True
+            if "generated_at_round" not in state["long_range_forecast"]:
+                state["long_range_forecast"]["generated_at_round"] = 0
+                needs_save = True
+            if "turn_count" not in state["long_range_forecast"]:
+                state["long_range_forecast"]["turn_count"] = LONG_RANGE_TURN_COUNT
                 needs_save = True
         
         if needs_save:
@@ -285,19 +313,67 @@ class AdaptiveStateManager:
         """Get pattern analysis history"""
         state = self.load_state()
         return state.get("pattern_analysis", {})
+
+    def get_long_range_forecast(self) -> Dict[str, Any]:
+        """Get the persisted 5-turn forecast batch state."""
+        state = self.load_state()
+        forecast = state.get("long_range_forecast", {})
+        return {
+            "predictions": [float(value) for value in forecast.get("predictions", [])],
+            "generated_at_round": int(forecast.get("generated_at_round", 0)),
+            "turn_count": int(forecast.get("turn_count", LONG_RANGE_TURN_COUNT)),
+        }
+
+    def update_long_range_forecast(self, forecast_state: Dict[str, Any]):
+        """Persist the active 5-turn forecast batch."""
+        state = self.load_state()
+        state["long_range_forecast"] = {
+            "predictions": [float(value) for value in forecast_state.get("predictions", [])],
+            "generated_at_round": int(forecast_state.get("generated_at_round", 0)),
+            "turn_count": int(forecast_state.get("turn_count", LONG_RANGE_TURN_COUNT)),
+        }
+        self.save_state(state)
     
     def update_performance_metrics(self, correct_predictions: int, total_predictions: int, 
                                  close_predictions: int = 0, adaptation_success: int = 0,
                                  prediction_record: Optional[Dict[str, Any]] = None):
-        """Update prediction performance metrics"""
+        """Update prediction performance metrics with weighted accuracy"""
         state = self.load_state()
         state["performance_metrics"]["correct_predictions"] = correct_predictions
         state["performance_metrics"]["total_predictions"] = total_predictions
         state["performance_metrics"]["close_predictions"] = close_predictions
         state["performance_metrics"]["adaptation_success"] = adaptation_success
-        state["performance_metrics"]["prediction_accuracy"] = (
-            correct_predictions / total_predictions * 100 if total_predictions > 0 else 0.0
-        )
+        
+        # Calculate weighted accuracy:
+        # - Correct predictions: 100% weight
+        # - Close predictions: 60% weight
+        # - All predictions contribute their individual accuracy_percentage up to 30%
+        weighted_accuracy = 0.0
+        if total_predictions > 0:
+            # Get prediction history to calculate weighted average
+            history = state["performance_metrics"]["prediction_history"]
+            if history:
+                total_weight = 0.0
+                for pred in history[-total_predictions:]:  # Use only latest predictions
+                    accuracy_pct = pred.get("accuracy_percentage", 0.0)
+                    if pred.get("correct"):
+                        # Correct predictions get full weight
+                        total_weight += 100.0
+                    elif pred.get("close"):
+                        # Close predictions contribute 60%
+                        total_weight += 60.0
+                    else:
+                        # Partial accuracy (0-30% based on accuracy_percentage)
+                        total_weight += min(30.0, accuracy_pct * 0.3)
+                weighted_accuracy = (total_weight / total_predictions) if total_predictions > 0 else 0.0
+            else:
+                # Fallback: use simple calculation with close predictions
+                weighted_accuracy = (
+                    (correct_predictions * 100 + close_predictions * 60) / 
+                    (total_predictions * 100) * 100 if total_predictions > 0 else 0.0
+                )
+        
+        state["performance_metrics"]["prediction_accuracy"] = max(0.0, min(100.0, weighted_accuracy))
         
         # Add prediction record
         if prediction_record:
@@ -405,7 +481,7 @@ class AdaptiveGamblingPredictor:
             "all_patterns": pattern_scores
         }
     
-    def predict_next_multipliers(self, history: List[float]) -> List[float]:
+    def predict_next_multipliers(self, history: List[float], persist_state: bool = True) -> List[float]:
         """Predict next multipliers using adaptive strategies - ENHANCED"""
         if len(history) < 10:
             # Not enough data - use conservative predictions
@@ -422,12 +498,13 @@ class AdaptiveGamblingPredictor:
         confidence = pattern_info["confidence"]
         
         # Update state manager with pattern analysis
-        self.state_manager.update_pattern_analysis({
-            "volatility": pattern_info["volatility"],
-            "trend": pattern_info["trend"],
-            "clustering": pattern_info.get("clustering", 0),
-            "confidence": confidence
-        })
+        if persist_state:
+            self.state_manager.update_pattern_analysis({
+                "volatility": pattern_info["volatility"],
+                "trend": pattern_info["trend"],
+                "clustering": pattern_info.get("clustering", 0),
+                "confidence": confidence
+            })
         
         # Get model state and check if we need to adapt
         model_state = self.state_manager.get_model_state()
@@ -436,18 +513,19 @@ class AdaptiveGamblingPredictor:
 
         # Drift detection — if recent errors have spiked, reset before adapting
         if self._detect_drift(history):
-            print("⚠️  Drift detected — resetting pattern state...")
-            self.state_manager.update_model_state({
-                "current_pattern": "random",
-                "confidence_level": 0.5,
-                "prediction_streak": 0,
-                "bias_correction": bias_correction * 0.5
-            })
+            if persist_state:
+                print("⚠️  Drift detected — resetting pattern state...")
+                self.state_manager.update_model_state({
+                    "current_pattern": "random",
+                    "confidence_level": 0.5,
+                    "prediction_streak": 0,
+                    "bias_correction": bias_correction * 0.5
+                })
             old_pattern = "random"
 
         # Adapt if pattern has changed significantly (with hysteresis)
         confidence_threshold = 0.65 if old_pattern == current_pattern else 0.7
-        if old_pattern != current_pattern and confidence > confidence_threshold:
+        if persist_state and old_pattern != current_pattern and confidence > confidence_threshold:
             self._adapt_strategy(old_pattern, current_pattern, pattern_info)
 
         # Weighted pattern blending — primary pattern gets full predictions,
@@ -481,19 +559,92 @@ class AdaptiveGamblingPredictor:
         feedback = self._calculate_prediction_bias()
         blended_bias = float(np.clip((bias_correction * 0.6) + (feedback * 0.4), -0.25, 0.25))
         predictions = self._apply_bias_correction(predictions, blended_bias)
-        self.state_manager.update_model_state({"bias_correction": blended_bias})
+        if persist_state:
+            self.state_manager.update_model_state({"bias_correction": blended_bias})
         
         # Ensure predictions are valid and diverse
         predictions = self._validate_predictions(predictions, history)
         
-        self.prediction_history.append({
-            "predictions": predictions[:3],
-            "pattern": current_pattern,
-            "confidence": confidence,
-            "timestamp": datetime.now().isoformat()
-        })
+        if persist_state:
+            self.prediction_history.append({
+                "predictions": predictions[:3],
+                "pattern": current_pattern,
+                "confidence": confidence,
+                "timestamp": datetime.now().isoformat()
+            })
         
         return predictions[:3]
+
+    def _collapse_prediction_window(self, predictions: List[float]) -> float:
+        """Collapse the 3-value next-round prediction set into one forward estimate."""
+        if not predictions:
+            return 2.0
+
+        ordered_predictions = sorted(float(pred) for pred in predictions)
+        midpoint = ordered_predictions[len(ordered_predictions) // 2]
+        return float(round(max(1.0, min(10000.0, midpoint)), 2))
+
+    def predict_future_turns(self, history: List[float], turns: int = LONG_RANGE_TURN_COUNT) -> List[float]:
+        """Predict one best-estimate value for each of the next N turns."""
+        if len(history) < LONG_RANGE_PREDICTION_THRESHOLD or turns <= 0:
+            return []
+
+        simulated_history = list(history)
+        future_turns = []
+
+        for _ in range(turns):
+            next_predictions = self.predict_next_multipliers(simulated_history, persist_state=False)
+            if not next_predictions:
+                break
+
+            future_value = self._collapse_prediction_window(next_predictions)
+            future_turns.append(future_value)
+            simulated_history.append(future_value)
+
+        return future_turns
+
+    def get_or_refresh_future_turn_batch(self, history: List[float]) -> Dict[str, Any]:
+        """Reuse the active 5-turn batch until 5 real inputs are consumed, then refresh it."""
+        current_round = len(history)
+        default_batch = {
+            "predictions": [],
+            "generated_at_round": 0,
+            "turn_count": LONG_RANGE_TURN_COUNT,
+            "consumed_count": 0,
+            "remaining_inputs": max(0, LONG_RANGE_PREDICTION_THRESHOLD - current_round),
+        }
+
+        if current_round < LONG_RANGE_PREDICTION_THRESHOLD:
+            return default_batch
+
+        forecast_state = self.state_manager.get_long_range_forecast()
+        predictions = forecast_state.get("predictions", [])
+        generated_at_round = int(forecast_state.get("generated_at_round", 0))
+        turn_count = max(1, int(forecast_state.get("turn_count", LONG_RANGE_TURN_COUNT)))
+
+        batch_complete = current_round >= generated_at_round + turn_count
+        needs_refresh = not predictions or generated_at_round < LONG_RANGE_PREDICTION_THRESHOLD or batch_complete
+
+        if needs_refresh:
+            predictions = self.predict_future_turns(history, turn_count)
+            generated_at_round = current_round
+            forecast_state = {
+                "predictions": predictions,
+                "generated_at_round": generated_at_round,
+                "turn_count": turn_count,
+            }
+            self.state_manager.update_long_range_forecast(forecast_state)
+
+        consumed_count = min(turn_count, max(0, current_round - generated_at_round))
+        remaining_inputs = max(0, turn_count - consumed_count)
+
+        return {
+            "predictions": [float(value) for value in predictions],
+            "generated_at_round": generated_at_round,
+            "turn_count": turn_count,
+            "consumed_count": consumed_count,
+            "remaining_inputs": remaining_inputs,
+        }
     
     def _predict_low_volatility(self, history: List[float]) -> List[float]:
         """Predict for low volatility patterns - ENHANCED"""
@@ -1150,7 +1301,11 @@ class AdaptiveGamblingSystem:
                 print("\n\n⚠️  Program interrupted. Use 'q' to exit properly.")
                 return None
     
-    def display_system_status(self, next_predictions: Optional[List[float]] = None):
+    def display_system_status(
+        self,
+        next_predictions: Optional[List[float]] = None,
+        future_turn_batch: Optional[Dict[str, Any]] = None,
+    ):
         """Display current system status with adaptive insights"""
         total_data_points = self.state_manager.get_data_count()
         performance_metrics = self.state_manager.get_performance_metrics()
@@ -1207,6 +1362,18 @@ class AdaptiveGamblingSystem:
                 model_state.get('current_pattern', 'random'),
                 model_state.get('confidence_level', 0.5)
             )
+            batch_predictions = (future_turn_batch or {}).get("predictions", [])
+            if total_data_points >= LONG_RANGE_PREDICTION_THRESHOLD and batch_predictions:
+                consumed_count = int((future_turn_batch or {}).get("consumed_count", 0))
+                remaining_inputs = int((future_turn_batch or {}).get("remaining_inputs", 0))
+                print("\nLONG-RANGE FORECAST (NEXT 5 TURNS):")
+                for i, pred in enumerate(batch_predictions[:LONG_RANGE_TURN_COUNT], 1):
+                    print(f"   T+{i}: {pred:.2f}")
+                print(f"   Batch Progress: {consumed_count}/{LONG_RANGE_TURN_COUNT} inputs used")
+                print(f"   Refreshes after {remaining_inputs} more input(s)")
+            elif total_data_points < LONG_RANGE_PREDICTION_THRESHOLD:
+                remaining = LONG_RANGE_PREDICTION_THRESHOLD - total_data_points
+                print(f"   5-turn forecast unlocks after {remaining} more data points")
             print(f"   🎯 Confidence: {pattern_confidence}")
         elif total_data_points < PREDICTION_START_THRESHOLD:
             print(f"\n💡 Need at least {PREDICTION_START_THRESHOLD} data points to start predictions")
@@ -1320,12 +1487,15 @@ class AdaptiveGamblingSystem:
             
             # Generate predictions for NEXT value
             next_predictions = []
+            future_turn_batch = None
             if len(historical_data) >= PREDICTION_START_THRESHOLD:
                 next_predictions = self.predictor.predict_next_multipliers(historical_data)
                 self.pending_predictions = next_predictions  # Store for evaluation
+                if len(historical_data) >= LONG_RANGE_PREDICTION_THRESHOLD:
+                    future_turn_batch = self.predictor.get_or_refresh_future_turn_batch(historical_data)
             
             # Display status with predictions
-            self.display_system_status(next_predictions)
+            self.display_system_status(next_predictions, future_turn_batch)
             
             # Get user input
             multiplier = self.get_user_input()
@@ -1363,6 +1533,8 @@ class AdaptiveGamblingSystem:
                     "closest": evaluation["closest_prediction"],
                     "correct": evaluation["correct"],
                     "close": evaluation["close"],
+                    "accuracy_percentage": evaluation["accuracy_percentage"],
+                    "difference": evaluation["difference"],
                     "pattern": self.state_manager.get_model_state().get('current_pattern', 'unknown')
                 }
                 

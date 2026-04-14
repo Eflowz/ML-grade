@@ -19,6 +19,7 @@ export default function Dashboard() {
 
   const [pendingPredictions, setPendingPredictions] = useState<number[]>([])
   const [currentPredictions, setCurrentPredictions] = useState<number[]>([])
+  const [currentFutureTurnPredictions, setCurrentFutureTurnPredictions] = useState<number[]>([])
   const [currentPattern, setCurrentPattern] = useState('random')
   const [currentConfidence, setCurrentConfidence] = useState(0)
   const [currentAllPatterns, setCurrentAllPatterns] = useState<Record<string, number>>({})
@@ -30,6 +31,12 @@ export default function Dashboard() {
     try {
       const res = await api.get<StatusResponse>('/api/status')
       setStatus(res.data)
+      setPendingPredictions(res.data.current_predictions ?? [])
+      setCurrentPredictions(res.data.current_predictions ?? [])
+      setCurrentFutureTurnPredictions(res.data.future_turn_predictions ?? [])
+      setCurrentPattern(res.data.prediction_pattern ?? res.data.model_state.current_pattern ?? 'random')
+      setCurrentConfidence(res.data.prediction_confidence ?? res.data.model_state.confidence_level ?? 0)
+      setCurrentAllPatterns(res.data.all_patterns ?? {})
     } catch {
       toast.error('Unable to reach prediction engine')
     } finally {
@@ -64,6 +71,7 @@ export default function Dashboard() {
 
       setPendingPredictions(res.data.next_predictions)
       setCurrentPredictions(res.data.next_predictions)
+      setCurrentFutureTurnPredictions(res.data.future_turn_predictions ?? [])
       setCurrentPattern(res.data.pattern)
       setCurrentConfidence(res.data.confidence)
       setCurrentAllPatterns(res.data.all_patterns ?? {})
@@ -84,6 +92,7 @@ export default function Dashboard() {
 
       setPendingPredictions([])
       setCurrentPredictions([])
+      setCurrentFutureTurnPredictions([])
       setLastEvaluation(null)
 
       await loadStatus()
@@ -176,6 +185,7 @@ export default function Dashboard() {
             <div className="rounded-3xl border border-black/10 bg-white p-5">
               <PredictionDisplay
                 predictions={currentPredictions}
+                futureTurnPredictions={currentFutureTurnPredictions}
                 pattern={currentPattern}
                 confidence={currentConfidence}
                 dataPoints={status?.total_data_points ?? 0}

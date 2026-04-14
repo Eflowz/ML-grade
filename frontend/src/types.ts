@@ -29,6 +29,12 @@ export interface StatusResponse {
   performance: Performance
   recent_data: number[]
   ready_for_predictions: boolean
+  ready_for_extended_predictions: boolean
+  current_predictions: number[]
+  future_turn_predictions: number[]
+  prediction_pattern: string
+  prediction_confidence: number
+  all_patterns: Record<string, number>
 }
 
 export interface EvaluationResult {
@@ -44,10 +50,13 @@ export interface AddResponse {
   success: boolean
   evaluation: EvaluationResult | null
   next_predictions: number[]
+  future_turn_predictions: number[]
   pattern: string
   confidence: number
   all_patterns: Record<string, number>
   total_data_points: number
+  ready_for_predictions: boolean
+  ready_for_extended_predictions: boolean
 }
 
 export interface StatsResponse {

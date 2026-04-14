@@ -30,16 +30,21 @@ ADMIN_USERNAME = _get_required_env("ADMIN_USERNAME")
 ADMIN_PASSWORD = _get_required_env("ADMIN_PASSWORD")
 
 
-def _get_prediction_threshold() -> int:
-    raw = os.environ.get("PREDICTION_START_THRESHOLD", "60").strip()
+def _get_positive_int_env(name: str, default: int) -> int:
+    raw = os.environ.get(name, str(default)).strip()
     try:
         value = int(raw)
         return max(1, value)
     except ValueError:
-        return 60
+        return default
 
 
-PREDICTION_START_THRESHOLD = _get_prediction_threshold()
+PREDICTION_START_THRESHOLD = _get_positive_int_env("PREDICTION_START_THRESHOLD", 60)
+LONG_RANGE_PREDICTION_THRESHOLD = max(
+    PREDICTION_START_THRESHOLD,
+    _get_positive_int_env("LONG_RANGE_PREDICTION_THRESHOLD", 100),
+)
+LONG_RANGE_TURN_COUNT = _get_positive_int_env("LONG_RANGE_TURN_COUNT", 5)
 
 
 # ── Auth helpers ──────────────────────────────────────────────────────────────
@@ -99,11 +104,23 @@ def login():
 @app.route("/api/status", methods=["GET"])
 @token_required
 def get_status():
-    sm, _predictor = _make_predictor()
+    sm, predictor = _make_predictor()
     state = sm.load_state()
     metrics = sm.get_performance_metrics()
     model_state = sm.get_model_state()
     recent_data = sm.get_recent_data(20)
+    history = sm.get_all_data()
+
+    current_predictions: list = []
+    future_turn_batch: dict = {}
+    pattern_info: dict = {}
+
+    if len(history) >= PREDICTION_START_THRESHOLD:
+        current_predictions = predictor.predict_next_multipliers(history, persist_state=False)
+        pattern_info = predictor.detect_algorithm_pattern(history)
+
+        if len(history) >= LONG_RANGE_PREDICTION_THRESHOLD:
+            future_turn_batch = predictor.get_or_refresh_future_turn_batch(history)
 
     return jsonify({
         "total_data_points": sm.get_data_count(),
@@ -122,6 +139,16 @@ def get_status():
         },
         "recent_data": recent_data,
         "ready_for_predictions": sm.get_data_count() >= PREDICTION_START_THRESHOLD,
+        "ready_for_extended_predictions": sm.get_data_count() >= LONG_RANGE_PREDICTION_THRESHOLD,
+        "current_predictions": current_predictions,
+        "future_turn_predictions": future_turn_batch.get("predictions", []),
+        "long_range_generated_at_round": future_turn_batch.get("generated_at_round", 0),
+        "long_range_turn_count": future_turn_batch.get("turn_count", LONG_RANGE_TURN_COUNT),
+        "long_range_consumed_count": future_turn_batch.get("consumed_count", 0),
+        "long_range_remaining_inputs": future_turn_batch.get("remaining_inputs", 0),
+        "prediction_pattern": pattern_info.get("pattern", model_state.get("current_pattern", "random")),
+        "prediction_confidence": pattern_info.get("confidence", model_state.get("confidence_level", 0.5)),
+        "all_patterns": pattern_info.get("all_patterns", {}),
     })
 
 
@@ -181,19 +208,29 @@ def add_multiplier():
     history = sm.get_all_data()
 
     next_predictions: list = []
+    future_turn_batch: dict = {}
     pattern_info: dict = {}
     if len(history) >= PREDICTION_START_THRESHOLD:
         next_predictions = predictor.predict_next_multipliers(history)
         pattern_info = predictor.detect_algorithm_pattern(history)
+        if len(history) >= LONG_RANGE_PREDICTION_THRESHOLD:
+            future_turn_batch = predictor.get_or_refresh_future_turn_batch(history)
 
     return jsonify({
         "success": True,
         "evaluation": evaluation,
         "next_predictions": next_predictions,
+        "future_turn_predictions": future_turn_batch.get("predictions", []),
+        "long_range_generated_at_round": future_turn_batch.get("generated_at_round", 0),
+        "long_range_turn_count": future_turn_batch.get("turn_count", LONG_RANGE_TURN_COUNT),
+        "long_range_consumed_count": future_turn_batch.get("consumed_count", 0),
+        "long_range_remaining_inputs": future_turn_batch.get("remaining_inputs", 0),
         "pattern": pattern_info.get("pattern", "random"),
         "confidence": pattern_info.get("confidence", 0.0),
         "all_patterns": pattern_info.get("all_patterns", {}),
         "total_data_points": sm.get_data_count(),
+        "ready_for_predictions": sm.get_data_count() >= PREDICTION_START_THRESHOLD,
+        "ready_for_extended_predictions": sm.get_data_count() >= LONG_RANGE_PREDICTION_THRESHOLD,
     })
 
 
