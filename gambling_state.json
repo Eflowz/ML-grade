@@ -1,10 +1,10 @@
 {
   "metadata": {
     "created_at": "2026-04-14T14:22:29.067902",
-    "last_updated": "2026-04-14T15:33:44.646284",
-    "total_rounds": 225,
+    "last_updated": "2026-04-16T12:59:24.345572",
+    "total_rounds": 241,
     "version": "2.1",
-    "adaptation_level": 41
+    "adaptation_level": 42
   },
   "historical_data": [
     {
@@ -1131,27 +1131,90 @@
       "multiplier": 1.11,
       "timestamp": "2026-04-14T15:33:42.732877",
       "round_number": 225
+    },
+    {
+      "multiplier": 3.4,
+      "timestamp": "2026-04-16T10:48:20.935709",
+      "round_number": 226
+    },
+    {
+      "multiplier": 2.3,
+      "timestamp": "2026-04-16T11:15:31.255712",
+      "round_number": 227
+    },
+    {
+      "multiplier": 1.21,
+      "timestamp": "2026-04-16T11:28:28.117373",
+      "round_number": 228
+    },
+    {
+      "multiplier": 1.05,
+      "timestamp": "2026-04-16T11:28:58.503640",
+      "round_number": 229
+    },
+    {
+      "multiplier": 2.52,
+      "timestamp": "2026-04-16T11:29:05.496522",
+      "round_number": 230
+    },
+    {
+      "multiplier": 4.3,
+      "timestamp": "2026-04-16T11:38:41.515874",
+      "round_number": 231
+    },
+    {
+      "multiplier": 2.22,
+      "timestamp": "2026-04-16T12:37:22.507412",
+      "round_number": 232
+    },
+    {
+      "multiplier": 3.2,
+      "timestamp": "2026-04-16T12:48:06.073251",
+      "round_number": 233
+    },
+    {
+      "multiplier": 2.45,
+      "timestamp": "2026-04-16T12:51:25.846813",
+      "round_number": 234
+    },
+    {
+      "multiplier": 2.82,
+      "timestamp": "2026-04-16T12:51:38.530926",
+      "round_number": 235
+    },
+    {
+      "multiplier": 2.9,
+      "timestamp": "2026-04-16T12:51:48.547682",
+      "round_number": 236
+    },
+    {
+      "multiplier": 2.5,
+      "timestamp": "2026-04-16T12:51:56.600692",
+      "round_number": 237
+    },
+    {
+      "multiplier": 3.2,
+      "timestamp": "2026-04-16T12:52:03.875150",
+      "round_number": 238
+    },
+    {
+      "multiplier": 3.11,
+      "timestamp": "2026-04-16T12:52:15.171230",
+      "round_number": 239
+    },
+    {
+      "multiplier": 2.42,
+      "timestamp": "2026-04-16T12:52:23.477539",
+      "round_number": 240
+    },
+    {
+      "multiplier": 3.4,
+      "timestamp": "2026-04-16T12:59:23.783330",
+      "round_number": 241
     }
   ],
   "pattern_analysis": {
     "volatility_history": [
-      6.419802450411704,
-      6.42754522242444,
-      6.427734729949852,
-      6.432961220922541,
-      6.428436147261436,
-      6.423845781950767,
-      3.903816685277331,
-      3.9038307962996157,
-      3.893532304861406,
-      3.893296164663001,
-      3.905851725067335,
-      3.756946603040006,
-      3.744629278154607,
-      3.75653941879517,
-      3.7758375908435577,
-      3.7688186732605424,
-      3.756395393991747,
       3.7645483243490863,
       3.7607278491948324,
       3.7600526648263872,
@@ -1234,26 +1297,26 @@
       2.097281458396602,
       1.6123473729358309,
       1.6004590367407372,
-      1.60381967596647
+      1.60381967596647,
+      1.6185459845359498,
+      1.6228320942986478,
+      1.631222256797243,
+      1.6323327937891816,
+      1.6336927908128964,
+      1.6336927908128964,
+      1.6320747947486218,
+      1.6329920810938026,
+      1.6272954657910348,
+      1.6299204217790384,
+      1.6290698805498864,
+      1.6297257358623933,
+      1.6328495691353992,
+      1.627508732563182,
+      1.6300517345924037,
+      1.6284289406369443,
+      1.348023747037709
     ],
     "trend_history": [
-      -0.004158440290513518,
-      -0.014032002163048386,
-      -0.024079329686867487,
-      -0.034281064563739264,
-      -0.043592010547646824,
-      -0.053625663413705484,
-      -0.031240223140095967,
-      -0.002207970639906817,
-      -0.009803691504165903,
-      -0.01187038401708064,
-      -0.017116272239606184,
-      -0.021639349495491587,
-      0.01877808329421232,
-      0.023150334447482476,
-      0.013443431333544425,
-      0.008151379799679089,
-      0.004096400505949038,
       -0.00531233620410275,
       -0.013331923349832095,
       -0.021057898984231202,
@@ -1336,7 +1399,24 @@
       0.007238089269767654,
       0.0025941827276487884,
       0.028365519652729782,
-      0.0260781388420359
+      0.0260781388420359,
+      0.02779368510684227,
+      0.02307699795494506,
+      0.01562229637869235,
+      0.007977979798128493,
+      0.00388556025636839,
+      0.00388556025636839,
+      0.007711407987689703,
+      0.006880040987478206,
+      0.005272958193410655,
+      0.0009532059548301647,
+      -0.0027310370546593534,
+      -0.006179414109622857,
+      -0.010448112331126476,
+      -0.012744892179014514,
+      -0.016082637883522183,
+      -0.020606256795474544,
+      -0.02376766349292786
     ],
     "cluster_history": [
       0,
@@ -1727,26 +1807,16 @@
         "old_pattern": "clustered",
         "new_pattern": "high_volatility",
         "round_number": 212
+      },
+      {
+        "timestamp": "2026-04-16T12:52:23.645881",
+        "reason": "Pattern changed from random to clustered (confidence: 0.80)",
+        "old_pattern": "random",
+        "new_pattern": "clustered",
+        "round_number": 240
       }
     ],
     "pattern_confidence": [
-      0.9,
-      0.9,
-      0.9,
-      0.9,
-      0.9,
-      0.9,
-      0.9,
-      0.9,
-      0.9,
-      0.9,
-      0.9,
-      0.9,
-      0.9,
-      0.9,
-      0.9,
-      0.9,
-      0.9,
       0.9,
       0.9,
       0.9,
@@ -1829,196 +1899,33 @@
       0.7,
       0.7,
       0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.7,
+      0.8,
       0.7
     ]
   },
   "performance_metrics": {
-    "prediction_accuracy": 19.272727272727273,
-    "total_predictions": 165,
-    "correct_predictions": 28,
-    "close_predictions": 56,
-    "adaptation_success": 4,
+    "prediction_accuracy": 19.88888888888889,
+    "total_predictions": 180,
+    "correct_predictions": 34,
+    "close_predictions": 65,
+    "adaptation_success": 8,
     "prediction_history": [
-      {
-        "actual": 3.69,
-        "predictions": [
-          3.4,
-          3.87,
-          3.9
-        ],
-        "closest": 3.87,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.11,
-        "predictions": [
-          1.93,
-          3.5,
-          3.68
-        ],
-        "closest": 1.93,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.06,
-        "predictions": [
-          1.13,
-          1.64,
-          2.04
-        ],
-        "closest": 1.13,
-        "correct": false,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.0,
-        "predictions": [
-          2.01,
-          2.95,
-          3.11
-        ],
-        "closest": 2.01,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.0,
-        "predictions": [
-          2.03,
-          2.14,
-          2.24
-        ],
-        "closest": 2.03,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.2,
-        "predictions": [
-          1.76,
-          1.94,
-          2.44
-        ],
-        "closest": 1.76,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 23.48,
-        "predictions": [
-          1.35,
-          1.42,
-          1.5
-        ],
-        "closest": 1.5,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.09,
-        "predictions": [
-          3.21,
-          3.35,
-          3.47
-        ],
-        "closest": 3.21,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.38,
-        "predictions": [
-          3.35,
-          4.05,
-          4.26
-        ],
-        "closest": 3.35,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 6.54,
-        "predictions": [
-          3.32,
-          3.46,
-          3.61
-        ],
-        "closest": 3.61,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 3.4,
-        "predictions": [
-          3.42,
-          3.5,
-          3.66
-        ],
-        "closest": 3.42,
-        "correct": true,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.56,
-        "predictions": [
-          2.01,
-          2.75,
-          3.01
-        ],
-        "closest": 2.75,
-        "correct": false,
-        "close": true,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 2.23,
-        "predictions": [
-          2.58,
-          3.13,
-          3.15
-        ],
-        "closest": 2.58,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 9.71,
-        "predictions": [
-          2.7,
-          2.82,
-          3.04
-        ],
-        "closest": 3.04,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
-      {
-        "actual": 1.04,
-        "predictions": [
-          4.3,
-          5.15,
-          5.3
-        ],
-        "closest": 4.3,
-        "correct": false,
-        "close": false,
-        "pattern": "high_volatility"
-      },
       {
         "actual": 1.82,
         "predictions": [
@@ -3038,26 +2945,206 @@
         "correct": false,
         "close": false,
         "pattern": "random"
+      },
+      {
+        "actual": 9.7,
+        "predictions": [
+          1.75,
+          1.85,
+          1.94
+        ],
+        "closest": 1.94,
+        "correct": false,
+        "close": false,
+        "pattern": "random"
+      },
+      {
+        "actual": 3.4,
+        "predictions": [
+          2.02,
+          2.13,
+          2.24
+        ],
+        "closest": 2.24,
+        "correct": false,
+        "close": false,
+        "pattern": "random"
+      },
+      {
+        "actual": 2.3,
+        "predictions": [
+          2.63,
+          2.76,
+          2.91
+        ],
+        "closest": 2.63,
+        "correct": false,
+        "close": true,
+        "pattern": "random"
+      },
+      {
+        "actual": 1.05,
+        "predictions": [
+          2.11,
+          2.13,
+          2.22
+        ],
+        "closest": 2.11,
+        "correct": false,
+        "close": false,
+        "pattern": "random"
+      },
+      {
+        "actual": 2.52,
+        "predictions": [
+          1.33,
+          1.45,
+          1.53
+        ],
+        "closest": 1.53,
+        "correct": false,
+        "close": false,
+        "pattern": "random"
+      },
+      {
+        "actual": 34.5,
+        "predictions": [
+          1.11,
+          1.68,
+          1.77
+        ],
+        "closest": 1.77,
+        "correct": false,
+        "close": false,
+        "pattern": "random"
+      },
+      {
+        "actual": 4.3,
+        "predictions": [
+          1.35,
+          2.05,
+          2.15
+        ],
+        "closest": 2.15,
+        "correct": false,
+        "close": false,
+        "pattern": "random"
+      },
+      {
+        "actual": 3.2,
+        "predictions": [
+          1.71,
+          2.06,
+          2.79
+        ],
+        "closest": 2.79,
+        "correct": false,
+        "close": true,
+        "pattern": "random"
+      },
+      {
+        "actual": 2.45,
+        "predictions": [
+          2.46,
+          2.88,
+          3.02
+        ],
+        "closest": 2.46,
+        "correct": true,
+        "close": true,
+        "pattern": "random"
+      },
+      {
+        "actual": 2.82,
+        "predictions": [
+          2.44,
+          2.88,
+          3.01
+        ],
+        "closest": 2.88,
+        "correct": true,
+        "close": true,
+        "pattern": "random"
+      },
+      {
+        "actual": 2.9,
+        "predictions": [
+          2.47,
+          2.92,
+          3.08
+        ],
+        "closest": 2.92,
+        "correct": true,
+        "close": true,
+        "pattern": "random"
+      },
+      {
+        "actual": 2.5,
+        "predictions": [
+          2.53,
+          2.97,
+          3.12
+        ],
+        "closest": 2.53,
+        "correct": true,
+        "close": true,
+        "pattern": "random"
+      },
+      {
+        "actual": 3.2,
+        "predictions": [
+          2.9,
+          3.03,
+          3.17
+        ],
+        "closest": 3.17,
+        "correct": true,
+        "close": true,
+        "pattern": "random"
+      },
+      {
+        "actual": 3.11,
+        "predictions": [
+          3.02,
+          3.16,
+          3.18
+        ],
+        "closest": 3.16,
+        "correct": true,
+        "close": true,
+        "pattern": "random"
+      },
+      {
+        "actual": 3.4,
+        "predictions": [
+          2.61,
+          3.12,
+          3.18
+        ],
+        "closest": 3.18,
+        "correct": false,
+        "close": true,
+        "pattern": "clustered"
       }
     ]
   },
   "long_range_forecast": {
     "predictions": [
-      1.85,
-      1.85,
-      1.79,
-      1.57,
-      1.45
+      3.18,
+      3.26,
+      3.27,
+      3.51,
+      3.68
     ],
-    "generated_at_round": 225,
+    "generated_at_round": 240,
     "turn_count": 5
   },
   "model_state": {
-    "current_pattern": "random",
-    "last_algorithm_change": "2026-04-14T15:32:06.005550",
-    "prediction_streak": 0,
+    "current_pattern": "clustered",
+    "last_algorithm_change": "2026-04-16T12:52:23.684046",
+    "prediction_streak": 1,
     "volatility_threshold": 2.0,
-    "confidence_level": 0.5,
-    "bias_correction": -0.08274301073466966
+    "confidence_level": 0.8,
+    "bias_correction": 0.16758410343478983
   }
 }

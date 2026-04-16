@@ -3,9 +3,16 @@ import { useState, type FormEvent } from 'react'
 interface Props {
   onSubmit: (multiplier: number) => void
   loading: boolean
+  disabled?: boolean
+  disabledMessage?: string
 }
 
-export default function MultiplierInput({ onSubmit, loading }: Props) {
+export default function MultiplierInput({
+  onSubmit,
+  loading,
+  disabled = false,
+  disabledMessage,
+}: Props) {
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
 
@@ -27,9 +34,7 @@ export default function MultiplierInput({ onSubmit, loading }: Props) {
 
   return (
     <div className="rounded-3xl border border-black/10 bg-white p-5">
-      
-      {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <h2 className="text-[11px] font-medium uppercase tracking-[0.18em] text-black/40">
           Enter Multiplier
         </h2>
@@ -41,7 +46,6 @@ export default function MultiplierInput({ onSubmit, loading }: Props) {
         )}
       </div>
 
-      {/* Input form */}
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input
           type="number"
@@ -55,24 +59,22 @@ export default function MultiplierInput({ onSubmit, loading }: Props) {
           }}
           placeholder="e.g. 2.45"
           autoFocus
-          disabled={loading}
-          className="w-full rounded-2xl border border-black/10 bg-white p-3 text-2xl font-mono text-black outline-none transition-colors placeholder-black/25 focus:border-black/20 disabled:opacity-50"
+          disabled={loading || disabled}
+          className="w-full rounded-2xl border border-black/10 bg-white p-3 text-2xl font-mono text-black outline-none transition-colors placeholder-black/25 focus:border-black/20 disabled:cursor-not-allowed disabled:bg-black/[0.02] disabled:opacity-50"
         />
-        
+
         <button
           type="submit"
-          disabled={loading || !value}
+          disabled={loading || disabled || !value}
           className="w-full rounded-2xl border border-black/10 bg-white p-3 font-mono text-sm font-medium text-black transition-colors hover:bg-black/5 disabled:opacity-50 disabled:hover:bg-white"
         >
-          {loading ? 'Processing...' : 'Submit →'}
+          {loading ? 'Processing...' : 'Submit ->'}
         </button>
       </form>
 
-      {/* Footer */}
       <p className="mt-3 text-xs text-black/45">
-        Enter a value between 1.00 and 10000
+        {disabled ? (disabledMessage ?? 'Only admins can submit new multipliers') : 'Enter a value between 1.00 and 10000'}
       </p>
-
     </div>
   )
 }

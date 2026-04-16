@@ -35,6 +35,7 @@ export interface StatusResponse {
   prediction_pattern: string
   prediction_confidence: number
   all_patterns: Record<string, number>
+  last_updated: string
 }
 
 export interface EvaluationResult {
