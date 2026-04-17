@@ -2,6 +2,10 @@ import numpy as np
 import random
 import json
 import os
+import sqlite3
+import shutil
+import tempfile
+import time
 from typing import List, Optional, Dict, Any
 import warnings
 from datetime import datetime
@@ -33,15 +37,117 @@ class AdaptiveStateManager:
     
     def __init__(self, state_file: str = "gambling_state.json"):
         self.state_file = state_file
+        base_name, ext = os.path.splitext(state_file)
+        self.db_file = state_file if ext.lower() == ".db" else f"{base_name or state_file}.db"
+        self.legacy_state_file = state_file if ext.lower() != ".db" else f"{base_name}.json"
+        self.lock_file = f"{state_file}.lock"
+        self.backup_file = f"{state_file}.bak"
         self.ensure_state_file()
+
+    def _acquire_file_lock(self, timeout: float = 10.0, poll_interval: float = 0.1):
+        """Acquire a simple cross-process lock using a sidecar lock file."""
+        start_time = time.time()
+
+        while True:
+            try:
+                fd = os.open(self.lock_file, os.O_CREAT | os.O_EXCL | os.O_RDWR)
+                os.write(fd, str(os.getpid()).encode())
+                return fd
+            except FileExistsError:
+                try:
+                    lock_age = time.time() - os.path.getmtime(self.lock_file)
+                    if lock_age > 30:
+                        os.remove(self.lock_file)
+                        continue
+                except FileNotFoundError:
+                    continue
+
+                if time.time() - start_time >= timeout:
+                    raise TimeoutError(f"Timed out waiting for state lock: {self.lock_file}")
+                time.sleep(poll_interval)
+
+    def _release_file_lock(self, fd: int):
+        try:
+            os.close(fd)
+        finally:
+            try:
+                os.remove(self.lock_file)
+            except FileNotFoundError:
+                pass
+
+    def _write_state_file(self, target_file: str, state_data: Dict[str, Any]):
+        """Write a JSON state file atomically using a unique temp file in the same directory."""
+        directory = os.path.dirname(os.path.abspath(target_file)) or "."
+        prefix = os.path.basename(target_file) + "."
+        temp_fd, temp_path = tempfile.mkstemp(prefix=prefix, suffix=".tmp", dir=directory)
+
+        try:
+            with os.fdopen(temp_fd, "w", encoding="utf-8") as temp_handle:
+                json.dump(state_data, temp_handle, indent=2)
+                temp_handle.flush()
+                os.fsync(temp_handle.fileno())
+
+            os.replace(temp_path, target_file)
+        except Exception:
+            try:
+                os.remove(temp_path)
+            except FileNotFoundError:
+                pass
+            raise
+
+    def _get_connection(self) -> sqlite3.Connection:
+        connection = sqlite3.connect(self.db_file, timeout=10, isolation_level=None)
+        connection.execute("PRAGMA journal_mode=WAL")
+        connection.execute("PRAGMA busy_timeout = 10000")
+        connection.execute("PRAGMA synchronous = NORMAL")
+        return connection
     
     def ensure_state_file(self):
-        """Create state file with initial structure if it doesn't exist"""
-        if not os.path.exists(self.state_file):
-            initial_state = self._get_initial_state()
-            self.save_state(initial_state)
-        else:
-            self._migrate_state()
+        """Ensure the SQLite state store exists and migrate legacy JSON if present."""
+        with self._get_connection() as connection:
+            connection.execute(
+                """
+                CREATE TABLE IF NOT EXISTS app_state (
+                    id INTEGER PRIMARY KEY CHECK (id = 1),
+                    state_json TEXT NOT NULL
+                )
+                """
+            )
+
+            row = connection.execute("SELECT state_json FROM app_state WHERE id = 1").fetchone()
+            if row is None:
+                initial_state = self._get_initial_state()
+                migrated_state = self._load_legacy_state_file() or initial_state
+                connection.execute(
+                    "INSERT INTO app_state (id, state_json) VALUES (1, ?)",
+                    (json.dumps(migrated_state),),
+                )
+
+        self._migrate_state()
+
+    def _load_legacy_state_file(self) -> Optional[Dict[str, Any]]:
+        legacy_candidates = []
+        if self.legacy_state_file:
+            legacy_candidates.append(self.legacy_state_file)
+        if self.backup_file:
+            legacy_candidates.append(self.backup_file)
+
+        for candidate in legacy_candidates:
+            if not candidate or not os.path.exists(candidate):
+                continue
+
+            try:
+                with open(candidate, "r", encoding="utf-8") as handle:
+                    content = handle.read().strip()
+                    if not content:
+                        continue
+                    state = json.loads(content)
+                    print(f"Migrating legacy state from {candidate} into SQLite store...")
+                    return state
+            except (OSError, json.JSONDecodeError, ValueError):
+                continue
+
+        return None
     
     def _get_initial_state(self) -> Dict[str, Any]:
         """Get initial state structure"""
@@ -390,6 +496,146 @@ class AdaptiveStateManager:
         self.save_state(initial_state)
         print("✅ All data cleared! Adaptive system reset to initial state.")
 
+def _adaptive_state_manager_load_state(self: AdaptiveStateManager) -> Dict[str, Any]:
+    """Load state from disk with lock protection and backup recovery."""
+    lock_fd = self._acquire_file_lock()
+    try:
+        try:
+            with open(self.state_file, "r", encoding="utf-8") as handle:
+                content = handle.read().strip()
+                if not content:
+                    raise ValueError("Empty state file")
+                return json.loads(content)
+        except (json.JSONDecodeError, FileNotFoundError, ValueError) as primary_error:
+            try:
+                with open(self.backup_file, "r", encoding="utf-8") as backup_handle:
+                    backup_content = backup_handle.read().strip()
+                    if not backup_content:
+                        raise ValueError("Empty backup state file")
+                    restored_state = json.loads(backup_content)
+                    self._write_state_file(self.state_file, restored_state)
+                    print(f"âš ï¸  Warning: Restored state from backup after load failure ({primary_error}).")
+                    return restored_state
+            except (json.JSONDecodeError, FileNotFoundError, ValueError):
+                pass
+
+            if os.path.exists(self.state_file):
+                corrupt_suffix = datetime.now().strftime("%Y%m%d%H%M%S")
+                corrupt_file = f"{self.state_file}.corrupt.{corrupt_suffix}"
+                try:
+                    os.replace(self.state_file, corrupt_file)
+                except OSError:
+                    pass
+
+            print(f"âš ï¸  Warning: Could not load state file ({primary_error}). Creating new one.")
+            initial_state = self._get_initial_state()
+            self._write_state_file(self.state_file, initial_state)
+            self._write_state_file(self.backup_file, initial_state)
+            return initial_state
+    finally:
+        self._release_file_lock(lock_fd)
+
+
+def _adaptive_state_manager_save_state(self: AdaptiveStateManager, state_data: Dict[str, Any]):
+    """Save state using a lock, unique temp file, and hot backup."""
+    lock_fd = self._acquire_file_lock()
+    try:
+        state_data["metadata"]["last_updated"] = datetime.now().isoformat()
+        state_data["metadata"]["total_rounds"] = len(state_data["historical_data"])
+
+        snapshot = json.loads(json.dumps(state_data))
+        self._write_state_file(self.state_file, snapshot)
+        shutil.copyfile(self.state_file, self.backup_file)
+    except Exception as e:
+        print(f"âŒ Error saving state: {e}")
+    finally:
+        self._release_file_lock(lock_fd)
+
+
+AdaptiveStateManager.load_state = _adaptive_state_manager_load_state
+AdaptiveStateManager.save_state = _adaptive_state_manager_save_state
+
+
+def _sqlite_ensure_state_file(self: AdaptiveStateManager):
+    with self._get_connection() as connection:
+        connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS app_state (
+                id INTEGER PRIMARY KEY CHECK (id = 1),
+                state_json TEXT NOT NULL
+            )
+            """
+        )
+
+        row = connection.execute("SELECT state_json FROM app_state WHERE id = 1").fetchone()
+        if row is None:
+            initial_state = self._get_initial_state()
+            migrated_state = _sqlite_load_legacy_state(self) or initial_state
+            connection.execute(
+                "INSERT INTO app_state (id, state_json) VALUES (1, ?)",
+                (json.dumps(migrated_state),),
+            )
+
+    self._migrate_state()
+
+
+def _sqlite_load_legacy_state(self: AdaptiveStateManager) -> Optional[Dict[str, Any]]:
+    for candidate in [self.legacy_state_file, self.backup_file]:
+        if not candidate or not os.path.exists(candidate):
+            continue
+
+        try:
+            with open(candidate, "r", encoding="utf-8") as handle:
+                content = handle.read().strip()
+                if not content:
+                    continue
+                state = json.loads(content)
+                print(f"Migrating legacy state from {candidate} into SQLite store...")
+                return state
+        except (OSError, json.JSONDecodeError, ValueError):
+            continue
+
+    return None
+
+
+def _sqlite_load_state(self: AdaptiveStateManager) -> Dict[str, Any]:
+    try:
+        with self._get_connection() as connection:
+            row = connection.execute("SELECT state_json FROM app_state WHERE id = 1").fetchone()
+            if row is None or not row[0]:
+                raise ValueError("Missing state row")
+            return json.loads(row[0])
+    except (sqlite3.Error, json.JSONDecodeError, ValueError) as e:
+        print(f"Warning: Could not load SQLite state ({e}). Creating new one.")
+        initial_state = self._get_initial_state()
+        _sqlite_save_state(self, initial_state)
+        return initial_state
+
+
+def _sqlite_save_state(self: AdaptiveStateManager, state_data: Dict[str, Any]):
+    try:
+        state_data["metadata"]["last_updated"] = datetime.now().isoformat()
+        state_data["metadata"]["total_rounds"] = len(state_data["historical_data"])
+        snapshot = json.dumps(state_data)
+
+        with self._get_connection() as connection:
+            connection.execute(
+                """
+                INSERT INTO app_state (id, state_json)
+                VALUES (1, ?)
+                ON CONFLICT(id) DO UPDATE SET state_json = excluded.state_json
+                """,
+                (snapshot,),
+            )
+    except sqlite3.Error as e:
+        print(f"Error saving SQLite state: {e}")
+
+
+AdaptiveStateManager.ensure_state_file = _sqlite_ensure_state_file
+AdaptiveStateManager.load_state = _sqlite_load_state
+AdaptiveStateManager.save_state = _sqlite_save_state
+
+
 class AdaptiveGamblingPredictor:
     """Advanced predictor that adapts to dynamic algorithm changes"""
     
@@ -399,6 +645,7 @@ class AdaptiveGamblingPredictor:
         self.adaptation_history = []
         self.current_strategy = "pattern_based"
         self.last_actual_value = None  # Track for proper evaluation
+        self.last_pattern_info: Dict[str, Any] = {}
     
     def detect_algorithm_pattern(self, history: List[float]) -> Dict[str, Any]:
         """Detect what pattern the gambling algorithm is currently using - ENHANCED"""
@@ -481,11 +728,26 @@ class AdaptiveGamblingPredictor:
             "all_patterns": pattern_scores
         }
     
-    def predict_next_multipliers(self, history: List[float], persist_state: bool = True) -> List[float]:
+    def predict_next_multipliers(
+        self,
+        history: List[float],
+        persist_state: bool = True,
+        state_snapshot: Optional[Dict[str, Any]] = None,
+    ) -> List[float]:
         """Predict next multipliers using adaptive strategies - ENHANCED"""
         if len(history) < 10:
             # Not enough data - use conservative predictions
             recent_avg = float(np.mean(history)) if history else 2.0
+            self.last_pattern_info = {
+                "pattern": "random",
+                "confidence": 0.3,
+                "volatility": 0.0,
+                "trend": 0.0,
+                "momentum": 0.0,
+                "clustering": 0.0,
+                "avg_multiplier": recent_avg,
+                "all_patterns": {},
+            }
             return [
                 max(1.0, recent_avg * 0.9),
                 max(1.0, recent_avg),
@@ -494,39 +756,58 @@ class AdaptiveGamblingPredictor:
         
         # Detect current algorithm pattern
         pattern_info = self.detect_algorithm_pattern(history)
+        self.last_pattern_info = pattern_info
         current_pattern = pattern_info["pattern"]
         confidence = pattern_info["confidence"]
         
         # Update state manager with pattern analysis
         if persist_state:
-            self.state_manager.update_pattern_analysis({
-                "volatility": pattern_info["volatility"],
-                "trend": pattern_info["trend"],
-                "clustering": pattern_info.get("clustering", 0),
-                "confidence": confidence
-            })
+            if state_snapshot is not None:
+                pattern_analysis = state_snapshot.setdefault("pattern_analysis", {})
+                pattern_analysis.setdefault("volatility_history", []).append(float(pattern_info["volatility"]))
+                pattern_analysis.setdefault("trend_history", []).append(float(pattern_info["trend"]))
+                pattern_analysis.setdefault("cluster_history", []).append(int(pattern_info.get("clustering", 0)))
+                pattern_analysis.setdefault("pattern_confidence", []).append(float(confidence))
+                for key in ["volatility_history", "trend_history", "cluster_history", "pattern_confidence"]:
+                    if len(pattern_analysis[key]) > 100:
+                        pattern_analysis[key] = pattern_analysis[key][-100:]
+            else:
+                self.state_manager.update_pattern_analysis({
+                    "volatility": pattern_info["volatility"],
+                    "trend": pattern_info["trend"],
+                    "clustering": pattern_info.get("clustering", 0),
+                    "confidence": confidence
+                })
         
         # Get model state and check if we need to adapt
-        model_state = self.state_manager.get_model_state()
+        model_state = state_snapshot.get("model_state", {}) if state_snapshot is not None else self.state_manager.get_model_state()
         old_pattern = model_state.get("current_pattern", "random")
         bias_correction = float(model_state.get("bias_correction", 0.0))
 
         # Drift detection — if recent errors have spiked, reset before adapting
-        if self._detect_drift(history):
+        if self._detect_drift(history, state_snapshot=state_snapshot):
             if persist_state:
-                print("⚠️  Drift detected — resetting pattern state...")
-                self.state_manager.update_model_state({
-                    "current_pattern": "random",
-                    "confidence_level": 0.5,
-                    "prediction_streak": 0,
-                    "bias_correction": bias_correction * 0.5
-                })
+                print("Warning: Drift detected; resetting pattern state...")
+                if state_snapshot is not None:
+                    state_snapshot.setdefault("model_state", {}).update({
+                        "current_pattern": "random",
+                        "confidence_level": 0.5,
+                        "prediction_streak": 0,
+                        "bias_correction": bias_correction * 0.5
+                    })
+                else:
+                    self.state_manager.update_model_state({
+                        "current_pattern": "random",
+                        "confidence_level": 0.5,
+                        "prediction_streak": 0,
+                        "bias_correction": bias_correction * 0.5
+                    })
             old_pattern = "random"
 
         # Adapt if pattern has changed significantly (with hysteresis)
         confidence_threshold = 0.65 if old_pattern == current_pattern else 0.7
         if persist_state and old_pattern != current_pattern and confidence > confidence_threshold:
-            self._adapt_strategy(old_pattern, current_pattern, pattern_info)
+            self._adapt_strategy(old_pattern, current_pattern, pattern_info, state_snapshot=state_snapshot)
 
         # Weighted pattern blending — primary pattern gets full predictions,
         # secondary patterns contribute proportionally to their confidence
@@ -543,8 +824,10 @@ class AdaptiveGamblingPredictor:
                 predictions_ensemble.extend(secondary_preds[:n_to_add])
 
         # EWMA and linear extrapolation — always available, no minimum data required
-        predictions_ensemble.extend(self._predict_ewma(history))
-        predictions_ensemble.extend(self._predict_linear_extrapolation(history))
+        ewma_predictions = self._predict_ewma(history)
+        linear_predictions = self._predict_linear_extrapolation(history)
+        predictions_ensemble.extend(ewma_predictions)
+        predictions_ensemble.extend(linear_predictions)
 
         # 4-model ML ensemble (activates at 60 samples)
         if len(history) >= PREDICTION_START_THRESHOLD:
@@ -552,15 +835,24 @@ class AdaptiveGamblingPredictor:
             predictions_ensemble.extend(ml_preds)
         
         # Select best predictions from ensemble
-        predictions = self._select_best_predictions(predictions_ensemble, history, pattern_info)
+        trend_projection = linear_predictions[0] if linear_predictions else None
+        predictions = self._select_best_predictions(
+            predictions_ensemble,
+            history,
+            pattern_info,
+            trend_projection=trend_projection,
+        )
 
         # Apply lightweight feedback from recent misses so the next round
         # nudges in the direction the model has been consistently wrong.
-        feedback = self._calculate_prediction_bias()
+        feedback = self._calculate_prediction_bias(state_snapshot=state_snapshot)
         blended_bias = float(np.clip((bias_correction * 0.6) + (feedback * 0.4), -0.25, 0.25))
         predictions = self._apply_bias_correction(predictions, blended_bias)
         if persist_state:
-            self.state_manager.update_model_state({"bias_correction": blended_bias})
+            if state_snapshot is not None:
+                state_snapshot.setdefault("model_state", {})["bias_correction"] = blended_bias
+            else:
+                self.state_manager.update_model_state({"bias_correction": blended_bias})
         
         # Ensure predictions are valid and diverse
         predictions = self._validate_predictions(predictions, history)
@@ -603,7 +895,11 @@ class AdaptiveGamblingPredictor:
 
         return future_turns
 
-    def get_or_refresh_future_turn_batch(self, history: List[float]) -> Dict[str, Any]:
+    def get_or_refresh_future_turn_batch(
+        self,
+        history: List[float],
+        state_snapshot: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
         """Reuse the active 5-turn batch until 5 real inputs are consumed, then refresh it."""
         current_round = len(history)
         default_batch = {
@@ -617,7 +913,12 @@ class AdaptiveGamblingPredictor:
         if current_round < LONG_RANGE_PREDICTION_THRESHOLD:
             return default_batch
 
-        forecast_state = self.state_manager.get_long_range_forecast()
+        forecast_source = state_snapshot.get("long_range_forecast", {}) if state_snapshot is not None else self.state_manager.get_long_range_forecast()
+        forecast_state = {
+            "predictions": [float(value) for value in forecast_source.get("predictions", [])],
+            "generated_at_round": int(forecast_source.get("generated_at_round", 0)),
+            "turn_count": int(forecast_source.get("turn_count", LONG_RANGE_TURN_COUNT)),
+        }
         predictions = forecast_state.get("predictions", [])
         generated_at_round = int(forecast_state.get("generated_at_round", 0))
         turn_count = max(1, int(forecast_state.get("turn_count", LONG_RANGE_TURN_COUNT)))
@@ -633,7 +934,14 @@ class AdaptiveGamblingPredictor:
                 "generated_at_round": generated_at_round,
                 "turn_count": turn_count,
             }
-            self.state_manager.update_long_range_forecast(forecast_state)
+            if state_snapshot is not None:
+                state_snapshot["long_range_forecast"] = {
+                    "predictions": [float(value) for value in predictions],
+                    "generated_at_round": generated_at_round,
+                    "turn_count": turn_count,
+                }
+            else:
+                self.state_manager.update_long_range_forecast(forecast_state)
 
         consumed_count = min(turn_count, max(0, current_round - generated_at_round))
         remaining_inputs = max(0, turn_count - consumed_count)
@@ -907,8 +1215,13 @@ class AdaptiveGamblingPredictor:
         except Exception:
             return []
     
-    def _select_best_predictions(self, ensemble: List[float], history: List[float], 
-                                pattern_info: Dict[str, Any]) -> List[float]:
+    def _select_best_predictions(
+        self,
+        ensemble: List[float],
+        history: List[float],
+        pattern_info: Dict[str, Any],
+        trend_projection: Optional[float] = None,
+    ) -> List[float]:
         """Select best predictions from ensemble"""
         if not ensemble:
             return [2.0, 2.5, 3.0]
@@ -926,8 +1239,9 @@ class AdaptiveGamblingPredictor:
         recent_std = float(np.std(recent))
         recent_min = float(np.min(recent))
         recent_max = float(np.max(recent))
-        trend_projection = float(self._predict_linear_extrapolation(history)[0]) if len(history) >= 5 else recent_avg
-        
+        if trend_projection is None:
+            trend_projection = float(self._predict_linear_extrapolation(history)[0]) if len(history) >= 5 else recent_avg
+
         scored_predictions = []
         for pred in ensemble:
             score = 0.0
@@ -964,10 +1278,14 @@ class AdaptiveGamblingPredictor:
         scored_predictions.sort(key=lambda x: x[1], reverse=True)
         return [p[0] for p in scored_predictions[:5]]
 
-    def _calculate_prediction_bias(self, window: int = 8) -> float:
+    def _calculate_prediction_bias(self, window: int = 8, state_snapshot: Optional[Dict[str, Any]] = None) -> float:
         """Estimate whether recent predictions have been consistently too high or too low."""
         try:
-            metrics = self.state_manager.get_performance_metrics()
+            metrics = (
+                state_snapshot.get("performance_metrics", {})
+                if state_snapshot is not None
+                else self.state_manager.get_performance_metrics()
+            )
             pred_history = metrics.get("prediction_history", [])
             if not pred_history:
                 return 0.0
@@ -1173,10 +1491,14 @@ class AdaptiveGamblingPredictor:
         except:
             return 0.0
 
-    def _detect_drift(self, history: List[float]) -> bool:
+    def _detect_drift(self, history: List[float], state_snapshot: Optional[Dict[str, Any]] = None) -> bool:
         """Return True when the latest error window is materially worse than the prior one."""
         try:
-            metrics = self.state_manager.get_performance_metrics()
+            metrics = (
+                state_snapshot.get("performance_metrics", {})
+                if state_snapshot is not None
+                else self.state_manager.get_performance_metrics()
+            )
             pred_history = metrics.get("prediction_history", [])
             if len(pred_history) < 24:
                 return False
@@ -1199,18 +1521,44 @@ class AdaptiveGamblingPredictor:
         except:
             return False
 
-    def _adapt_strategy(self, old_pattern: str, new_pattern: str, pattern_info: Dict[str, Any]):
+    def _adapt_strategy(
+        self,
+        old_pattern: str,
+        new_pattern: str,
+        pattern_info: Dict[str, Any],
+        state_snapshot: Optional[Dict[str, Any]] = None,
+    ):
         """Adapt prediction strategy when algorithm pattern changes"""
         confidence = pattern_info.get("confidence", 0.5)
         reason = f"Pattern changed from {old_pattern} to {new_pattern} (confidence: {confidence:.2f})"
         
-        self.state_manager.record_algorithm_change(reason, old_pattern, new_pattern)
-        self.state_manager.update_model_state({
-            "current_pattern": new_pattern,
-            "last_algorithm_change": datetime.now().isoformat(),
-            "prediction_streak": 0,
-            "confidence_level": confidence
-        })
+        if state_snapshot is not None:
+            state_snapshot.setdefault("pattern_analysis", {}).setdefault("algorithm_changes", []).append({
+                "timestamp": datetime.now().isoformat(),
+                "reason": reason,
+                "old_pattern": old_pattern,
+                "new_pattern": new_pattern,
+                "round_number": len(state_snapshot.get("historical_data", [])),
+            })
+            if len(state_snapshot["pattern_analysis"]["algorithm_changes"]) > 50:
+                state_snapshot["pattern_analysis"]["algorithm_changes"] = state_snapshot["pattern_analysis"]["algorithm_changes"][-50:]
+            state_snapshot.setdefault("metadata", {})["adaptation_level"] = int(
+                state_snapshot.get("metadata", {}).get("adaptation_level", 0)
+            ) + 1
+            state_snapshot.setdefault("model_state", {}).update({
+                "current_pattern": new_pattern,
+                "last_algorithm_change": datetime.now().isoformat(),
+                "prediction_streak": 0,
+                "confidence_level": confidence
+            })
+        else:
+            self.state_manager.record_algorithm_change(reason, old_pattern, new_pattern)
+            self.state_manager.update_model_state({
+                "current_pattern": new_pattern,
+                "last_algorithm_change": datetime.now().isoformat(),
+                "prediction_streak": 0,
+                "confidence_level": confidence
+            })
         
         self.adaptation_history.append({
             "timestamp": datetime.now().isoformat(),

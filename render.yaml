@@ -15,6 +15,6 @@ services:
       - key: HMAC_SECRET
         sync: false
       - key: STATE_FILE
-        value: gambling_state.json
+        value: gambling_state.db
       - key: ALLOWED_ORIGINS
         sync: false

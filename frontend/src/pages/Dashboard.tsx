@@ -82,6 +82,7 @@ export default function Dashboard() {
       const res = await api.post<AddResponse>('/api/add', {
         multiplier,
         pending_predictions: pendingPredictions,
+        include_extended_predictions: false,
       })
 
       if (res.data.evaluation) {
@@ -96,7 +97,64 @@ export default function Dashboard() {
         }
       }
 
-      await loadStatus(false)
+      setPendingPredictions(res.data.next_predictions ?? [])
+      setStatus((current) => {
+        if (!current) {
+          return current
+        }
+
+        const nextPattern = res.data.pattern || current.prediction_pattern
+        const nextConfidence = res.data.confidence ?? current.prediction_confidence
+        const nextRecentData = [...(current.recent_data ?? []), multiplier].slice(-20)
+        const nextRecentHistory = res.data.evaluation
+          ? [
+              ...(current.performance.recent_history ?? []),
+              {
+                actual: multiplier,
+                predictions: pendingPredictions,
+                closest: res.data.evaluation.closest_prediction,
+                correct: res.data.evaluation.correct,
+                close: res.data.evaluation.close,
+                pattern: current.prediction_pattern,
+              },
+            ].slice(-10)
+          : current.performance.recent_history
+
+        return {
+          ...current,
+          total_data_points: res.data.total_data_points,
+          ready_for_predictions: res.data.ready_for_predictions,
+          ready_for_extended_predictions: res.data.ready_for_extended_predictions,
+          current_predictions: res.data.next_predictions ?? current.current_predictions,
+          prediction_pattern: nextPattern,
+          prediction_confidence: nextConfidence,
+          all_patterns:
+            Object.keys(res.data.all_patterns ?? {}).length > 0 ? res.data.all_patterns : current.all_patterns,
+          recent_data: nextRecentData,
+          last_updated: new Date().toISOString(),
+          model_state: {
+            ...current.model_state,
+            current_pattern: nextPattern,
+            confidence_level: nextConfidence,
+            prediction_streak: res.data.evaluation
+              ? res.data.evaluation.correct || res.data.evaluation.close
+                ? current.model_state.prediction_streak + 1
+                : 0
+              : current.model_state.prediction_streak,
+          },
+          performance: res.data.evaluation
+            ? {
+                ...current.performance,
+                total_predictions: current.performance.total_predictions + 1,
+                correct_predictions:
+                  current.performance.correct_predictions + (res.data.evaluation.correct ? 1 : 0),
+                close_predictions:
+                  current.performance.close_predictions + (res.data.evaluation.close ? 1 : 0),
+                recent_history: nextRecentHistory,
+              }
+            : current.performance,
+        }
+      })
     } catch {
       toast.error('Submission failed')
     } finally {
@@ -149,68 +207,75 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-white text-black">
-      <header className="sticky top-0 z-20 border-b border-black/10 bg-white/80 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          <div>
-            <h1 className="text-lg font-semibold tracking-tight">
-              Prediction Dashboard
-            </h1>
-            <p className="text-xs text-black/50">
-              Adaptive pattern learning engine
-            </p>
-          </div>
+    <header className="sticky top-0 z-20 border-b border-black/10 bg-white/80 backdrop-blur">
+  <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+    <div>
+      <h1 className="text-lg font-semibold tracking-tight">
+        Prediction Dashboard
+      </h1>
+      <p className="text-xs text-black/50">
+        Adaptive pattern learning engine
+      </p>
+    </div>
 
-          <div className="flex items-center gap-2 sm:gap-3">
-            <span className="hidden text-sm text-black/60 sm:block">
-              {username}
-            </span>
+    {/* Right-hand side - Responsive container */}
+    <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
+      
+      {/* Username - hidden on smallest screens */}
+      <span className="hidden text-sm text-black/60 md:inline-block">
+        {username}
+      </span>
 
-            {isAdmin && (
-              <button
-                onClick={() => setShowStats(true)}
-                className="rounded-xl border border-black/10 px-3 py-1.5 text-sm transition hover:bg-black hover:text-white"
-              >
-                Stats
-              </button>
-            )}
+      {/* Stats button */}
+      {isAdmin && (
+        <button
+          onClick={() => setShowStats(true)}
+          className="whitespace-nowrap rounded-xl border border-black/10 px-2 py-1.5 text-xs transition hover:bg-black hover:text-white sm:px-3 sm:text-sm"
+        >
+          Stats
+        </button>
+      )}
 
-            {isAdmin && (
-              <button
-                onClick={handleClear}
-                className="rounded-xl border border-black/10 px-3 py-1.5 text-sm text-red-600 transition hover:bg-red-50"
-              >
-                Clear
-              </button>
-            )}
+      {/* Clear button */}
+      {isAdmin && (
+        <button
+          onClick={handleClear}
+          className="whitespace-nowrap rounded-xl border border-black/10 px-2 py-1.5 text-xs text-red-600 transition hover:bg-red-50 sm:px-3 sm:text-sm"
+        >
+          Clear
+        </button>
+      )}
 
-            {isAdmin && (
-              <select
-                onChange={(e) => handleGenerateTemp(e.target.value)}
-                disabled={generatingTemp}
-                className="rounded-xl border border-black/10 px-3 py-1.5 text-sm transition hover:bg-black hover:text-white disabled:opacity-50"
-                defaultValue=""
-              >
-                <option value="" disabled>Generate Temp Access</option>
-                <option value="30min">30 minutes</option>
-                <option value="1hour">1 hour</option>
-                <option value="2hours">2 hours</option>
-                <option value="6hours">6 hours</option>
-                <option value="12hours">12 hours</option>
-                <option value="24hours">24 hours</option>
-                <option value="48hours">48 hours</option>
-                <option value="72hours">72 hours</option>
-              </select>
-            )}
+      {/* Generate Temp Access dropdown - condensed on mobile */}
+      {isAdmin && (
+        <select
+          onChange={(e) => handleGenerateTemp(e.target.value)}
+          disabled={generatingTemp}
+          className="max-w-[110px] whitespace-nowrap rounded-xl border border-black/10 px-2 py-1.5 text-xs transition hover:bg-black hover:text-white disabled:opacity-50 sm:max-w-none sm:px-3 sm:text-sm"
+          defaultValue=""
+        >
+          <option value="" disabled>Generate Temp</option>
+          <option value="30min">30 min</option>
+          <option value="1hour">1 hour</option>
+          <option value="2hours">2 hours</option>
+          <option value="6hours">6 hours</option>
+          <option value="12hours">12 hours</option>
+          <option value="24hours">24 hours</option>
+          <option value="48hours">48 hours</option>
+          <option value="72hours">72 hours</option>
+        </select>
+      )}
 
-            <button
-              onClick={logout}
-              className="rounded-xl border border-black/10 px-3 py-1.5 text-sm text-black/60 transition hover:bg-black hover:text-white"
-            >
-              Sign out
-            </button>
-          </div>
-        </div>
-      </header>
+      {/* Sign out button */}
+      <button
+        onClick={logout}
+        className="whitespace-nowrap rounded-xl border border-black/10 px-2 py-1.5 text-xs text-black/60 transition hover:bg-black hover:text-white sm:px-3 sm:text-sm"
+      >
+        Sign out
+      </button>
+    </div>
+  </div>
+</header>
 
       {tempCredentials && (
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">

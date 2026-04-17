@@ -19,7 +19,7 @@ from update import AdaptiveStateManager, AdaptiveGamblingPredictor
 app = Flask(__name__)
 CORS(app, origins=os.environ.get("ALLOWED_ORIGINS", "*"))
 
-STATE_FILE = os.environ.get("STATE_FILE", "gambling_state.json")
+STATE_FILE = os.environ.get("STATE_FILE", "gambling_state.db")
 
 
 def _get_required_env(name: str) -> str:
@@ -153,43 +153,83 @@ def _make_predictor():
     return sm, predictor
 
 
-def _build_status_payload() -> dict:
-    sm, predictor = _make_predictor()
-    state = sm.load_state()
-    metrics = sm.get_performance_metrics()
-    model_state = sm.get_model_state()
-    recent_data = sm.get_recent_data(20)
-    history = sm.get_all_data()
+def _parse_bool(value, default: bool = False) -> bool:
+    if value is None:
+        return default
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)):
+        return value != 0
+    if isinstance(value, str):
+        return value.strip().lower() in {"1", "true", "yes", "on"}
+    return default
 
-    current_predictions: list = []
+
+def _compute_prediction_response(
+    predictor: AdaptiveGamblingPredictor,
+    history: list[float],
+    state: dict,
+    *,
+    persist_state: bool,
+    include_extended_predictions: bool,
+) -> tuple[list[float], dict, dict]:
+    next_predictions: list = []
     future_turn_batch: dict = {}
     pattern_info: dict = {}
 
-    if len(history) >= PREDICTION_START_THRESHOLD:
-        current_predictions = predictor.predict_next_multipliers(history, persist_state=False)
-        pattern_info = predictor.detect_algorithm_pattern(history)
+    if len(history) < PREDICTION_START_THRESHOLD:
+        return next_predictions, pattern_info, future_turn_batch
 
-        if len(history) >= LONG_RANGE_PREDICTION_THRESHOLD:
-            future_turn_batch = predictor.get_or_refresh_future_turn_batch(history)
+    next_predictions = predictor.predict_next_multipliers(
+        history,
+        persist_state=persist_state,
+        state_snapshot=state,
+    )
+    pattern_info = predictor.last_pattern_info or predictor.detect_algorithm_pattern(history)
+
+    if include_extended_predictions and len(history) >= LONG_RANGE_PREDICTION_THRESHOLD:
+        future_turn_batch = predictor.get_or_refresh_future_turn_batch(history, state_snapshot=state)
+
+    return next_predictions, pattern_info, future_turn_batch
+
+
+def _build_status_payload() -> dict:
+    sm, predictor = _make_predictor()
+    state = sm.load_state()
+    history_rows = state.get("historical_data", [])
+    history = [float(item["multiplier"]) for item in history_rows]
+    total_data_points = len(history)
+
+    metrics = state.get("performance_metrics", {})
+    model_state = state.get("model_state", {})
+    recent_data = history[-20:]
+
+    current_predictions, pattern_info, future_turn_batch = _compute_prediction_response(
+        predictor,
+        history,
+        state,
+        persist_state=False,
+        include_extended_predictions=True,
+    )
 
     return {
-        "total_data_points": sm.get_data_count(),
-        "adaptation_level": state["metadata"]["adaptation_level"],
+        "total_data_points": total_data_points,
+        "adaptation_level": int(state.get("metadata", {}).get("adaptation_level", 0)),
         "model_state": {
             "current_pattern": model_state.get("current_pattern", "random"),
             "confidence_level": model_state.get("confidence_level", 0.5),
             "prediction_streak": model_state.get("prediction_streak", 0),
         },
         "performance": {
-            "total_predictions": metrics["total_predictions"],
-            "correct_predictions": metrics["correct_predictions"],
-            "close_predictions": metrics["close_predictions"],
-            "prediction_accuracy": metrics["prediction_accuracy"],
-            "recent_history": metrics["prediction_history"][-10:],
+            "total_predictions": int(metrics.get("total_predictions", 0)),
+            "correct_predictions": int(metrics.get("correct_predictions", 0)),
+            "close_predictions": int(metrics.get("close_predictions", 0)),
+            "prediction_accuracy": float(metrics.get("prediction_accuracy", 0.0)),
+            "recent_history": metrics.get("prediction_history", [])[-10:],
         },
         "recent_data": recent_data,
-        "ready_for_predictions": sm.get_data_count() >= PREDICTION_START_THRESHOLD,
-        "ready_for_extended_predictions": sm.get_data_count() >= LONG_RANGE_PREDICTION_THRESHOLD,
+        "ready_for_predictions": total_data_points >= PREDICTION_START_THRESHOLD,
+        "ready_for_extended_predictions": total_data_points >= LONG_RANGE_PREDICTION_THRESHOLD,
         "current_predictions": current_predictions,
         "future_turn_predictions": future_turn_batch.get("predictions", []),
         "long_range_generated_at_round": future_turn_batch.get("generated_at_round", 0),
@@ -199,7 +239,23 @@ def _build_status_payload() -> dict:
         "prediction_pattern": pattern_info.get("pattern", model_state.get("current_pattern", "random")),
         "prediction_confidence": pattern_info.get("confidence", model_state.get("confidence_level", 0.5)),
         "all_patterns": pattern_info.get("all_patterns", {}),
-        "last_updated": state["metadata"]["last_updated"],
+        "last_updated": state.get("metadata", {}).get("last_updated", datetime.now(timezone.utc).isoformat()),
+    }
+
+
+def _get_history_from_state(state: dict) -> list[float]:
+    return [float(item["multiplier"]) for item in state.get("historical_data", [])]
+
+
+def _get_metrics_from_state(state: dict) -> dict:
+    metrics = state.get("performance_metrics", {})
+    return {
+        "prediction_accuracy": float(metrics.get("prediction_accuracy", 0.0)),
+        "total_predictions": int(metrics.get("total_predictions", 0)),
+        "correct_predictions": int(metrics.get("correct_predictions", 0)),
+        "close_predictions": int(metrics.get("close_predictions", 0)),
+        "adaptation_success": int(metrics.get("adaptation_success", 0)),
+        "prediction_history": metrics.get("prediction_history", []),
     }
 
 
@@ -289,22 +345,24 @@ def add_multiplier():
         return jsonify({"error": "Multiplier must be between 1.00 and 10000.00"}), 400
 
     sm, predictor = _make_predictor()
-    history = sm.get_all_data()
+    state = sm.load_state()
+    history = _get_history_from_state(state)
     pending_preds = data.get("pending_predictions", [])
+    include_extended_predictions = _parse_bool(data.get("include_extended_predictions"), default=True)
 
     evaluation = None
     if pending_preds and len(history) >= PREDICTION_START_THRESHOLD:
         evaluation = predictor.evaluate_prediction_accuracy(multiplier, pending_preds)
-        metrics = sm.get_performance_metrics()
+        metrics = _get_metrics_from_state(state)
         n_correct = metrics["correct_predictions"]
         n_close = metrics["close_predictions"]
         n_total = metrics["total_predictions"]
         n_adapt = metrics["adaptation_success"]
+        model_state = state.get("model_state", {})
 
         n_total += 1
         if evaluation["correct"]:
             n_correct += 1
-            model_state = sm.get_model_state()
             if model_state.get("prediction_streak", 0) > 2:
                 n_adapt += 1
         if evaluation["close"]:
@@ -316,26 +374,56 @@ def add_multiplier():
             "closest": evaluation["closest_prediction"],
             "correct": evaluation["correct"],
             "close": evaluation["close"],
-            "pattern": sm.get_model_state().get("current_pattern", "unknown"),
+            "pattern": model_state.get("current_pattern", "unknown"),
         }
-        sm.update_performance_metrics(n_correct, n_total, n_close, n_adapt, record)
+        state["performance_metrics"]["correct_predictions"] = n_correct
+        state["performance_metrics"]["total_predictions"] = n_total
+        state["performance_metrics"]["close_predictions"] = n_close
+        state["performance_metrics"]["adaptation_success"] = n_adapt
 
-        model_state = sm.get_model_state()
+        history_records = state["performance_metrics"].get("prediction_history", [])
+        history_records.append(record)
+        if len(history_records) > 100:
+            history_records = history_records[-100:]
+        state["performance_metrics"]["prediction_history"] = history_records
+
+        weighted_accuracy = 0.0
+        if n_total > 0:
+            if history_records:
+                total_weight = 0.0
+                for pred in history_records[-n_total:]:
+                    accuracy_pct = pred.get("accuracy_percentage", 0.0)
+                    if pred.get("correct"):
+                        total_weight += 100.0
+                    elif pred.get("close"):
+                        total_weight += 60.0
+                    else:
+                        total_weight += min(30.0, accuracy_pct * 0.3)
+                weighted_accuracy = total_weight / n_total
+            else:
+                weighted_accuracy = ((n_correct * 100 + n_close * 60) / (n_total * 100) * 100)
+        state["performance_metrics"]["prediction_accuracy"] = max(0.0, min(100.0, weighted_accuracy))
+
         streak = model_state.get("prediction_streak", 0)
         new_streak = streak + 1 if (evaluation["correct"] or evaluation["close"]) else 0
-        sm.update_model_state({"prediction_streak": new_streak})
+        state["model_state"]["prediction_streak"] = new_streak
 
-    sm.add_historical_data(multiplier)
-    history = sm.get_all_data()
+    state["historical_data"].append({
+        "multiplier": float(multiplier),
+        "timestamp": datetime.now().isoformat(),
+        "round_number": len(history) + 1,
+    })
+    history = _get_history_from_state(state)
 
-    next_predictions: list = []
-    future_turn_batch: dict = {}
-    pattern_info: dict = {}
-    if len(history) >= PREDICTION_START_THRESHOLD:
-        next_predictions = predictor.predict_next_multipliers(history)
-        pattern_info = predictor.detect_algorithm_pattern(history)
-        if len(history) >= LONG_RANGE_PREDICTION_THRESHOLD:
-            future_turn_batch = predictor.get_or_refresh_future_turn_batch(history)
+    next_predictions, pattern_info, future_turn_batch = _compute_prediction_response(
+        predictor,
+        history,
+        state,
+        persist_state=True,
+        include_extended_predictions=include_extended_predictions,
+    )
+
+    sm.save_state(state)
 
     return jsonify({
         "success": True,
@@ -349,9 +437,9 @@ def add_multiplier():
         "pattern": pattern_info.get("pattern", "random"),
         "confidence": pattern_info.get("confidence", 0.0),
         "all_patterns": pattern_info.get("all_patterns", {}),
-        "total_data_points": sm.get_data_count(),
-        "ready_for_predictions": sm.get_data_count() >= PREDICTION_START_THRESHOLD,
-        "ready_for_extended_predictions": sm.get_data_count() >= LONG_RANGE_PREDICTION_THRESHOLD,
+        "total_data_points": len(history),
+        "ready_for_predictions": len(history) >= PREDICTION_START_THRESHOLD,
+        "ready_for_extended_predictions": len(history) >= LONG_RANGE_PREDICTION_THRESHOLD,
     })
 
 
@@ -359,8 +447,9 @@ def add_multiplier():
 @token_required
 def get_stats():
     sm, _ = _make_predictor()
-    metrics = sm.get_performance_metrics()
-    pattern_analysis = sm.get_pattern_analysis()
+    state = sm.load_state()
+    metrics = _get_metrics_from_state(state)
+    pattern_analysis = state.get("pattern_analysis", {})
     pred_history = metrics.get("prediction_history", [])
 
     pattern_counts: dict = {}
@@ -387,7 +476,7 @@ def get_stats():
 @admin_required
 def clear_data():
     sm, _ = _make_predictor()
-    sm.clear_all_data()
+    sm.save_state(sm._get_initial_state())
     return jsonify({"success": True, "message": "All data cleared"})
 
 
