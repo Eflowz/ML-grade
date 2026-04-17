@@ -10,8 +10,10 @@ import EvaluationResultCard from '../components/EvaluationResult'
 import RecentHistory from '../components/RecentHistory'
 import StatsModal from '../components/StatsModal'
 
+const LIVE_REFRESH_INTERVAL_MS = 3000
+
 export default function Dashboard() {
-  const { token, username, logout, isAdmin } = useAuth()
+  const { username, logout, isAdmin } = useAuth()
 
   const [status, setStatus] = useState<StatusResponse | null>(null)
   const [loading, setLoading] = useState(true)
@@ -48,46 +50,25 @@ export default function Dashboard() {
   }, [loadStatus])
 
   useEffect(() => {
-    if (!token) {
-      return
-    }
-
-    const baseUrl = import.meta.env.VITE_API_URL ?? window.location.origin
-    const streamUrl = new URL('/api/status/stream', baseUrl)
-    streamUrl.searchParams.set('token', token)
-
-    const eventSource = new EventSource(streamUrl.toString())
-    let hasShownRealtimeError = false
-
-    const handleStatusUpdate = (event: MessageEvent) => {
-      const nextStatus = JSON.parse(event.data) as StatusResponse
-      setStatus((current) => {
-        if (current?.last_updated === nextStatus.last_updated) {
-          return current
-        }
-        return nextStatus
-      })
-      setPendingPredictions(nextStatus.current_predictions ?? [])
-      hasShownRealtimeError = false
-      setLoading(false)
-    }
-
-    const handleStreamError = () => {
-      if (!hasShownRealtimeError) {
-        hasShownRealtimeError = true
-        toast.error('Live updates disconnected, retrying...')
+    const intervalId = window.setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        void loadStatus(false)
       }
-      void loadStatus(false)
+    }, LIVE_REFRESH_INTERVAL_MS)
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        void loadStatus(false)
+      }
     }
 
-    eventSource.addEventListener('status_updated', handleStatusUpdate as EventListener)
-    eventSource.onerror = handleStreamError
+    document.addEventListener('visibilitychange', handleVisibilityChange)
 
     return () => {
-      eventSource.removeEventListener('status_updated', handleStatusUpdate as EventListener)
-      eventSource.close()
+      window.clearInterval(intervalId)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
-  }, [loadStatus, token])
+  }, [loadStatus])
 
   const handleSubmit = async (multiplier: number) => {
     if (!isAdmin) {

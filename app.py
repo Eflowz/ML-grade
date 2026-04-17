@@ -1,10 +1,8 @@
-from flask import Flask, request, jsonify, g, Response, stream_with_context
+from flask import Flask, request, jsonify, g
 from flask_cors import CORS
 from functools import wraps
 from datetime import datetime, timedelta, timezone
 from dotenv import load_dotenv
-from queue import Queue, Empty
-from threading import Lock
 import jwt
 import os
 import sys
@@ -52,13 +50,8 @@ LONG_RANGE_PREDICTION_THRESHOLD = max(
     _get_positive_int_env("LONG_RANGE_PREDICTION_THRESHOLD", 100),
 )
 LONG_RANGE_TURN_COUNT = _get_positive_int_env("LONG_RANGE_TURN_COUNT", 5)
-SSE_KEEPALIVE_SECONDS = 20
-
-_status_subscribers: list[Queue] = []
-_status_subscribers_lock = Lock()
 
 
-# Temporary access durations in minutes
 TEMP_DURATIONS = {
     "30min": 30,
     "1hour": 60,
@@ -72,27 +65,24 @@ TEMP_DURATIONS = {
 
 
 def _generate_temp_credentials(duration_minutes: int) -> dict:
-    """Generate temporary username and password for given duration."""
     exp_timestamp = int((datetime.now(timezone.utc) + timedelta(minutes=duration_minutes)).timestamp())
-    username = f"temp_{secrets.token_hex(4)}"  # Random 8-char suffix
-    
+    username = f"temp_{secrets.token_hex(4)}"
+
     payload = json.dumps({
         "user": username,
         "exp": exp_timestamp,
     }).encode()
-    
-    # HMAC for integrity
-    hmac_digest = hmac.new(HMAC_SECRET.encode(), payload, 'sha256').hexdigest()
-    
+
+    hmac_digest = hmac.new(HMAC_SECRET.encode(), payload, "sha256").hexdigest()
+
     temp_data = {
         "user": username,
         "exp": exp_timestamp,
         "hmac": hmac_digest,
     }
-    
-    # Encode as base64
+
     password = base64.b64encode(json.dumps(temp_data).encode()).decode()
-    
+
     return {
         "username": username,
         "password": f"TEMP:{password}",
@@ -101,35 +91,30 @@ def _generate_temp_credentials(duration_minutes: int) -> dict:
 
 
 def _validate_temp_password(password: str) -> dict | None:
-    """Validate temporary password and return user data if valid."""
     if not password.startswith("TEMP:"):
         return None
-    
+
     try:
-        encoded = password[5:]  # Remove "TEMP:"
+        encoded = password[5:]
         decoded = base64.b64decode(encoded).decode()
         data = json.loads(decoded)
-        
-        # Verify HMAC
+
         payload = json.dumps({
             "user": data["user"],
             "exp": data["exp"],
         }).encode()
-        expected_hmac = hmac.new(HMAC_SECRET.encode(), payload, 'sha256').hexdigest()
-        
+        expected_hmac = hmac.new(HMAC_SECRET.encode(), payload, "sha256").hexdigest()
+
         if not hmac.compare_digest(data["hmac"], expected_hmac):
             return None
-        
-        # Check expiration
+
         if datetime.now(timezone.utc).timestamp() > data["exp"]:
             return None
-        
+
         return data
     except Exception:
         return None
 
-
-# ── Auth helpers ──────────────────────────────────────────────────────────────
 
 def token_required(f):
     @wraps(f)
@@ -146,17 +131,8 @@ def token_required(f):
             return jsonify({"error": "Invalid token"}), 401
         g.current_user = payload
         return f(*args, **kwargs)
+
     return decorated
-
-
-def _decode_token(token: str) -> dict:
-    return jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
-
-
-def _extract_token_from_request() -> str:
-    auth_header = request.headers.get("Authorization", "")
-    header_token = auth_header.removeprefix("Bearer ").strip()
-    return header_token or request.args.get("token", "").strip()
 
 
 def admin_required(f):
@@ -167,6 +143,7 @@ def admin_required(f):
         if not current_user.get("is_admin", False):
             return jsonify({"error": "Admin access required"}), 403
         return f(*args, **kwargs)
+
     return decorated
 
 
@@ -226,17 +203,6 @@ def _build_status_payload() -> dict:
     }
 
 
-def _publish_status_update():
-    payload = _build_status_payload()
-    with _status_subscribers_lock:
-        subscribers = list(_status_subscribers)
-
-    for subscriber in subscribers:
-        subscriber.put(payload)
-
-
-# ── Public endpoints ──────────────────────────────────────────────────────────
-
 @app.route("/api/health", methods=["GET"])
 def health():
     return jsonify({"status": "ok"})
@@ -253,28 +219,22 @@ def login():
 
     temp_data = None
     is_admin = False
-    
-    # Check if it's a temporary password
+
     if password.startswith("TEMP:"):
         temp_data = _validate_temp_password(password)
-        if temp_data and temp_data["user"] == username:
-            # Valid temp login
-            pass
-        else:
+        if not (temp_data and temp_data["user"] == username):
             return jsonify({"error": "Invalid credentials"}), 401
     elif username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
         is_admin = True
     else:
         return jsonify({"error": "Invalid credentials"}), 401
 
-    # Determine JWT expiration
     now = datetime.now(timezone.utc)
     if temp_data:
         jwt_exp = datetime.fromtimestamp(temp_data["exp"], tz=timezone.utc)
     else:
         jwt_exp = now + timedelta(hours=24)
-    
-    # Ensure JWT doesn't expire too far in future (max 24h for security)
+
     jwt_exp = min(jwt_exp, now + timedelta(hours=24))
 
     token = jwt.encode(
@@ -291,14 +251,14 @@ def generate_temp():
     data = request.get_json(silent=True)
     if not data or "duration" not in data:
         return jsonify({"error": "duration field required"}), 400
-    
+
     duration_key = data["duration"]
     if duration_key not in TEMP_DURATIONS:
         return jsonify({"error": f"Invalid duration. Valid options: {list(TEMP_DURATIONS.keys())}"}), 400
-    
+
     duration_minutes = TEMP_DURATIONS[duration_key]
     credentials = _generate_temp_credentials(duration_minutes)
-    
+
     return jsonify({
         "username": credentials["username"],
         "password": credentials["password"],
@@ -307,51 +267,10 @@ def generate_temp():
     })
 
 
-# ── Protected endpoints ───────────────────────────────────────────────────────
-
 @app.route("/api/status", methods=["GET"])
 @token_required
 def get_status():
     return jsonify(_build_status_payload())
-
-
-@app.route("/api/status/stream", methods=["GET"])
-def status_stream():
-    token = _extract_token_from_request()
-    if not token:
-        return jsonify({"error": "Token required"}), 401
-
-    try:
-        _decode_token(token)
-    except jwt.ExpiredSignatureError:
-        return jsonify({"error": "Token expired"}), 401
-    except jwt.InvalidTokenError:
-        return jsonify({"error": "Invalid token"}), 401
-
-    subscriber: Queue = Queue()
-    with _status_subscribers_lock:
-        _status_subscribers.append(subscriber)
-
-    def event_stream():
-        try:
-            yield f"event: status_updated\ndata: {json.dumps(_build_status_payload())}\n\n"
-
-            while True:
-                try:
-                    payload = subscriber.get(timeout=SSE_KEEPALIVE_SECONDS)
-                    yield f"event: status_updated\ndata: {json.dumps(payload)}\n\n"
-                except Empty:
-                    yield ": keepalive\n\n"
-        finally:
-            with _status_subscribers_lock:
-                if subscriber in _status_subscribers:
-                    _status_subscribers.remove(subscriber)
-
-    response = Response(stream_with_context(event_stream()), mimetype="text/event-stream")
-    response.headers["Cache-Control"] = "no-cache"
-    response.headers["Connection"] = "keep-alive"
-    response.headers["X-Accel-Buffering"] = "no"
-    return response
 
 
 @app.route("/api/add", methods=["POST"])
@@ -418,7 +337,7 @@ def add_multiplier():
         if len(history) >= LONG_RANGE_PREDICTION_THRESHOLD:
             future_turn_batch = predictor.get_or_refresh_future_turn_batch(history)
 
-    response = {
+    return jsonify({
         "success": True,
         "evaluation": evaluation,
         "next_predictions": next_predictions,
@@ -433,9 +352,7 @@ def add_multiplier():
         "total_data_points": sm.get_data_count(),
         "ready_for_predictions": sm.get_data_count() >= PREDICTION_START_THRESHOLD,
         "ready_for_extended_predictions": sm.get_data_count() >= LONG_RANGE_PREDICTION_THRESHOLD,
-    }
-    _publish_status_update()
-    return jsonify(response)
+    })
 
 
 @app.route("/api/stats", methods=["GET"])
@@ -471,7 +388,6 @@ def get_stats():
 def clear_data():
     sm, _ = _make_predictor()
     sm.clear_all_data()
-    _publish_status_update()
     return jsonify({"success": True, "message": "All data cleared"})
 
 
