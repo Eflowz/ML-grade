@@ -3,7 +3,7 @@ services:
     name: predictor-api
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --threads 8 --worker-class gthread --timeout 120
     healthCheckPath: /api/health
     envVars:
       - key: ADMIN_USERNAME
@@ -11,6 +11,8 @@ services:
       - key: ADMIN_PASSWORD
         sync: false
       - key: JWT_SECRET
+        sync: false
+      - key: HMAC_SECRET
         sync: false
       - key: STATE_FILE
         value: gambling_state.json
