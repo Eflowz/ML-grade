@@ -111,7 +111,7 @@ export default function StatsModal({ onClose }: { onClose: () => void }) {
             <div className="flex flex-col gap-6">
               {/* Performance */}
               <Section title="Prediction Performance">
-                <div className="grid grid-cols-4 gap-3">
+                <div className="grid grid-cols-5 gap-3">
                   <StatBox label="Total" value={stats.performance.total_predictions} />
                   <StatBox
                     label="Exact"
@@ -126,6 +126,10 @@ export default function StatsModal({ onClose }: { onClose: () => void }) {
                   <StatBox
                     label="Accuracy"
                     value={`${stats.performance.prediction_accuracy.toFixed(1)}%`}
+                  />
+                  <StatBox
+                    label="2x+ Hits"
+                    value={stats.performance.greater_than_two_hits}
                   />
                 </div>
               </Section>

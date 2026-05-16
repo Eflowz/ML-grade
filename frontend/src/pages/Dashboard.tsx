@@ -9,6 +9,9 @@ import PredictionDisplay from '../components/PredictionDisplay'
 import EvaluationResultCard from '../components/EvaluationResult'
 import RecentHistory from '../components/RecentHistory'
 import StatsModal from '../components/StatsModal'
+import LiveCapture from '../components/LiveCapture'
+import IframeContainer from '../components/IframeContainer'
+import { LuLayoutDashboard, LuMonitorPlay } from 'react-icons/lu'
 
 const LIVE_REFRESH_INTERVAL_MS = 3000
 
@@ -23,6 +26,7 @@ export default function Dashboard() {
   const [showStats, setShowStats] = useState(false)
   const [tempCredentials, setTempCredentials] = useState<{ username: string; password: string; expires_at: number } | null>(null)
   const [generatingTemp, setGeneratingTemp] = useState(false)
+  const [isLiveMode, setIsLiveMode] = useState(false)
 
   const loadStatus = useCallback(async (showError = false) => {
     try {
@@ -88,7 +92,9 @@ export default function Dashboard() {
       if (res.data.evaluation) {
         setLastEvaluation(res.data.evaluation)
 
-        if (res.data.evaluation.correct) {
+        if (res.data.evaluation.greater_than_two_hit) {
+          toast.success(res.data.evaluation.notification ?? 'Greater than two')
+        } else if (res.data.evaluation.correct) {
           toast.success('Exact prediction')
         } else if (res.data.evaluation.close) {
           toast('Close prediction', { icon: '👍' })
@@ -115,6 +121,9 @@ export default function Dashboard() {
                 closest: res.data.evaluation.closest_prediction,
                 correct: res.data.evaluation.correct,
                 close: res.data.evaluation.close,
+                greater_than_two_signal: res.data.evaluation.greater_than_two_signal,
+                greater_than_two_hit: res.data.evaluation.greater_than_two_hit,
+                notification: res.data.evaluation.notification,
                 pattern: current.prediction_pattern,
               },
             ].slice(-10)
@@ -150,6 +159,9 @@ export default function Dashboard() {
                   current.performance.correct_predictions + (res.data.evaluation.correct ? 1 : 0),
                 close_predictions:
                   current.performance.close_predictions + (res.data.evaluation.close ? 1 : 0),
+                greater_than_two_hits:
+                  current.performance.greater_than_two_hits +
+                  (res.data.evaluation.greater_than_two_hit ? 1 : 0),
                 recent_history: nextRecentHistory,
               }
             : current.performance,
@@ -273,6 +285,28 @@ export default function Dashboard() {
       >
         Sign out
       </button>
+
+      {/* Live Mode Toggle */}
+      <button
+        onClick={() => setIsLiveMode(!isLiveMode)}
+        className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-3 py-1.5 text-sm font-medium transition ${
+          isLiveMode 
+            ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' 
+            : 'border border-black/10 text-black/60 hover:bg-black hover:text-white'
+        }`}
+      >
+        {isLiveMode ? (
+          <>
+            <LuLayoutDashboard className="h-4 w-4" />
+            Dashboard
+          </>
+        ) : (
+          <>
+            <LuMonitorPlay className="h-4 w-4" />
+            Live Mode
+          </>
+        )}
+      </button>
     </div>
   </div>
 </header>
@@ -365,56 +399,87 @@ export default function Dashboard() {
       )}
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {isAdmin && (
-            <div className="flex flex-col gap-6 lg:col-span-1">
-              <div className="rounded-3xl border border-black/10 bg-white p-5">
+        {isLiveMode ? (
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 h-[calc(100vh-160px)]">
+            {/* Sidebar: Predictions & Automation Controls */}
+            <div className="flex flex-col gap-6 lg:col-span-4 overflow-y-auto pr-2">
+              <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-sm">
+                <PredictionDisplay
+                  predictions={currentPredictions}
+                  futureTurnPredictions={currentFutureTurnPredictions}
+                  pattern={currentPattern}
+                  confidence={currentConfidence}
+                  dataPoints={status?.total_data_points ?? 0}
+                  allPatterns={currentAllPatterns}
+                />
+              </div>
+
+              {isAdmin && (
+                <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-sm">
+                  <LiveCapture 
+                    onDetected={handleSubmit} 
+                  />
+                </div>
+              )}
+
+              <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-sm">
                 <StatusPanel status={status} />
               </div>
-
-              <div className="rounded-3xl border border-black/10 bg-white p-5">
-                <MultiplierInput
-                  onSubmit={handleSubmit}
-                  loading={submitting}
-                />
-              </div>
-            </div>
-          )}
-
-          <div className={`flex flex-col gap-6 ${isAdmin ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
-            <div className="rounded-3xl border border-black/10 bg-white p-5">
-              <PredictionDisplay
-                predictions={currentPredictions}
-                futureTurnPredictions={currentFutureTurnPredictions}
-                pattern={currentPattern}
-                confidence={currentConfidence}
-                dataPoints={status?.total_data_points ?? 0}
-                allPatterns={currentAllPatterns}
-              />
             </div>
 
-            {/* {!isAdmin && (
-              <div className="rounded-3xl border border-black/10 bg-black/[0.02] p-5 text-sm text-black/60">
-                Read-only access is active. Only the admin can add data, and your dashboard will keep updating with the live next 3 and next 5 predictions.
+            {/* Main: Iframe */}
+            <div className="lg:col-span-8 flex flex-col gap-4">
+              <div className="flex-1 rounded-3xl overflow-hidden">
+                <IframeContainer />
               </div>
-            )} */}
-
-            {lastEvaluation && isAdmin && (
-              <div className="rounded-3xl border border-black/10 bg-white p-5">
-                <EvaluationResultCard evaluation={lastEvaluation} />
-              </div>
-            )}
-
-            {status && isAdmin && (
-              <div className="rounded-3xl border border-black/10 bg-white p-5">
-                <RecentHistory
-                  recentData={status.recent_data}
-                  history={status.performance.recent_history}
-                />
-              </div>
-            )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+            {isAdmin && (
+              <div className="flex flex-col gap-6 lg:col-span-1">
+                <div className="rounded-3xl border border-black/10 bg-white p-5">
+                  <StatusPanel status={status} />
+                </div>
+
+                <div className="rounded-3xl border border-black/10 bg-white p-5">
+                  <MultiplierInput
+                    onSubmit={handleSubmit}
+                    loading={submitting}
+                  />
+                </div>
+              </div>
+            )}
+
+            <div className={`flex flex-col gap-6 ${isAdmin ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
+              <div className="rounded-3xl border border-black/10 bg-white p-5">
+                <PredictionDisplay
+                  predictions={currentPredictions}
+                  futureTurnPredictions={currentFutureTurnPredictions}
+                  pattern={currentPattern}
+                  confidence={currentConfidence}
+                  dataPoints={status?.total_data_points ?? 0}
+                  allPatterns={currentAllPatterns}
+                />
+              </div>
+
+              {lastEvaluation && isAdmin && (
+                <div className="rounded-3xl border border-black/10 bg-white p-5">
+                  <EvaluationResultCard evaluation={lastEvaluation} />
+                </div>
+              )}
+
+              {status && isAdmin && (
+                <div className="rounded-3xl border border-black/10 bg-white p-5">
+                  <RecentHistory
+                    recentData={status.recent_data}
+                    history={status.performance.recent_history}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </main>
 
       {showStats && isAdmin && <StatsModal onClose={() => setShowStats(false)} />}

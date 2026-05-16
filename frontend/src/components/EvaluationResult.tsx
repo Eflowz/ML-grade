@@ -21,6 +21,8 @@ export default function EvaluationResultCard({ evaluation }: { evaluation: Evalu
     difference,
     accuracy_percentage,
     threshold_used,
+    greater_than_two_hit,
+    notification,
   } = evaluation
 
   const borderClass = correct
@@ -39,9 +41,7 @@ export default function EvaluationResultCard({ evaluation }: { evaluation: Evalu
 
   return (
     <div className={`rounded-3xl border p-5 ${borderClass}`}>
-      
-      {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <h2 className="text-[11px] font-medium uppercase tracking-[0.18em] text-black/40">
           Last Result
         </h2>
@@ -51,18 +51,21 @@ export default function EvaluationResultCard({ evaluation }: { evaluation: Evalu
         </span>
       </div>
 
-      {/* Result grid */}
       <div className="grid grid-cols-3 gap-3">
         <Cell label="Closest" value={closest_prediction.toFixed(2)} />
-        <Cell label="Difference" value={`±${difference.toFixed(2)}`} />
+        <Cell label="Difference" value={`+/-${difference.toFixed(2)}`} />
         <Cell label="Accuracy" value={`${accuracy_percentage.toFixed(1)}%`} />
       </div>
 
-      {/* Footer */}
       <p className="mt-3 text-xs text-black/45">
-        Threshold used: ±{threshold_used.toFixed(2)}
+        Threshold used: +/-{threshold_used.toFixed(2)}
       </p>
 
+      {greater_than_two_hit && (
+        <p className="mt-2 text-xs font-medium uppercase tracking-wide text-green-700">
+          {notification ?? 'Greater than two'}
+        </p>
+      )}
     </div>
   )
 }

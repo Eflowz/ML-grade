@@ -6,7 +6,7 @@ import sqlite3
 import shutil
 import tempfile
 import time
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Callable
 import warnings
 from datetime import datetime
 from sklearn.ensemble import GradientBoostingRegressor, ExtraTreesRegressor
@@ -31,6 +31,15 @@ LONG_RANGE_PREDICTION_THRESHOLD = max(
     _get_positive_int_env("LONG_RANGE_PREDICTION_THRESHOLD", 100),
 )
 LONG_RANGE_TURN_COUNT = _get_positive_int_env("LONG_RANGE_TURN_COUNT", 5)
+SIGNAL_TARGET_MULTIPLIER = 2.0
+SIGNAL_MIN_PROBABILITY_OVER_TARGET = 0.52
+SIGNAL_MIN_SCORE = 0.48
+SIGNAL_MIN_ENSEMBLE_SUPPORT = 0.40
+DRIFT_MIN_SAMPLE_WINDOW = 30
+DRIFT_BASELINE_SLICE = 15
+DRIFT_MIN_ERROR_LEVEL = 0.24
+DRIFT_RELATIVE_MULTIPLIER = 1.5
+DRIFT_MIN_ABSOLUTE_INCREASE = 0.08
 
 class AdaptiveStateManager:
     """Manages saving and loading system state with adaptive learning"""
@@ -173,6 +182,8 @@ class AdaptiveStateManager:
                 "correct_predictions": 0,
                 "close_predictions": 0,
                 "adaptation_success": 0,
+                "greater_than_two_hits": 0,
+                "good_abstentions": 0,
                 "prediction_history": [] 
             },
             "long_range_forecast": {
@@ -259,12 +270,20 @@ class AdaptiveStateManager:
                 "correct_predictions": 0,
                 "close_predictions": 0,
                 "adaptation_success": 0,
+                "greater_than_two_hits": 0,
+                "good_abstentions": 0,
                 "prediction_history": []
             }
             needs_save = True
         else:
             if "prediction_history" not in state["performance_metrics"]:
                 state["performance_metrics"]["prediction_history"] = []
+                needs_save = True
+            if "greater_than_two_hits" not in state["performance_metrics"]:
+                state["performance_metrics"]["greater_than_two_hits"] = 0
+                needs_save = True
+            if "good_abstentions" not in state["performance_metrics"]:
+                state["performance_metrics"]["good_abstentions"] = 0
                 needs_save = True
 
         if "long_range_forecast" not in state:
@@ -407,6 +426,8 @@ class AdaptiveStateManager:
             "correct_predictions": int(metrics.get("correct_predictions", 0)),
             "close_predictions": int(metrics.get("close_predictions", 0)),
             "adaptation_success": int(metrics.get("adaptation_success", 0)),
+            "greater_than_two_hits": int(metrics.get("greater_than_two_hits", 0)),
+            "good_abstentions": int(metrics.get("good_abstentions", 0)),
             "prediction_history": metrics.get("prediction_history", [])
         }
     
@@ -442,13 +463,16 @@ class AdaptiveStateManager:
     
     def update_performance_metrics(self, correct_predictions: int, total_predictions: int, 
                                  close_predictions: int = 0, adaptation_success: int = 0,
-                                 prediction_record: Optional[Dict[str, Any]] = None):
+                                 prediction_record: Optional[Dict[str, Any]] = None,
+                                 greater_than_two_hits: Optional[int] = None):
         """Update prediction performance metrics with weighted accuracy"""
         state = self.load_state()
         state["performance_metrics"]["correct_predictions"] = correct_predictions
         state["performance_metrics"]["total_predictions"] = total_predictions
         state["performance_metrics"]["close_predictions"] = close_predictions
         state["performance_metrics"]["adaptation_success"] = adaptation_success
+        if greater_than_two_hits is not None:
+            state["performance_metrics"]["greater_than_two_hits"] = greater_than_two_hits
         
         # Calculate weighted accuracy:
         # - Correct predictions: 100% weight
@@ -462,7 +486,9 @@ class AdaptiveStateManager:
                 total_weight = 0.0
                 for pred in history[-total_predictions:]:  # Use only latest predictions
                     accuracy_pct = pred.get("accuracy_percentage", 0.0)
-                    if pred.get("correct"):
+                    if pred.get("good_abstention"):
+                        total_weight += 100.0
+                    elif pred.get("correct"):
                         # Correct predictions get full weight
                         total_weight += 100.0
                     elif pred.get("close"):
@@ -646,6 +672,98 @@ class AdaptiveGamblingPredictor:
         self.current_strategy = "pattern_based"
         self.last_actual_value = None  # Track for proper evaluation
         self.last_pattern_info: Dict[str, Any] = {}
+
+    def _count_streak(self, values: List[float], predicate: Callable[[float], bool]) -> int:
+        """Count how many latest values satisfy a predicate consecutively."""
+        streak = 0
+        for value in reversed(values):
+            if predicate(float(value)):
+                streak += 1
+            else:
+                break
+        return streak
+
+    def _build_signal_summary(
+        self,
+        history: List[float],
+        predictions: List[float],
+        pattern_info: Dict[str, Any],
+        *,
+        target: float = SIGNAL_TARGET_MULTIPLIER,
+    ) -> Dict[str, Any]:
+        """Estimate whether the model has enough edge to issue a next-round signal."""
+        if not history:
+            return {
+                "action": "wait",
+                "reason": "Not enough history to score the signal.",
+                "target_multiplier": float(target),
+                "probability_over_target": 0.0,
+                "signal_score": 0.0,
+                "ensemble_support": 0.0,
+            }
+
+        recent_10 = history[-10:]
+        recent_25 = history[-25:] if len(history) >= 25 else history
+        recent_50 = history[-50:] if len(history) >= 50 else history
+        short_hit_rate = float(np.mean([value >= target for value in recent_10])) if recent_10 else 0.0
+        medium_hit_rate = float(np.mean([value >= target for value in recent_25])) if recent_25 else short_hit_rate
+        long_hit_rate = float(np.mean([value >= target for value in recent_50])) if recent_50 else medium_hit_rate
+        empirical_probability = (short_hit_rate * 0.5) + (medium_hit_rate * 0.3) + (long_hit_rate * 0.2)
+
+        ensemble_support = float(np.mean([value >= target for value in predictions])) if predictions else 0.0
+        confidence = float(pattern_info.get("confidence", 0.0))
+        volatility = float(pattern_info.get("volatility", 0.0))
+        median_prediction = float(np.median(predictions)) if predictions else float(np.median(recent_25))
+        prediction_spread = (
+            (max(predictions) - min(predictions)) / max(median_prediction, 1.0)
+            if len(predictions) >= 2 else 1.0
+        )
+        spread_quality = max(0.0, 1.0 - min(1.0, prediction_spread / 0.75))
+        stability = max(0.0, 1.0 - min(1.0, volatility / 1.2))
+        drift = self._detect_drift(history)
+        drift_penalty = 0.15 if drift else 0.0
+
+        probability_over_target = float(np.clip(
+            (empirical_probability * 0.45)
+            + (ensemble_support * 0.35)
+            + (confidence * 0.15)
+            + (stability * 0.05)
+            - drift_penalty,
+            0.0,
+            1.0,
+        ))
+        signal_score = float(np.clip(
+            (probability_over_target * 0.5)
+            + (spread_quality * 0.25)
+            + (confidence * 0.15)
+            + (stability * 0.10),
+            0.0,
+            1.0,
+        ))
+
+        should_predict = (
+            predictions
+            and probability_over_target >= SIGNAL_MIN_PROBABILITY_OVER_TARGET
+            and signal_score >= SIGNAL_MIN_SCORE
+            and ensemble_support >= SIGNAL_MIN_ENSEMBLE_SUPPORT
+        )
+
+        reason = (
+            f"High-conviction setup for {target:.1f}x+."
+            if should_predict
+            else f"No bet: estimated chance of clearing {target:.1f}x is too weak or too noisy."
+        )
+
+        return {
+            "action": "predict" if should_predict else "abstain",
+            "reason": reason,
+            "target_multiplier": float(target),
+            "probability_over_target": probability_over_target,
+            "signal_score": signal_score,
+            "ensemble_support": ensemble_support,
+            "prediction_spread": float(prediction_spread),
+            "empirical_probability": float(empirical_probability),
+        }
     
     def detect_algorithm_pattern(self, history: List[float]) -> Dict[str, Any]:
         """Detect what pattern the gambling algorithm is currently using - ENHANCED"""
@@ -733,6 +851,7 @@ class AdaptiveGamblingPredictor:
         history: List[float],
         persist_state: bool = True,
         state_snapshot: Optional[Dict[str, Any]] = None,
+        enforce_signal_gate: bool = True,
     ) -> List[float]:
         """Predict next multipliers using adaptive strategies - ENHANCED"""
         if len(history) < 10:
@@ -747,6 +866,14 @@ class AdaptiveGamblingPredictor:
                 "clustering": 0.0,
                 "avg_multiplier": recent_avg,
                 "all_patterns": {},
+                "signal": {
+                    "action": "wait",
+                    "reason": "Collecting more data before issuing signals.",
+                    "target_multiplier": float(SIGNAL_TARGET_MULTIPLIER),
+                    "probability_over_target": 0.0,
+                    "signal_score": 0.0,
+                    "ensemble_support": 0.0,
+                },
             }
             return [
                 max(1.0, recent_avg * 0.9),
@@ -756,7 +883,6 @@ class AdaptiveGamblingPredictor:
         
         # Detect current algorithm pattern
         pattern_info = self.detect_algorithm_pattern(history)
-        self.last_pattern_info = pattern_info
         current_pattern = pattern_info["pattern"]
         confidence = pattern_info["confidence"]
         
@@ -856,12 +982,31 @@ class AdaptiveGamblingPredictor:
         
         # Ensure predictions are valid and diverse
         predictions = self._validate_predictions(predictions, history)
+        signal_summary = self._build_signal_summary(history, predictions, pattern_info)
+        has_two_x_candidate = any(float(pred) >= SIGNAL_TARGET_MULTIPLIER for pred in predictions)
+        if has_two_x_candidate and signal_summary["action"] != "predict":
+            signal_summary["action"] = "watch"
+            signal_summary["reason"] = (
+                f"Showing candidates because the set includes {SIGNAL_TARGET_MULTIPLIER:.1f}x+, "
+                "but confidence is still below the high-conviction threshold."
+            )
+        elif not has_two_x_candidate:
+            signal_summary["action"] = "abstain"
+            signal_summary["reason"] = (
+                f"Not confident enough to call a {SIGNAL_TARGET_MULTIPLIER:.1f}x+ round yet."
+            )
+        pattern_info["signal"] = signal_summary
+        self.last_pattern_info = pattern_info
+
+        if enforce_signal_gate and not has_two_x_candidate:
+            predictions = []
         
         if persist_state:
             self.prediction_history.append({
                 "predictions": predictions[:3],
                 "pattern": current_pattern,
                 "confidence": confidence,
+                "signal_action": signal_summary["action"],
                 "timestamp": datetime.now().isoformat()
             })
         
@@ -885,7 +1030,11 @@ class AdaptiveGamblingPredictor:
         future_turns = []
 
         for _ in range(turns):
-            next_predictions = self.predict_next_multipliers(simulated_history, persist_state=False)
+            next_predictions = self.predict_next_multipliers(
+                simulated_history,
+                persist_state=False,
+                enforce_signal_gate=False,
+            )
             if not next_predictions:
                 break
 
@@ -1500,24 +1649,27 @@ class AdaptiveGamblingPredictor:
                 else self.state_manager.get_performance_metrics()
             )
             pred_history = metrics.get("prediction_history", [])
-            if len(pred_history) < 24:
+            if len(pred_history) < DRIFT_MIN_SAMPLE_WINDOW:
                 return False
             errors = [
                 abs(p["actual"] - p["closest"]) / max(p["actual"], 1.0)
                 for p in pred_history
                 if "actual" in p and "closest" in p
             ]
-            if len(errors) < 24:
+            if len(errors) < DRIFT_MIN_SAMPLE_WINDOW:
                 return False
 
-            baseline_window = errors[-24:-12]
-            recent_window = errors[-12:]
+            baseline_window = errors[-DRIFT_MIN_SAMPLE_WINDOW:-DRIFT_BASELINE_SLICE]
+            recent_window = errors[-DRIFT_BASELINE_SLICE:]
             baseline = float(np.mean(baseline_window))
             recent = float(np.mean(recent_window))
 
             # Require both a relative jump and a meaningful absolute increase
             # so random noise does not trigger repeated resets.
-            return recent > max(0.18, baseline * 1.35) and (recent - baseline) > 0.05
+            return (
+                recent > max(DRIFT_MIN_ERROR_LEVEL, baseline * DRIFT_RELATIVE_MULTIPLIER)
+                and (recent - baseline) > DRIFT_MIN_ABSOLUTE_INCREASE
+            )
         except:
             return False
 

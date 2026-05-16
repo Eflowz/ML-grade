@@ -30,10 +30,14 @@ export default function PredictionDisplay({
   dataPoints,
   allPatterns,
 }: Props) {
+  const visiblePredictions =
+    predictions.some((prediction) => prediction >= 2.0) ? predictions : []
   const isReady = dataPoints >= MIN_POINTS
   const remaining = MIN_POINTS - dataPoints
   const isLongRangeReady = dataPoints >= LONG_RANGE_MIN_POINTS
   const longRangeRemaining = LONG_RANGE_MIN_POINTS - dataPoints
+  const longRangeIsExperimental =
+    isLongRangeReady && visiblePredictions.length === 0 && futureTurnPredictions.length > 0
 
   // Secondary patterns that also influenced the prediction (conf > 0.4, excluding primary)
   const contributing = Object.entries(allPatterns ?? {})
@@ -48,7 +52,7 @@ export default function PredictionDisplay({
         <h2 className="text-[11px] font-medium uppercase tracking-[0.18em] text-black/40">
           Next Predictions
         </h2>
-        {isReady && predictions.length > 0 && (
+        {isReady && visiblePredictions.length > 0 && (
           <span className="text-[11px] uppercase tracking-wide text-black/45">
             {confidenceLabel(confidence)} · {Math.round(confidence * 100)}%
           </span>
@@ -75,20 +79,103 @@ export default function PredictionDisplay({
             </p>
           </div>
         </div>
-      ) : predictions.length === 0 ? (
-        <div className="rounded-2xl border border-black/10 bg-white p-6 text-center">
-          <p className="text-[11px] uppercase tracking-wide text-black/45 mb-0.5">
-            No predictions
-          </p>
-          <p className="font-mono text-sm text-black/60">
-            Submit a multiplier to get predictions
-          </p>
+      ) : visiblePredictions.length === 0 ? (
+        <div className="space-y-4">
+          <div className="rounded-2xl border border-black/10 bg-white p-6 text-center">
+            <p className="text-[11px] uppercase tracking-wide text-black/45 mb-0.5">
+              No predictions
+            </p>
+            <p className="font-mono text-sm text-black/60">
+              Not confident enough to call a 2x+ round yet
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-[11px] uppercase tracking-wide text-black/40">
+                Driving pattern:
+              </span>
+              <span className="text-[11px] font-medium uppercase tracking-widest text-black">
+                {pattern.replace(/_/g, ' ')}
+              </span>
+              <span className="text-[11px] font-mono text-black/40">
+                {Math.round(confidence * 100)}%
+              </span>
+            </div>
+
+            {contributing.length > 0 && (
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-[11px] uppercase tracking-wide text-black/40">
+                  Also using:
+                </span>
+                {contributing.map(([p, c]) => (
+                  <span
+                    key={p}
+                    className="text-[10px] px-2 py-1 rounded-full border border-black/10 bg-white text-black/60 font-mono"
+                  >
+                    {p.replace(/_/g, ' ')} {Math.round(c * 100)}%
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="rounded-2xl border border-black/10 bg-black/[0.02] p-3">
+            <div className="mb-2 flex items-center justify-between gap-3">
+              <p className="text-[11px] uppercase tracking-wide text-black/45">
+                Next 5 turns
+              </p>
+              <span
+                className={`text-[10px] font-mono ${
+                  longRangeIsExperimental ? 'text-amber-600' : 'text-black/45'
+                }`}
+              >
+                {isLongRangeReady
+                  ? longRangeIsExperimental
+                    ? 'Experimental'
+                    : 'Unlocked'
+                  : `${longRangeRemaining} to unlock`}
+              </span>
+            </div>
+
+            {isLongRangeReady && futureTurnPredictions.length > 0 ? (
+              <div className="space-y-3">
+                {longRangeIsExperimental && (
+                  <p className="text-xs text-amber-700">
+                    Shown without a cleared 2x+ signal. Use as a low-confidence guide.
+                  </p>
+                )}
+
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+                  {futureTurnPredictions.slice(0, 5).map((p, i) => (
+                    <div
+                      key={`future-empty-${i}`}
+                      className="rounded-2xl border border-black/10 bg-white p-3 text-center"
+                    >
+                      <div className="text-[10px] uppercase tracking-wide text-black/45 mb-0.5">
+                        T+{i + 1}
+                      </div>
+                      <div className="font-mono text-sm text-black/70">
+                        {p.toFixed(2)}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <p className="font-mono text-xs text-black/50">
+                {isLongRangeReady
+                  ? 'Building longer-range forecast'
+                  : `Unlocks at ${LONG_RANGE_MIN_POINTS} data points`}
+              </p>
+            )}
+          </div>
         </div>
       ) : (
         <>
           {/* Prediction grid */}
           <div className="grid grid-cols-3 gap-3 mb-4">
-            {predictions.slice(0, 3).map((p, i) => (
+            {visiblePredictions.slice(0, 3).map((p, i) => (
               <div
                 key={i}
                 className={`rounded-2xl border p-3 text-center ${
@@ -114,26 +201,42 @@ export default function PredictionDisplay({
               <p className="text-[11px] uppercase tracking-wide text-black/45">
                 Next 5 turns
               </p>
-              <span className="text-[10px] font-mono text-black/45">
-                {isLongRangeReady ? 'Unlocked' : `${longRangeRemaining} to unlock`}
+              <span
+                className={`text-[10px] font-mono ${
+                  longRangeIsExperimental ? 'text-amber-600' : 'text-black/45'
+                }`}
+              >
+                {isLongRangeReady
+                  ? longRangeIsExperimental
+                    ? 'Experimental'
+                    : 'Unlocked'
+                  : `${longRangeRemaining} to unlock`}
               </span>
             </div>
 
             {isLongRangeReady && futureTurnPredictions.length > 0 ? (
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
-                {futureTurnPredictions.slice(0, 5).map((p, i) => (
-                  <div
-                    key={`future-${i}`}
-                    className="rounded-2xl border border-black/10 bg-white p-3 text-center"
-                  >
-                    <div className="text-[10px] uppercase tracking-wide text-black/45 mb-0.5">
-                      T+{i + 1}
+              <div className="space-y-3">
+                {longRangeIsExperimental && (
+                  <p className="text-xs text-amber-700">
+                    Shown without a cleared 2x+ signal. Use as a low-confidence guide.
+                  </p>
+                )}
+
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+                  {futureTurnPredictions.slice(0, 5).map((p, i) => (
+                    <div
+                      key={`future-${i}`}
+                      className="rounded-2xl border border-black/10 bg-white p-3 text-center"
+                    >
+                      <div className="text-[10px] uppercase tracking-wide text-black/45 mb-0.5">
+                        T+{i + 1}
+                      </div>
+                      <div className="font-mono text-sm text-black/70">
+                        {p.toFixed(2)}
+                      </div>
                     </div>
-                    <div className="font-mono text-sm text-black/70">
-                      {p.toFixed(2)}
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             ) : (
               <p className="font-mono text-xs text-black/50">

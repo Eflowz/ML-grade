@@ -73,7 +73,11 @@ export default function StatusPanel({ status }: { status: StatusResponse | null 
         <StatBox label="Data Points" value={total_data_points} />
         <StatBox label="Adaptations" value={adaptation_level} />
         <StatBox label="Accuracy" value={`${performance.prediction_accuracy.toFixed(1)}%`} />
-        <StatBox label="Streak" value={streakLabel} />
+        <StatBox label="2x+ Hits" value={performance.greater_than_two_hits} />
+      </div>
+
+      <div className="rounded-2xl border border-black/10 bg-black/[0.02] px-3 py-2 text-xs text-black/50">
+        Current streak: <span className="font-medium text-black/70">{streakLabel}</span>
       </div>
 
       {/* Pattern + confidence */}

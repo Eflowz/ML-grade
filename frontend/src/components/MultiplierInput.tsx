@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 
 interface Props {
   onSubmit: (multiplier: number) => void
@@ -15,6 +15,13 @@ export default function MultiplierInput({
 }: Props) {
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (!loading && !disabled) {
+      inputRef.current?.focus()
+    }
+  }, [loading, disabled])
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -48,6 +55,7 @@ export default function MultiplierInput({
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         <input
+          ref={inputRef}
           type="number"
           step="0.01"
           min="1"
@@ -60,7 +68,7 @@ export default function MultiplierInput({
           placeholder="e.g. 2.45"
           autoFocus
           disabled={loading || disabled}
-          className="w-full rounded-2xl border border-black/10 bg-white p-3 text-2xl font-mono text-black outline-none transition-colors placeholder-black/25 focus:border-black/20 disabled:cursor-not-allowed disabled:bg-black/[0.02] disabled:opacity-50"
+          className="w-full rounded-2xl border border-black/10 bg-white p-3 text-2xl font-mono text-black outline-none transition-colors placeholder-black/25 focus:border-black/20 disabled:cursor-not-allowed disabled:bg-black/2 disabled:opacity-50"
         />
 
         <button
