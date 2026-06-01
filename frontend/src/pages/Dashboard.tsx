@@ -11,9 +11,22 @@ import RecentHistory from '../components/RecentHistory'
 import StatsModal from '../components/StatsModal'
 import LiveCapture from '../components/LiveCapture'
 import IframeContainer from '../components/IframeContainer'
-import { LuLayoutDashboard, LuMonitorPlay } from 'react-icons/lu'
+import { LuLayoutDashboard, LuMenu, LuMonitorPlay, LuX } from 'react-icons/lu'
 
 const LIVE_REFRESH_INTERVAL_MS = 3000
+
+function getApiErrorMessage(error: unknown): string {
+  if (
+    typeof error === 'object' &&
+    error !== null &&
+    'response' in error
+  ) {
+    const response = (error as { response?: { data?: { error?: string }; status?: number } }).response
+    return response?.data?.error ?? `Request failed${response?.status ? ` (${response.status})` : ''}`
+  }
+
+  return error instanceof Error ? error.message : 'Submission failed'
+}
 
 export default function Dashboard() {
   const { username, logout, isAdmin } = useAuth()
@@ -27,6 +40,7 @@ export default function Dashboard() {
   const [tempCredentials, setTempCredentials] = useState<{ username: string; password: string; expires_at: number } | null>(null)
   const [generatingTemp, setGeneratingTemp] = useState(false)
   const [isLiveMode, setIsLiveMode] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const loadStatus = useCallback(async (showError = false) => {
     try {
@@ -74,9 +88,12 @@ export default function Dashboard() {
     }
   }, [loadStatus])
 
-  const handleSubmit = async (multiplier: number) => {
+  const handleSubmit = async (multiplier: number, options: { throwOnError?: boolean } = {}) => {
     if (!isAdmin) {
       toast.error('Only admins can submit new multipliers')
+      if (options.throwOnError) {
+        throw new Error('Only admins can submit new multipliers')
+      }
       return
     }
 
@@ -86,7 +103,7 @@ export default function Dashboard() {
       const res = await api.post<AddResponse>('/api/add', {
         multiplier,
         pending_predictions: pendingPredictions,
-        include_extended_predictions: false,
+        include_extended_predictions: true,
       })
 
       if (res.data.evaluation) {
@@ -104,6 +121,7 @@ export default function Dashboard() {
       }
 
       setPendingPredictions(res.data.next_predictions ?? [])
+      setIsMobileMenuOpen(false)
       setStatus((current) => {
         if (!current) {
           return current
@@ -151,24 +169,30 @@ export default function Dashboard() {
                 : 0
               : current.model_state.prediction_streak,
           },
-          performance: res.data.evaluation
-            ? {
-                ...current.performance,
-                total_predictions: current.performance.total_predictions + 1,
-                correct_predictions:
-                  current.performance.correct_predictions + (res.data.evaluation.correct ? 1 : 0),
-                close_predictions:
-                  current.performance.close_predictions + (res.data.evaluation.close ? 1 : 0),
-                greater_than_two_hits:
-                  current.performance.greater_than_two_hits +
-                  (res.data.evaluation.greater_than_two_hit ? 1 : 0),
-                recent_history: nextRecentHistory,
-              }
-            : current.performance,
+          performance: res.data.performance
+            ? res.data.performance
+            : res.data.evaluation
+              ? {
+              ...current.performance,
+              total_predictions: current.performance.total_predictions + 1,
+              correct_predictions:
+                current.performance.correct_predictions + (res.data.evaluation.correct ? 1 : 0),
+              close_predictions:
+                current.performance.close_predictions + (res.data.evaluation.close ? 1 : 0),
+              greater_than_two_hits:
+                current.performance.greater_than_two_hits +
+                (res.data.evaluation.greater_than_two_hit ? 1 : 0),
+              recent_history: nextRecentHistory,
+            }
+              : current.performance,
         }
       })
-    } catch {
-      toast.error('Submission failed')
+    } catch (error) {
+      const message = getApiErrorMessage(error)
+      toast.error(message)
+      if (options.throwOnError) {
+        throw error
+      }
     } finally {
       setSubmitting(false)
     }
@@ -193,6 +217,7 @@ export default function Dashboard() {
     try {
       const res = await api.post('/api/generate_temp', { duration })
       setTempCredentials(res.data)
+      setIsMobileMenuOpen(false)
       toast.success('Temporary access generated')
     } catch {
       toast.error('Failed to generate temporary access')
@@ -219,97 +244,188 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-white text-black">
-    <header className="sticky top-0 z-20 border-b border-black/10 bg-white/80 backdrop-blur">
-  <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-    <div>
-      <h1 className="text-lg font-semibold tracking-tight">
-        Prediction Dashboard
-      </h1>
-      <p className="text-xs text-black/50">
-        Adaptive pattern learning engine
-      </p>
-    </div>
+      <header className="sticky top-0 z-20 border-b border-black/10 bg-white/90 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+          <div>
+            <h1 className="text-lg font-semibold tracking-tight">
+              Prediction Dashboard
+            </h1>
+            <p className="text-xs text-black/50">
+              Adaptive pattern learning engine
+            </p>
+          </div>
 
-    {/* Right-hand side - Responsive container */}
-    <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
-      
-      {/* Username - hidden on smallest screens */}
-      <span className="hidden text-sm text-black/60 md:inline-block">
-        {username}
-      </span>
+          <div className="hidden items-center gap-3 md:flex">
+            <span className="text-sm text-black/60">
+              {username}
+            </span>
 
-      {/* Stats button */}
-      {isAdmin && (
-        <button
-          onClick={() => setShowStats(true)}
-          className="whitespace-nowrap rounded-xl border border-black/10 px-2 py-1.5 text-xs transition hover:bg-black hover:text-white sm:px-3 sm:text-sm"
-        >
-          Stats
-        </button>
-      )}
+            {isAdmin && (
+              <button
+                onClick={() => setShowStats(true)}
+                className="whitespace-nowrap rounded-xl border border-black/10 px-3 py-1.5 text-sm transition hover:bg-black hover:text-white"
+              >
+                Stats
+              </button>
+            )}
 
-      {/* Clear button */}
-      {isAdmin && (
-        <button
-          onClick={handleClear}
-          className="whitespace-nowrap rounded-xl border border-black/10 px-2 py-1.5 text-xs text-red-600 transition hover:bg-red-50 sm:px-3 sm:text-sm"
-        >
-          Clear
-        </button>
-      )}
+            {isAdmin && (
+              <button
+                onClick={handleClear}
+                className="whitespace-nowrap rounded-xl border border-black/10 px-3 py-1.5 text-sm text-red-600 transition hover:bg-red-50"
+              >
+                Clear
+              </button>
+            )}
 
-      {/* Generate Temp Access dropdown - condensed on mobile */}
-      {isAdmin && (
-        <select
-          onChange={(e) => handleGenerateTemp(e.target.value)}
-          disabled={generatingTemp}
-          className="max-w-[110px] whitespace-nowrap rounded-xl border border-black/10 px-2 py-1.5 text-xs transition hover:bg-black hover:text-white disabled:opacity-50 sm:max-w-none sm:px-3 sm:text-sm"
-          defaultValue=""
-        >
-          <option value="" disabled>Generate Temp</option>
-          <option value="30min">30 min</option>
-          <option value="1hour">1 hour</option>
-          <option value="2hours">2 hours</option>
-          <option value="6hours">6 hours</option>
-          <option value="12hours">12 hours</option>
-          <option value="24hours">24 hours</option>
-          <option value="48hours">48 hours</option>
-          <option value="72hours">72 hours</option>
-        </select>
-      )}
+            {isAdmin && (
+              <select
+                onChange={(e) => {
+                  handleGenerateTemp(e.target.value)
+                  e.currentTarget.value = ''
+                }}
+                disabled={generatingTemp}
+                className="whitespace-nowrap rounded-xl border border-black/10 px-3 py-1.5 text-sm transition hover:bg-black hover:text-white disabled:opacity-50"
+                defaultValue=""
+              >
+                <option value="" disabled>Generate Temp</option>
+                <option value="30min">30 min</option>
+                <option value="1hour">1 hour</option>
+                <option value="2hours">2 hours</option>
+                <option value="6hours">6 hours</option>
+                <option value="12hours">12 hours</option>
+                <option value="24hours">24 hours</option>
+                <option value="48hours">48 hours</option>
+                <option value="72hours">72 hours</option>
+              </select>
+            )}
 
-      {/* Sign out button */}
-      <button
-        onClick={logout}
-        className="whitespace-nowrap rounded-xl border border-black/10 px-2 py-1.5 text-xs text-black/60 transition hover:bg-black hover:text-white sm:px-3 sm:text-sm"
-      >
-        Sign out
-      </button>
+            <button
+              onClick={logout}
+              className="whitespace-nowrap rounded-xl border border-black/10 px-3 py-1.5 text-sm text-black/60 transition hover:bg-black hover:text-white"
+            >
+              Sign out
+            </button>
 
-      {/* Live Mode Toggle */}
-      <button
-        onClick={() => setIsLiveMode(!isLiveMode)}
-        className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-3 py-1.5 text-sm font-medium transition ${
-          isLiveMode 
-            ? 'bg-blue-600 text-white shadow-lg shadow-blue-200' 
-            : 'border border-black/10 text-black/60 hover:bg-black hover:text-white'
-        }`}
-      >
-        {isLiveMode ? (
-          <>
-            <LuLayoutDashboard className="h-4 w-4" />
-            Dashboard
-          </>
-        ) : (
-          <>
-            <LuMonitorPlay className="h-4 w-4" />
-            Live Mode
-          </>
+            <button
+              onClick={() => setIsLiveMode(!isLiveMode)}
+              className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-3 py-1.5 text-sm font-medium transition ${
+                isLiveMode
+                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
+                  : 'border border-black/10 text-black/60 hover:bg-black hover:text-white'
+              }`}
+            >
+              {isLiveMode ? (
+                <>
+                  <LuLayoutDashboard className="h-4 w-4" />
+                  Dashboard
+                </>
+              ) : (
+                <>
+                  <LuMonitorPlay className="h-4 w-4" />
+                  Live Mode
+                </>
+              )}
+            </button>
+          </div>
+
+          <button
+            onClick={() => setIsMobileMenuOpen((open) => !open)}
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-black/10 text-black/70 transition hover:bg-black hover:text-white md:hidden"
+            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMobileMenuOpen}
+          >
+            {isMobileMenuOpen ? <LuX className="h-5 w-5" /> : <LuMenu className="h-5 w-5" />}
+          </button>
+        </div>
+
+        {isMobileMenuOpen && (
+          <div className="border-t border-black/10 bg-white px-4 py-4 shadow-sm md:hidden">
+            <div className="mx-auto flex max-w-7xl flex-col gap-3">
+              <span className="text-sm text-black/60">
+                Signed in as {username}
+              </span>
+
+              <button
+                onClick={() => {
+                  setIsLiveMode((current) => !current)
+                  setIsMobileMenuOpen(false)
+                }}
+                className={`flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition ${
+                  isLiveMode
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-200'
+                    : 'border border-black/10 text-black/70'
+                }`}
+              >
+                {isLiveMode ? (
+                  <>
+                    <LuLayoutDashboard className="h-4 w-4" />
+                    Dashboard
+                  </>
+                ) : (
+                  <>
+                    <LuMonitorPlay className="h-4 w-4" />
+                    Live Mode
+                  </>
+                )}
+              </button>
+
+              {isAdmin && (
+                <button
+                  onClick={() => {
+                    setShowStats(true)
+                    setIsMobileMenuOpen(false)
+                  }}
+                  className="rounded-xl border border-black/10 px-3 py-2 text-sm transition hover:bg-black hover:text-white"
+                >
+                  Stats
+                </button>
+              )}
+
+              {isAdmin && (
+                <button
+                  onClick={() => {
+                    handleClear()
+                    setIsMobileMenuOpen(false)
+                  }}
+                  className="rounded-xl border border-black/10 px-3 py-2 text-sm text-red-600 transition hover:bg-red-50"
+                >
+                  Clear
+                </button>
+              )}
+
+              {isAdmin && (
+                <select
+                  onChange={(e) => {
+                    handleGenerateTemp(e.target.value)
+                    e.currentTarget.value = ''
+                  }}
+                  disabled={generatingTemp}
+                  className="w-full rounded-xl border border-black/10 px-3 py-2 text-sm text-black/70 disabled:opacity-50"
+                  defaultValue=""
+                >
+                  <option value="" disabled>Generate Temp Access</option>
+                  <option value="30min">30 min</option>
+                  <option value="1hour">1 hour</option>
+                  <option value="2hours">2 hours</option>
+                  <option value="6hours">6 hours</option>
+                  <option value="12hours">12 hours</option>
+                  <option value="24hours">24 hours</option>
+                  <option value="48hours">48 hours</option>
+                  <option value="72hours">72 hours</option>
+                </select>
+              )}
+
+              <button
+                onClick={logout}
+                className="rounded-xl border border-black/10 px-3 py-2 text-sm text-black/60 transition hover:bg-black hover:text-white"
+              >
+                Sign out
+              </button>
+            </div>
+          </div>
         )}
-      </button>
-    </div>
-  </div>
-</header>
+      </header>
 
       {tempCredentials && (
         <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
@@ -333,7 +449,7 @@ export default function Dashboard() {
             </div>
 
             <div className="space-y-3">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                 <span className="min-w-[70px] text-sm text-black/50">Username</span>
                 <div className="min-w-0 flex-1">
                   <code className="block w-full truncate rounded bg-black/5 px-2 py-1.5 font-mono text-sm text-black/80">
@@ -351,7 +467,7 @@ export default function Dashboard() {
                 </button>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                 <span className="min-w-[70px] text-sm text-black/50">Password</span>
                 <div className="min-w-0 flex-1">
                   <code className="block w-full truncate rounded bg-black/5 px-2 py-1.5 font-mono text-sm text-black/80">
@@ -369,7 +485,7 @@ export default function Dashboard() {
                 </button>
               </div>
 
-              <div className="flex items-center gap-2 border-t border-black/5 pt-2">
+              <div className="flex flex-col gap-1 border-t border-black/5 pt-2 sm:flex-row sm:items-center sm:gap-2">
                 <span className="min-w-[70px] text-sm text-black/50">Expires</span>
                 <span className="flex-1 text-sm text-black/70">
                   {new Date(tempCredentials.expires_at * 1000).toLocaleString()}
@@ -377,7 +493,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="mt-5 flex gap-2">
+            <div className="mt-5 flex flex-col gap-2 sm:flex-row">
               <button
                 onClick={() => {
                   navigator.clipboard.writeText(`Username: ${tempCredentials.username}\nPassword: ${tempCredentials.password}`)
@@ -417,7 +533,7 @@ export default function Dashboard() {
               {isAdmin && (
                 <div className="rounded-3xl border border-black/10 bg-white p-5 shadow-sm">
                   <LiveCapture 
-                    onDetected={handleSubmit} 
+                    onDetected={(multiplier) => handleSubmit(multiplier, { throwOnError: true })} 
                   />
                 </div>
               )}

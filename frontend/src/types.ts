@@ -14,6 +14,7 @@ export interface PredictionRecord {
   greater_than_two_hit?: boolean
   notification?: string | null
   pattern: string
+  accuracy_percentage?: number
   timestamp?: string
 }
 
@@ -23,6 +24,7 @@ export interface Performance {
   close_predictions: number
   prediction_accuracy: number
   greater_than_two_hits: number
+  good_abstentions: number
   recent_history: PredictionRecord[]
 }
 
@@ -65,6 +67,7 @@ export interface AddResponse {
   total_data_points: number
   ready_for_predictions: boolean
   ready_for_extended_predictions: boolean
+  performance?: Performance
 }
 
 export interface StatsResponse {
@@ -74,6 +77,7 @@ export interface StatsResponse {
     close_predictions: number
     prediction_accuracy: number
     greater_than_two_hits: number
+    good_abstentions: number
   }
   pattern_distribution: Record<string, number>
   adaptation_history: AdaptationRecord[]

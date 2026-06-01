@@ -25,19 +25,20 @@ export default function EvaluationResultCard({ evaluation }: { evaluation: Evalu
     notification,
   } = evaluation
 
-  const borderClass = correct
+  const borderClass = greater_than_two_hit || correct
     ? 'border-green-200 bg-green-50'
     : close
       ? 'border-yellow-200 bg-yellow-50'
       : 'border-black/10 bg-white'
 
-  const statusText = correct ? 'Exact match' : close ? 'Close prediction' : 'Adapting'
+  const statusText = greater_than_two_hit ? 'Greater than two' : correct ? 'Exact match' : close ? 'Close prediction' : 'Adapting'
 
-  const statusColor = correct
+  const statusColor = greater_than_two_hit || correct
     ? 'text-green-700'
     : close
       ? 'text-yellow-700'
       : 'text-black/60'
+  const displayAccuracy = greater_than_two_hit ? 100 : accuracy_percentage
 
   return (
     <div className={`rounded-3xl border p-5 ${borderClass}`}>
@@ -54,7 +55,7 @@ export default function EvaluationResultCard({ evaluation }: { evaluation: Evalu
       <div className="grid grid-cols-3 gap-3">
         <Cell label="Closest" value={closest_prediction.toFixed(2)} />
         <Cell label="Difference" value={`+/-${difference.toFixed(2)}`} />
-        <Cell label="Accuracy" value={`${accuracy_percentage.toFixed(1)}%`} />
+        <Cell label="Accuracy" value={`${displayAccuracy.toFixed(1)}%`} />
       </div>
 
       <p className="mt-3 text-xs text-black/45">

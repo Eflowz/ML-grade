@@ -211,13 +211,32 @@ def _build_status_payload() -> dict:
     model_state = state.get("model_state", {})
     recent_data = history[-20:]
 
-    current_predictions, pattern_info, future_turn_batch = _compute_prediction_response(
-        predictor,
-        history,
-        state,
-        persist_state=False,
-        include_extended_predictions=True,
-    )
+    active_preds = state.get("active_predictions", {})
+    needs_extended = total_data_points >= LONG_RANGE_PREDICTION_THRESHOLD
+    has_extended = bool(active_preds.get("future_turn_batch", {}).get("predictions"))
+
+    if (active_preds 
+        and active_preds.get("round_number") == total_data_points
+        and (not needs_extended or has_extended)):
+        current_predictions = active_preds.get("current_predictions", [])
+        pattern_info = active_preds.get("pattern_info", {})
+        future_turn_batch = active_preds.get("future_turn_batch", {})
+    else:
+        current_predictions, pattern_info, future_turn_batch = _compute_prediction_response(
+            predictor,
+            history,
+            state,
+            persist_state=False,
+            include_extended_predictions=True,
+        )
+        # Update the cache so subsequent status requests can reuse it
+        state["active_predictions"] = {
+            "round_number": total_data_points,
+            "current_predictions": current_predictions,
+            "pattern_info": pattern_info,
+            "future_turn_batch": future_turn_batch
+        }
+        sm.save_state(state)
 
     return {
         "total_data_points": total_data_points,
@@ -268,6 +287,29 @@ def _get_metrics_from_state(state: dict) -> dict:
         "good_abstentions": int(metrics.get("good_abstentions", 0)),
         "prediction_history": metrics.get("prediction_history", []),
     }
+
+
+def _score_prediction_record(record: dict) -> float:
+    accuracy_pct = float(record.get("accuracy_percentage", 0.0))
+    if record.get("good_abstention") or record.get("greater_than_two_hit"):
+        return 100.0
+    if record.get("correct"):
+        return 100.0
+    if record.get("close"):
+        return 60.0
+    return min(30.0, accuracy_pct * 0.3)
+
+
+def _recalculate_prediction_accuracy(state: dict, total_predictions: int) -> None:
+    history_records = state["performance_metrics"].get("prediction_history", [])
+    if total_predictions <= 0 or not history_records:
+        state["performance_metrics"]["prediction_accuracy"] = 0.0
+        return
+
+    scored_records = history_records[-total_predictions:]
+    total_weight = sum(_score_prediction_record(pred) for pred in scored_records)
+    denominator = max(1, len(scored_records))
+    state["performance_metrics"]["prediction_accuracy"] = max(0.0, min(100.0, total_weight / denominator))
 
 
 @app.route("/api/health", methods=["GET"])
@@ -362,92 +404,31 @@ def add_multiplier():
     include_extended_predictions = _parse_bool(data.get("include_extended_predictions"), default=True)
 
     evaluation = None
-    if pending_preds and len(history) >= PREDICTION_START_THRESHOLD:
-        evaluation = predictor.evaluate_prediction_accuracy(multiplier, pending_preds)
+    if len(history) >= PREDICTION_START_THRESHOLD:
         metrics = _get_metrics_from_state(state)
-        n_correct = metrics["correct_predictions"]
-        n_close = metrics["close_predictions"]
-        n_total = metrics["total_predictions"]
-        n_adapt = metrics["adaptation_success"]
-        n_gt2_hits = metrics["greater_than_two_hits"]
         model_state = state.get("model_state", {})
-        has_greater_than_two_signal = any(float(pred) >= 2.0 for pred in pending_preds)
-        greater_than_two_hit = has_greater_than_two_signal and multiplier >= 2.0
+        
+        # 1. Determine if we abstained, watched, or waited on this round
+        active_preds = state.get("active_predictions", {})
+        if active_preds and active_preds.get("round_number") == len(history):
+            action = active_preds.get("pattern_info", {}).get("signal", {}).get("action")
+        else:
+            _, abstain_pattern_info, _ = _compute_prediction_response(
+                predictor,
+                history,
+                state,
+                persist_state=False,
+                include_extended_predictions=False,
+            )
+            action = abstain_pattern_info.get("signal", {}).get("action")
+        
+        is_abstain_or_watch = action in {"abstain", "watch", "wait"}
 
-        evaluation["greater_than_two_signal"] = has_greater_than_two_signal
-        evaluation["greater_than_two_hit"] = greater_than_two_hit
-        evaluation["notification"] = "greater than two" if greater_than_two_hit else None
-
-        n_total += 1
-        if evaluation["correct"]:
-            n_correct += 1
-            if model_state.get("prediction_streak", 0) > 2:
-                n_adapt += 1
-        if evaluation["close"]:
-            n_close += 1
-        if greater_than_two_hit:
-            n_gt2_hits += 1
-
-        record = {
-            "actual": float(multiplier),
-            "predictions": pending_preds,
-            "closest": evaluation["closest_prediction"],
-            "correct": evaluation["correct"],
-            "close": evaluation["close"],
-            "greater_than_two_signal": has_greater_than_two_signal,
-            "greater_than_two_hit": greater_than_two_hit,
-            "notification": evaluation["notification"],
-            "pattern": model_state.get("current_pattern", "unknown"),
-        }
-        state["performance_metrics"]["correct_predictions"] = n_correct
-        state["performance_metrics"]["total_predictions"] = n_total
-        state["performance_metrics"]["close_predictions"] = n_close
-        state["performance_metrics"]["adaptation_success"] = n_adapt
-        state["performance_metrics"]["greater_than_two_hits"] = n_gt2_hits
-
-        history_records = state["performance_metrics"].get("prediction_history", [])
-        history_records.append(record)
-        if len(history_records) > 100:
-            history_records = history_records[-100:]
-        state["performance_metrics"]["prediction_history"] = history_records
-
-        weighted_accuracy = 0.0
-        if n_total > 0:
-            if history_records:
-                total_weight = 0.0
-                for pred in history_records[-n_total:]:
-                    accuracy_pct = pred.get("accuracy_percentage", 0.0)
-                    if pred.get("correct"):
-                        total_weight += 100.0
-                    elif pred.get("close"):
-                        total_weight += 60.0
-                    else:
-                        total_weight += min(30.0, accuracy_pct * 0.3)
-                weighted_accuracy = total_weight / n_total
-            else:
-                weighted_accuracy = ((n_correct * 100 + n_close * 60) / (n_total * 100) * 100)
-        state["performance_metrics"]["prediction_accuracy"] = max(0.0, min(100.0, weighted_accuracy))
-
-        streak = model_state.get("prediction_streak", 0)
-        new_streak = streak + 1 if (evaluation["correct"] or evaluation["close"]) else 0
-        state["model_state"]["prediction_streak"] = new_streak
-    elif len(history) >= PREDICTION_START_THRESHOLD:
-        metrics = _get_metrics_from_state(state)
-        _, abstain_pattern_info, _ = _compute_prediction_response(
-            predictor,
-            history,
-            state,
-            persist_state=False,
-            include_extended_predictions=False,
-        )
-        signal_info = abstain_pattern_info.get("signal", {})
-        abstained_on_two_x = signal_info.get("action") == "abstain"
-
-        if abstained_on_two_x and multiplier < 2.0:
+        # 2. Check if we avoided a loss (abstained/watched/waited and result is < 2.0)
+        if is_abstain_or_watch and multiplier < 2.0:
             n_total = metrics["total_predictions"] + 1
             n_good_abstentions = metrics["good_abstentions"] + 1
-            model_state = state.get("model_state", {})
-
+            
             record = {
                 "actual": float(multiplier),
                 "predictions": [],
@@ -459,9 +440,61 @@ def add_multiplier():
                 "pattern": model_state.get("current_pattern", "unknown"),
                 "accuracy_percentage": 100.0,
             }
-
+            
             state["performance_metrics"]["total_predictions"] = n_total
             state["performance_metrics"]["good_abstentions"] = n_good_abstentions
+            
+            history_records = state["performance_metrics"].get("prediction_history", [])
+            history_records.append(record)
+            if len(history_records) > 100:
+                history_records = history_records[-100:]
+            state["performance_metrics"]["prediction_history"] = history_records
+            
+            _recalculate_prediction_accuracy(state, n_total)
+            
+        elif pending_preds:
+            evaluation = predictor.evaluate_prediction_accuracy(multiplier, pending_preds)
+            n_correct = metrics["correct_predictions"]
+            n_close = metrics["close_predictions"]
+            n_total = metrics["total_predictions"]
+            n_adapt = metrics["adaptation_success"]
+            n_gt2_hits = metrics["greater_than_two_hits"]
+            
+            has_greater_than_two_signal = any(float(pred) >= 2.0 for pred in pending_preds)
+            greater_than_two_hit = has_greater_than_two_signal and multiplier >= 2.0
+
+            evaluation["greater_than_two_signal"] = has_greater_than_two_signal
+            evaluation["greater_than_two_hit"] = greater_than_two_hit
+            evaluation["notification"] = "greater than two" if greater_than_two_hit else None
+
+            n_total += 1
+            if evaluation["correct"]:
+                n_correct += 1
+                if model_state.get("prediction_streak", 0) > 2:
+                    n_adapt += 1
+            if evaluation["close"]:
+                n_close += 1
+            if greater_than_two_hit:
+                n_gt2_hits += 1
+
+            record = {
+                "actual": float(multiplier),
+                "predictions": pending_preds,
+                "closest": evaluation["closest_prediction"],
+                "correct": evaluation["correct"],
+                "close": evaluation["close"],
+                "greater_than_two_signal": has_greater_than_two_signal,
+                "greater_than_two_hit": greater_than_two_hit,
+                "notification": evaluation["notification"],
+                "pattern": model_state.get("current_pattern", "unknown"),
+                "accuracy_percentage": evaluation["accuracy_percentage"],
+            }
+            
+            state["performance_metrics"]["correct_predictions"] = n_correct
+            state["performance_metrics"]["total_predictions"] = n_total
+            state["performance_metrics"]["close_predictions"] = n_close
+            state["performance_metrics"]["adaptation_success"] = n_adapt
+            state["performance_metrics"]["greater_than_two_hits"] = n_gt2_hits
 
             history_records = state["performance_metrics"].get("prediction_history", [])
             history_records.append(record)
@@ -469,18 +502,11 @@ def add_multiplier():
                 history_records = history_records[-100:]
             state["performance_metrics"]["prediction_history"] = history_records
 
-            total_weight = 0.0
-            for pred in history_records[-n_total:]:
-                accuracy_pct = pred.get("accuracy_percentage", 0.0)
-                if pred.get("good_abstention"):
-                    total_weight += 100.0
-                elif pred.get("correct"):
-                    total_weight += 100.0
-                elif pred.get("close"):
-                    total_weight += 60.0
-                else:
-                    total_weight += min(30.0, accuracy_pct * 0.3)
-            state["performance_metrics"]["prediction_accuracy"] = max(0.0, min(100.0, total_weight / n_total))
+            _recalculate_prediction_accuracy(state, n_total)
+
+            streak = model_state.get("prediction_streak", 0)
+            new_streak = streak + 1 if (evaluation["correct"] or evaluation["close"]) else 0
+            state["model_state"]["prediction_streak"] = new_streak
 
     state["historical_data"].append({
         "multiplier": float(multiplier),
@@ -496,6 +522,13 @@ def add_multiplier():
         persist_state=True,
         include_extended_predictions=include_extended_predictions,
     )
+
+    state["active_predictions"] = {
+        "round_number": len(history),
+        "current_predictions": next_predictions,
+        "pattern_info": pattern_info,
+        "future_turn_batch": future_turn_batch
+    }
 
     sm.save_state(state)
 
@@ -514,6 +547,15 @@ def add_multiplier():
         "total_data_points": len(history),
         "ready_for_predictions": len(history) >= PREDICTION_START_THRESHOLD,
         "ready_for_extended_predictions": len(history) >= LONG_RANGE_PREDICTION_THRESHOLD,
+        "performance": {
+            "total_predictions": int(state["performance_metrics"].get("total_predictions", 0)),
+            "correct_predictions": int(state["performance_metrics"].get("correct_predictions", 0)),
+            "close_predictions": int(state["performance_metrics"].get("close_predictions", 0)),
+            "prediction_accuracy": float(state["performance_metrics"].get("prediction_accuracy", 0.0)),
+            "greater_than_two_hits": int(state["performance_metrics"].get("greater_than_two_hits", 0)),
+            "good_abstentions": int(state["performance_metrics"].get("good_abstentions", 0)),
+            "recent_history": state["performance_metrics"].get("prediction_history", [])[-10:],
+        },
     })
 
 
